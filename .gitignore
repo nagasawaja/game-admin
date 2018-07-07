@@ -1,0 +1,7 @@
+/adminbackend/.env
+/nbproject
+/vendor
+*.log
+/.idea/
+/storage/
+
