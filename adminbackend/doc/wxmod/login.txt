@@ -1,0 +1,52 @@
+测试地址：http://192.168.42.172:7081
+
+响应码：
+// EOK 0 成功
+// ESystemBusy 1 系统繁忙
+// EParamInvalid 2 参数错误
+// EDevNotExists 3 设备不存在
+// EDevOfOther 4 设备已经被其他微信号登录
+
+响应json结构：
+{
+"code":响应码,
+"data":{...可选数据},
+"msg":"可选错误信息"
+}
+
+==流程说明
+1、添加微信号：
+"创建二维码"，获取到二维码后定时"检测二维码状态"，如果状态变为“已使用”时即添加成功，可调用获取用户信息的相关接口
+
+==接口说明：
+创建二维码(添加微信号时)：
+/newQrcode?user_id=123 => "data":{"idfa":"登录设备标识","qr":"二维码base64字符串"}
+
+检测二维码状态:
+/checkQrcode?idfa=0daa&user_id=123 => "data":{"status":}
+使用状态 status 取值：
+ 0 未使用， 1 扫码中， 2 已使用， 4 (已扫码)取消登录， 5 设备扫描操作过于频繁 6 设备已经被其他微信号登录
+
+检测设备状态:
+/clientState?idfa=0daa&user_id=123 => "data":{"state":}
+state 取值：
+0(INIT) 初始化客户端, 
+1(AUTO_AUTH) 自动登录,
+2(SEND_QRCODE) 扫码登录,
+3(CHECK_QRCODE)检查登录状态, 
+4(MANUAL_AUTH) 手动登录,
+5(MANUAL_SWITCH) 手动登录类型选择,
+6(CYCLE) 业务循环工作中，
+7(PUSH_LOGIN) 推送ipad登录，
+8(CHECK_PUSH_LOGIN) 检测ipad登录状态，
+9(EXIT) 退出登录
+
+刷新二维码：
+/refreshQrcode?idfa=0daa&user_id=123 => "data":{"idfa":"请求参数中的idfa","qr":"二维码base64字符串"}
+如果返回系统内部错误而 idfa 又不存在于系统则需要联系客服
+
+登录：
+/login?idfa=0daa&user_id=123 => "data":{"idfa":"请求参数中的idfa","qr":"二维码base64字符串，如果非空即要求扫码登录"}
+
+退出登录：
+/logout?idfa=0daa&user_id=123

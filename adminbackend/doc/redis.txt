@@ -1,0 +1,63 @@
+﻿c:[wxid] -> hash，记录微信账号信息{
+    cip         wxcore 所在ip，整形
+    cport       wxcore 所在端口，整形
+    st          对应 CORE_NTC_CLIENT_STATUS 的 state,客户端状态，0(INIT) 初始化客户端, 1(AUTO_AUTH) 自动登录, 2(SEND_QRCODE) 扫码登录, 3(CHECK_QRCODE)检查登录状态, 4(MANUAL_AUTH) 手动登录, 5(MANUAL_SWITCH) 手动登录类型选择, 6(CYCLE) 业务循环工作中，
+                7（PUSH_LOGIN） 推送ipad登录， 8（CHECK_PUSH_LOGIN） 检测ipad登录状态， 9（EXIT） 退出登录
+    sta         对应 CORE_NTC_CLIENT_STATUS 的 status
+    idfa        设备标识
+    uid         购买用户id
+    hb_time     记录最后一次心跳时间
+    msg_time    记录最后一次发消息时间
+}
+
+i:[idfa] -> hash，记录微信设备登录信息{
+    cip     wxcore所在ip，整形
+    cport   wxcore所在端口，整形
+    st      对应 CORE_NTC_CLIENT_STATUS 的 state,客户端状态，0(INIT) 初始化客户端, 1(AUTO_AUTH) 自动登录, 2(SEND_QRCODE) 扫码登录, 3(CHECK_QRCODE)检查登录状态, 4(MANUAL_AUTH) 手动登录, 5(MANUAL_SWITCH) 手动登录类型选择, 6(CYCLE) 业务循环工作中，
+            7（PUSH_LOGIN） 推送ipad登录， 8（CHECK_PUSH_LOGIN） 检测ipad登录状态， 9（EXIT） 退出登录
+    sta     对应 CORE_NTC_CLIENT_STATUS 的 status
+    wxid    微信id
+    uid     购买用户id
+}
+
+ia:[user_id] -> hash，用户未使用的设备idfa信息{
+    idfa    设备idfa(id)
+    caddr   wxcore所在主机地址
+    t       录入时间
+}
+
+qr:[idfa] -> hash，二维码缓存信息{
+    qr  二维码base64字符串
+    t   录入时间
+}
+
+h:[wxid] -> string，记录心跳失败次数
+
+logsms:[wxid] -> string，记录上次发送登录退出短信时间
+
+chat:tasks -> List，存放需调用微信消息模块功能的任务，value为json字符串，例如：{"time":1577721599,"task":"open_msg_sync_prompt","data":{"wxid":"aaa"}}
+
+pyq:[momentid] -> string，朋友圈数据，值为xml格式的字符串
+
+qre:[idfa] -> string，可能的值为：
+1 产生 -3003 错误（扫描登录太频繁），CORE_NTC_CLIENT_STATUS 回调写入
+2 设备在被其他微信登录
+
+sct:[wxid] -> hash，记录同步联系人任务信息{
+    start_time  开始时间
+    end_time    结束时间
+    sync_num    已同步数
+}
+
+gafl:wxid:[wxid]:gid:[group_id] -> sorted-set，记录批量加群成员好友操作日志，score：操作步骤数，member：日志内容
+
+gafg:wxid:[wxid]:gid:[group_id] -> hash，记录批量加群成员好友进度信息{
+    total           总数
+    status          状态，1=无，2=进行中，3=已完成
+    finished        已请求加好友数
+    start_time      开始时间
+    finished_time   完成时间
+    wait_time       下一次操作需间隔的时间，单位：秒
+    successful      请求加好友成功数
+    failed          请求加好友失败数
+}
