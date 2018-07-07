@@ -25,6 +25,9 @@ class Constants {
     const RK_USER_IDFA = 'user_idfa:'; //微信idfa(绑定的设备标识)
     const RK_AUTO_INCREMENT = 'auto_increment:'; //自增
     const RK_CHAT_TASKS = 'chat:tasks'; //自增
+    const RK_SERVER_STOP = 'server_stop'; //维护模式，1：是，2：否
+    const RK_SYSTEM_CONFIG = 'system_config'; //系统配置
+
 
     //各种ttl 单位s
     const TTL_VERIFY_CODE = 60; //验证码超时时间
@@ -49,6 +52,10 @@ class Constants {
     const TYPE_WX_ACCOUNT_FRIEND = 1; //普通好友
     const TYPE_WX_ACCOUNT_GROUP = 5; //群聊
 
+    const BALANCE_BUY_ACTIVATION_CODE = 1; //购买激活码
+    const BALANCE_TRANSFER = 2; //余额转账
+    const BALANCE_MASTER_RECEIVE_USER_ID = 777; //公司收款方user_id
+
 
     //各种status
     const STATUS_VALID_0 = 0; //有效的
@@ -71,15 +78,4 @@ class Constants {
 
     //ipad设备状态
     const IPAD_STATE_CYCLE = 6;
-
-    //网站各种登记信息
-    const APP_WX_ID = 'wx236e74a543ebc7fb';
-    const APP_WX_APP_SECRET = '473d39767600fa0353f21509accbf38c';
-
-    const WX_APP_ID = 'wx236e74a543ebc7fb';
-    const WX_KEY = '2EC3A62B3D9B8DE65DD51E82852B8B18';
-    const WX_MCH_ID = '1500020512';
-    const WX_APP_SECRET = '473d39767600fa0353f21509accbf38c';
-    const WX_PAY_NOTIFY = 'http://112.74.48.33:7061/pay-notify/wx-pay-order';
-    const WX_TRADE_TYPE_JS = 'JSAPI'; //公众号支付
 }

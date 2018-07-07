@@ -12,7 +12,6 @@ import Element from 'element-ui'
 import './icons' // icon
 import './permission' // permission control
 import * as filters from './filters' // global filters
-import VueWechatTitle from 'vue-wechat-title';
 // register global utility filters.
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
@@ -20,7 +19,6 @@ Object.keys(filters).forEach(key => {
 
 Vue.config.productionTip = false
 
-Vue.use(VueWechatTitle)
 Vue.use(Element, {
   size: 'mini' // set element-ui default size: medium small mini
 })

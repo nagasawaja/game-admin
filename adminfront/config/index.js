@@ -1,4 +1,4 @@
-'use strict'
+//'use strict'
 // Template version: 1.3.1
 // see http://vuejs-templates.github.io/webpack for documentation.
 
@@ -6,20 +6,19 @@ const path = require('path')
 
 module.exports = {
   dev: {
-
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    // proxyTable: {
-    //   '/backend': {
-    //     target: 'http://192.168.46.200:8000',
-    //     pathRewrite: {'^/backend' : ''},
-    //     secure: false
-    //   }
-    // },
+    proxyTable: {
+      '/backend': {
+        target: 'http://192.168.77.3:8081',
+        pathRewrite: {'^/backend' : ''},
+        secure: false
+      }
+    },
 
     // Various Dev Server settings
-    host: '192.168.42.172', // can be overwritten by process.env.HOST
+    host: '192.168.77.3', // can be overwritten by process.env.HOST
     port: 7071, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: true,
     errorOverlay: true,
@@ -29,7 +28,7 @@ module.exports = {
     // Use Eslint Loader?
     // If true, your code will be linted during bundling and
     // linting errors and warnings will be shown in the console.
-    useEslint: true,
+    useEslint: false,
     // If true, eslint errors and warnings will also be shown in the error overlay
     // in the browser.
     showEslintErrorsInOverlay: false,
