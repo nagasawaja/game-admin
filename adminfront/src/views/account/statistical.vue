@@ -4,17 +4,25 @@
             <el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='邮箱'  v-model="listQuery.email"></el-input>
             <el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='状态'  v-model="listQuery.status"></el-input>
             <el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='服务器'  v-model="listQuery.serverName"></el-input>
+            <el-date-picker
+                    v-model="listQuery.login_time"
+                    type="daterange"
+                    align="right"
+                    value-format="yyyy-MM-dd"
+                    unlink-panels
+                    range-separator="至"
+                    start-placeholder="登录时间开始"
+                    end-placeholder="登录时间结束"
+                    :picker-options="filterOption.DATE_FILTER_OPTION">
+            </el-date-picker>
             <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter"></el-button>
         </div>
 
         <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;margin-top:15px;">
-            <el-table-column width="65px"  label="帐号id" prop="id"></el-table-column>
-            <el-table-column width="300px" label="邮箱" prop="email"></el-table-column>
-            <el-table-column width="150px" label="密码" prop="passwd"></el-table-column>
-            <el-table-column width="150px" label="状态" prop="status"></el-table-column>
-            <el-table-column width="150px" label="服务器" prop="server_name"></el-table-column>
-            <el-table-column width="150px" label="签到天数" prop="sign_day"></el-table-column>
-            <el-table-column width="150px" label="欧泊" prop="oubo"></el-table-column>
+            <el-table-column width="65px"  label="服务器" prop="server_name"></el-table-column>
+            <el-table-column width="100px" label="欧泊" prop="oubo"></el-table-column>
+            <el-table-column width="100px" label="签到天数" prop="sign_day"></el-table-column>
+            <el-table-column width="100px" label="数量" prop="count"></el-table-column>
         </el-table>
 
         <div class="pagination-container">
@@ -77,7 +85,7 @@
         methods: {
             getList () {
                 this.listLoading = true
-                request({ url: 'account/lists', method: 'post', params: this.listQuery }).then(response => {
+                request({ url: 'account/statistical', method: 'post', params: this.listQuery }).then(response => {
                     const result = response.data;
                     if (result.code) {
                         this.$message.error(result.msg || '系统错误')
@@ -86,7 +94,7 @@
                     }
 
                     this.list = result.data.rows;
-                    this.total = result.data.total;
+                    this.total = 10;
                     this.listLoading = false
                 })
             },

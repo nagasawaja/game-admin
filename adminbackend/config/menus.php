@@ -7,7 +7,8 @@ return [
         ],
     ],
     ['title' => '帐号相关', 'icon' => 'document', 'children' => [
-            ['title' => '帐号列表', 'path' => 'account/lists']
+            ['title' => '帐号列表', 'path' => 'account/lists'],
+            ['title' => '帐号统计', 'path' => 'account/statistical']
         ],
     ]
 ];
