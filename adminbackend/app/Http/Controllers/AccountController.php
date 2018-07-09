@@ -6,6 +6,7 @@ use App\Http\Responses\JSON;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Constants;
+use App\Models\Account;
 
 class AccountController extends Controller
 {
@@ -22,21 +23,12 @@ class AccountController extends Controller
             return $r;
         }
 
-        //接收处理参数
-        $email = trim($request->input('email'));
-        $status = trim($request->input('status'));
-        $serverName = trim($request->input('serverName'));
-        $take = trim($request->input('limit'));
-        $skip = (trim($request->input('page')) - 1) * $take;
+        $query = Account::singleton()->getAccountQuery($request);
 
-        //帐号数据
         $accountSelectRaw = 'a.id, a.server_name, a.status, a.email, a.passwd, ';
         $qiriAccountDetailSelectRaw = 'qad.oubo, qad.sign_day';
-        $query = DB::table('account as a')
-            ->leftJoin('qiri_account_detail as qad', function($join) {$join->on('a.id', '=', 'qad.account_id');})
-            ->when($email, function($query) use($email) {$query->where('email', 'like', '%' . $email . '%');})
-            ->when($status, function($query) use($status) {$query->where('status', '=', $status);})
-            ->when($serverName, function($query) use($serverName) {$query->where('server_name', '=', $serverName);});
+        $take = trim($request->input('limit'));
+        $skip = (trim($request->input('page')) - 1) * $take;
 
         $total = $query->count();
         $rows = $query->selectRaw($accountSelectRaw . $qiriAccountDetailSelectRaw)->take($take)->skip($skip)->get();
@@ -68,6 +60,45 @@ class AccountController extends Controller
         //返回数据
         return JSON::ok([
             'rows' => $rows,
+        ]);
+    }
+
+    //将未卖出的帐号置成已卖出
+    public function markAccountSoldOut(Request $request)
+    {
+        $validRules = [
+            'limit' => 'integer|between:1,50',
+            'page' => 'integer|min:1',
+        ];
+
+        if ($r = $this->validateFail($request, $validRules)) {
+            return $r;
+        }
+
+        $query = Account::singleton()->getAccountQuery($request);
+
+        $rows = $query->selectRaw('a.id, a.email, a.passwd')->get();
+
+        $accountStr = '';
+        foreach($rows as $row) {
+            $accountStr .= $row->email . ',' . $row->passwd . "\r\n";
+        }
+
+        $insertData = [
+            'title' => Date('Y-m-d H:i:s', time())
+        ];
+
+
+        return JSON::ok();
+    }
+
+    //已卖出帐号详细
+    public function soldOutAccountDetail(Request $request)
+    {
+        $id = $request->input('id');
+        $rows = DB::table('sold_out_account')->first();
+        return JSON::ok([
+            'rows' => $rows
         ]);
     }
 }
