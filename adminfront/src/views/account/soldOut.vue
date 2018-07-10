@@ -19,10 +19,19 @@
         </div>
 
         <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;margin-top:15px;">
-            <el-table-column width="65px"  label="服务器" prop="server_name"></el-table-column>
-            <el-table-column width="100px" label="欧泊" prop="oubo"></el-table-column>
-            <el-table-column width="100px" label="签到天数" prop="sign_day"></el-table-column>
-            <el-table-column width="100px" label="数量" prop="count"></el-table-column>
+            <el-table-column width="65px"  label="id" prop="id"></el-table-column>
+            <el-table-column width="150px" label="title" prop="title"></el-table-column>
+            <el-table-column width="150px" label="account_number" prop="account_number"></el-table-column>
+            <el-table-column width="150px" label="create_time">
+                <template slot-scope="scope">
+                    {{scope.row.create_time | formatTime('{y}-{m}-{d} {h}:{i}')}}
+                </template>
+            </el-table-column>
+            <el-table-column width="100px" label="操作">
+                <template slot-scope="scope">
+                    <el-button type="primary" size="mini" @click="showSoldAccountDetail(scope.row)">详情</el-button>
+                </template>
+            </el-table-column>
         </el-table>
 
         <div class="pagination-container">
@@ -30,24 +39,15 @@
             </el-pagination>
         </div>
 
-        <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" width="30%">
-            <el-form ref="dataForm" :model="temp" label-position="left" label-width="80px" style='width: 400px; margin-left:50px;'>
-                <el-form-item label="id" prop="id">
-                    <el-input v-model="temp.name"></el-input>
-                </el-form-item>
-                <el-form-item label="phone" prop="phone">
-                    <el-input type="textarea" v-model="temp.description"></el-input>
-                </el-form-item>
-                <el-form-item label="coin" prop="coin">
-                    <el-input v-model.number="temp.coins"></el-input>
-                </el-form-item>
-                <el-form-item label="register_time" prop="register_time">
-                    <el-input v-model.number="temp.extra_coins"></el-input>
-                </el-form-item>
-            </el-form>
+        <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" width="35%">
+            <el-input
+                    type="textarea"
+                    :rows="10"
+                    placeholder="请输入内容"
+                    v-model="textarea">
+            </el-input>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取消</el-button>
-                <el-button type="primary" @click="saveData">确认</el-button>
+                <el-button @click="dialogFormVisible = false">关闭</el-button>
             </div>
         </el-dialog>
 
@@ -85,17 +85,28 @@
         methods: {
             getList () {
                 this.listLoading = true
-                request({ url: 'account/statistical', method: 'post', params: this.listQuery }).then(response => {
+                request({ url: 'account/sold-out-account-list', method: 'post', params: this.listQuery }).then(response => {
                     const result = response.data;
                     if (result.code) {
                         this.$message.error(result.msg || '系统错误')
                         this.listLoading = false
                         return
                     }
-
                     this.list = result.data.rows;
-                    this.total = 10;
+                    this.total = 999;
                     this.listLoading = false
+                })
+            },
+            showSoldAccountDetail(row) {
+                request({ url: 'account/sold-out-account-detail', method: 'post', params: {id:row.id} }).then(response => {
+                    const result = response.data;
+                    if(result.code) {
+                        this.$message.error(result.msg || '系统错误')
+                        this.listLoading = false
+                        return
+                    }
+                    this.dialogFormVisible = true;
+                    this.textarea = result.data.rows.content;
                 })
             },
             handleSizeChange (val) {

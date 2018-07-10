@@ -76,27 +76,43 @@ class AccountController extends Controller
         }
 
         $query = Account::singleton()->getAccountQuery($request);
-
         $rows = $query->selectRaw('a.id, a.email, a.passwd')->get();
-
         $accountStr = '';
+        $idRows = [];
         foreach($rows as $row) {
+            $idRows[] = $row->id;
             $accountStr .= $row->email . ',' . $row->passwd . "\r\n";
         }
 
         $insertData = [
-            'title' => Date('Y-m-d H:i:s', time())
+            'title' => Date('Y-m-d H:i:s', time()),
+            'content' => $accountStr,
+            'create_time' => time(),
+            'account_number' => count($rows)
         ];
+        $id = DB::table('sold_out_account')->insertGetId($insertData);
 
+        DB::table('account')->whereIn('id', $idRows)->update(['status' => 3]);
 
-        return JSON::ok();
+        return JSON::ok([
+            'id' => $id
+        ]);
+    }
+
+    //已卖出帐号列表
+    public function soldOutAccountList(Request $request)
+    {
+        $rows = DB::table('sold_out_account')->selectRaw('id, title, create_time, account_number')->get();
+        return JSON::ok([
+            'rows' => $rows
+        ]);
     }
 
     //已卖出帐号详细
     public function soldOutAccountDetail(Request $request)
     {
         $id = $request->input('id');
-        $rows = DB::table('sold_out_account')->first();
+        $rows = DB::table('sold_out_account')->where('id', '=', $id)->first();
         return JSON::ok([
             'rows' => $rows
         ]);

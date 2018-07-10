@@ -18,6 +18,7 @@ return [
     'account/statistical' => [ 'method' => 'post', 'ctrl' => 'AccountController@statistical', 'title' => '帐号统计'],
     'account/mark-account-sold-out' => [ 'method' => 'post', 'ctrl' => 'AccountController@markAccountSoldOut', 'title' => '将未卖出的帐号置成已卖出'],
     'account/sold-out-account-detail' => [ 'method' => 'post', 'ctrl' => 'AccountController@soldOutAccountDetail', 'title' => '已卖出帐号详细'],
+    'account/sold-out-account-list' => [ 'method' => 'post', 'ctrl' => 'AccountController@soldOutAccountList', 'title' => '已卖出帐号列表'],
 
     //通用设置
     'systemConfig/sys-config-menu' => [ 'method' => 'get', 'ctrl' => 'SystemConfigController@sysConfigMenu', 'title' => '系统基础信息'],

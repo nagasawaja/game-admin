@@ -94,7 +94,8 @@
                         this.listLoading = false
                         return
                     }
-                    request({ url: 'account/sold-out-account-detail', method: 'post', params: {id:1} }).then(response => {
+
+                    request({ url: 'account/sold-out-account-detail', method: 'post', params: {id: result.data.id} }).then(response => {
                         const result = response.data;
                         if(result.code) {
                             this.$message.error(result.msg || '系统错误')
