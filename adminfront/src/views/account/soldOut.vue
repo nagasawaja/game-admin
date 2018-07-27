@@ -93,7 +93,7 @@
                         return
                     }
                     this.list = result.data.rows;
-                    this.total = 999;
+                    this.total = result.data.total;
                     this.listLoading = false
                 })
             },

@@ -1,10 +1,14 @@
 <template>
     <div class="app-container calendar-list-container">
         <div class="filter-container">
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='邮箱'  v-model="listQuery.email"></el-input>
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='状态'  v-model="listQuery.status"></el-input>
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='服务器'  v-model="listQuery.serverName"></el-input>
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='提取数量'  v-model="listQuery.getNumber"></el-input>
+            邮箱：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='邮箱'  v-model="listQuery.email"></el-input>
+            状态：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='状态'  v-model="listQuery.status"></el-input>
+            <br/>
+            服务器：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='服务器'  v-model="listQuery.serverName"></el-input>
+            欧泊：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='欧泊'  v-model="listQuery.oubo"></el-input>
+            <br/>
+            签到天数：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='签到天数'  v-model="listQuery.signDay"></el-input>
+            提取数量：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='提取数量'  v-model="listQuery.getNumber"></el-input>
             <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter"></el-button>
             <el-button class="filter-item" type="primary" icon="el-icon-download" @click="markAccountSoldOut"></el-button>
         </div>
@@ -55,10 +59,12 @@
                 listQuery: {
                     page: 1,
                     limit: 20,
-                    serverName:'',
-                    getNumber:'',
+                    serverName:'chunri',
+                    getNumber:10,
                     email:'',
-                    status:''
+                    status:2,
+                    oubo:'',
+                    signDay:15
                 },
                 temp: { id: undefined, name: '', description: '', coins: '', extra_coins: '', price: '' },
                 dialogFormVisible: false,

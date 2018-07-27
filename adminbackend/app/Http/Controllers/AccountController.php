@@ -66,13 +66,16 @@ class AccountController extends Controller
     //将未卖出的帐号置成已卖出
     public function markAccountSoldOut(Request $request)
     {
-        $validRules = [
-            'limit' => 'integer|between:1,50',
-            'page' => 'integer|min:1',
-        ];
+        //接收处理参数
+        $email = trim($request->input('email'));
+        $status = trim($request->input('status'));
+        $serverName = trim($request->input('serverName'));
+        $getNumber = floor(($request->input('getNumber')));
+        $oubo = floor(($request->input('oubo')));
+        $signDay = floor(($request->input('signDay')));
 
-        if ($r = $this->validateFail($request, $validRules)) {
-            return $r;
+        if($getNumber > 50 || $getNumber <=0 || $oubo <=0 || $serverName == '' || $status != 2 || $signDay != 15) {
+            return JSON::error(JSON::E_INTERNAL, '参数不符合标准');
         }
 
         $query = Account::singleton()->getAccountQuery($request);
@@ -82,6 +85,9 @@ class AccountController extends Controller
         foreach($rows as $row) {
             $idRows[] = $row->id;
             $accountStr .= $row->email . ',' . $row->passwd . "\r\n";
+        }
+        if(count($idRows) == 0) {
+            return JSON::error(JSON::E_INTERNAL, '没有数据');
         }
 
         $insertData = [
@@ -102,9 +108,24 @@ class AccountController extends Controller
     //已卖出帐号列表
     public function soldOutAccountList(Request $request)
     {
-        $rows = DB::table('sold_out_account')->selectRaw('id, title, create_time, account_number')->get();
+        $valiRules = [
+            'limit' => 'integer|between:1,50',
+            'page' => 'integer|min:1',
+        ];
+
+        if ($r = $this->validateFail($request, $valiRules)) {
+            return $r;
+        }
+
+        $take = trim($request->input('limit'));
+        $skip = (trim($request->input('page')) - 1) * $take;
+
+        $query = DB::table('sold_out_account')->selectRaw('id, title, create_time, account_number');
+        $total = $query->count();
+        $rows = $query->take($take)->skip($skip)->get();
         return JSON::ok([
-            'rows' => $rows
+            'rows' => $rows,
+            'total' => $total
         ]);
     }
 
