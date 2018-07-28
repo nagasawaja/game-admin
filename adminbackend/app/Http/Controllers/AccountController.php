@@ -91,7 +91,7 @@ class AccountController extends Controller
         }
 
         $insertData = [
-            'title' => Date('Y-m-d H:i:s', time()),
+            'title' => date('Y-m-d H:i:s', time()) . ',服务器:' . $serverName . ',欧泊:' . $oubo,
             'content' => $accountStr,
             'create_time' => time(),
             'account_number' => count($rows)
@@ -121,9 +121,10 @@ class AccountController extends Controller
         $take = trim($request->input('limit'));
         $skip = (trim($request->input('page')) - 1) * $take;
 
-        $query = DB::table('sold_out_account')->selectRaw('id, title, create_time, account_number');
+        $query = DB::table('sold_out_account')
+            ->selectRaw('id, title, create_time, account_number');
         $total = $query->count();
-        $rows = $query->take($take)->skip($skip)->get();
+        $rows = $query->take($take)->skip($skip)->orderBy('id', 'desc')->get();
         return JSON::ok([
             'rows' => $rows,
             'total' => $total

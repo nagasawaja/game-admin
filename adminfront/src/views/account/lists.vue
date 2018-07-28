@@ -59,12 +59,12 @@
                 listQuery: {
                     page: 1,
                     limit: 20,
-                    serverName:'chunri',
-                    getNumber:10,
+                    serverName:'',
+                    getNumber:'',
                     email:'',
-                    status:2,
+                    status:'',
                     oubo:'',
-                    signDay:15
+                    signDay:''
                 },
                 temp: { id: undefined, name: '', description: '', coins: '', extra_coins: '', price: '' },
                 dialogFormVisible: false,

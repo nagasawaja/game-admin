@@ -20,7 +20,7 @@
 
         <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;margin-top:15px;">
             <el-table-column width="65px"  label="id" prop="id"></el-table-column>
-            <el-table-column width="150px" label="title" prop="title"></el-table-column>
+            <el-table-column width="300px" label="title" prop="title"></el-table-column>
             <el-table-column width="150px" label="account_number" prop="account_number"></el-table-column>
             <el-table-column width="150px" label="create_time">
                 <template slot-scope="scope">
@@ -106,6 +106,7 @@
                         return
                     }
                     this.dialogFormVisible = true;
+                    this.dialogTitle = row.title;
                     this.textarea = result.data.rows.content;
                 })
             },
