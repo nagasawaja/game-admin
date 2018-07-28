@@ -15,8 +15,8 @@ class AccountController extends Controller
     public function lists(Request $request)
     {
         $valiRules = [
-            'limit' => 'integer|between:1,50',
-            'page' => 'integer|min:1',
+            'limit' => 'required|integer|between:1,50',
+            'page' => 'required|integer|min:1',
         ];
 
         if ($r = $this->validateFail($request, $valiRules)) {
@@ -53,7 +53,7 @@ class AccountController extends Controller
             ->when($serverNameRows, function($query) use($serverNameRows) {$query->whereIn('a.server_name', $serverNameRows);})
             ->groupBy(['server_name', 'sign_day', 'oubo'])
             ->orderBy('a.server_name', 'desc')
-            ->orderBy('qad.oubo', 'asc')
+            ->orderBy('qad.sign_day', 'asc')
             ->selectRaw($accountSelectRaw . $qiriAccountDetailRaw)
             ->get();
 
