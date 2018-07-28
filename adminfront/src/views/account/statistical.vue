@@ -13,7 +13,7 @@
             <el-button class="filter-item" type="primary" icon="el-icon-download" @click="markAccountSoldOut"></el-button>
         </div>
 
-        <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;margin-top:15px;">
+        <el-table :key='tableKey' height="1000px" :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="display:inline-block;width:auto;margin-top:15px;">
             <el-table-column width="65px"  label="服务器" prop="server_name"></el-table-column>
             <el-table-column width="100px" label="欧泊" prop="oubo"></el-table-column>
             <el-table-column width="100px" label="签到天数" prop="sign_day"></el-table-column>

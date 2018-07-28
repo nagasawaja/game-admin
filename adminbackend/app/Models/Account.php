@@ -32,6 +32,21 @@ class Account extends Model
         return $query;
     }
 
+    public function recoverAccount999()
+    {
+        //update qiri_account_detail as a left join account as b on a.account_id = b.id set sign_day = 7,oubo_update_time = 1522274400
+        //where sign_day = 999  and b.`status` = 2;
+        $where = [
+            ['qiri_account_detail.sign_day', '=', 999],
+            ['account.status', '=', 2]
+        ];
+        $updateData = [
+            'sign_day' => 10,
+            'oubo_update_time' => strtotime(date('Y-m-d 00:00:00', time())) + 27000
+        ];
+        DB::table('qiri_account_detail')->leftJoin('account', 'qiri_account_detail.account_id', '=', 'account.id')->where($where)->update($updateData);
+    }
+
     public static function singleton()
     {
         static $inst = null;

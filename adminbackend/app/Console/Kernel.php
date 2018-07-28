@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
+use App\Models\Account;
 
 class Kernel extends ConsoleKernel
 {
@@ -24,6 +25,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        //
+        $schedule->call(function () {
+            //每天清理一次sign_day=9999的帐号
+            Account::singleton()->recoverAccount999();
+        })->everyMinute()->name('recoverAccount999')->withoutOverlapping();
     }
 }
