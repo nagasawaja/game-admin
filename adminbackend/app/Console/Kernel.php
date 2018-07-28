@@ -28,6 +28,6 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             //每天清理一次sign_day=9999的帐号
             Account::singleton()->recoverAccount999();
-        })->everyMinute()->name('recoverAccount999')->withoutOverlapping();
+        })->daily()->name('recoverAccount999')->withoutOverlapping();
     }
 }

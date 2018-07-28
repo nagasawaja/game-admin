@@ -108,6 +108,7 @@
                         this.textarea = result.data.rows.content;
                     })
                     this.listLoading = false
+                    this.dialogTitle = '服务器:' + this.listQuery.serverName + '----欧泊:' + this.listQuery.oubo + '----提取数量:' + this.listQuery.getNumber;
                 })
             },
             handleSizeChange (val) {
