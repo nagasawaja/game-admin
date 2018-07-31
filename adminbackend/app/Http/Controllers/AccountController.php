@@ -140,4 +140,22 @@ class AccountController extends Controller
             'rows' => $rows
         ]);
     }
+
+    //今日帐号统计
+    public function todayStatistics(Request $request)
+    {
+        $updateTime = $request->input('updateTime');
+        $todayTimeStamp = strtotime($updateTime) - 8 * 60 * 60;
+        $rows = DB::table('qiri_account_detail')
+            ->leftJoin('account', 'qiri_account_detail.account_id', '=', 'account.id')
+            ->selectRaw('account.server_name,qiri_account_detail.sign_day,qiri_account_detail.oubo,account.status,count(account.id) as count')
+            ->where('qiri_account_detail.update_time', '>=', $todayTimeStamp)
+            ->where('qiri_account_detail.update_time', '<', $todayTimeStamp + 86400)
+            ->groupBy(['server_name', 'sign_day', 'account.status'])
+            ->get();
+
+        return JSON::ok([
+            'rows' => $rows
+        ]);
+    }
 }
