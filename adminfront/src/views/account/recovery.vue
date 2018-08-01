@@ -1,56 +1,16 @@
 <template>
     <div class="app-container calendar-list-container">
-        <div class="filter-container">
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='邮箱'  v-model="listQuery.email"></el-input>
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='状态'  v-model="listQuery.status"></el-input>
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='服务器'  v-model="listQuery.serverName"></el-input>
-            <el-date-picker
-                    v-model="listQuery.login_time"
-                    type="daterange"
-                    align="right"
-                    value-format="yyyy-MM-dd"
-                    unlink-panels
-                    range-separator="至"
-                    start-placeholder="登录时间开始"
-                    end-placeholder="登录时间结束"
-                    :picker-options="filterOption.DATE_FILTER_OPTION">
-            </el-date-picker>
-            <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter"></el-button>
+        <el-form ref="dataForm" :model="temp" label-position="left" label-width="300px" style='width: 700px;'>
+            <el-input
+                    type="textarea"
+                    :rows="25"
+                    placeholder="请输入内容"
+                    v-model="listQuery.info">
+            </el-input>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="saveData">确认</el-button>
         </div>
-
-        <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;margin-top:15px;">
-            <el-table-column width="65px"  label="服务器" prop="server_name"></el-table-column>
-            <el-table-column width="100px" label="欧泊" prop="oubo"></el-table-column>
-            <el-table-column width="100px" label="签到天数" prop="sign_day"></el-table-column>
-            <el-table-column width="100px" label="数量" prop="count"></el-table-column>
-        </el-table>
-
-        <div class="pagination-container">
-            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
-            </el-pagination>
-        </div>
-
-        <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" width="30%">
-            <el-form ref="dataForm" :model="temp" label-position="left" label-width="80px" style='width: 400px; margin-left:50px;'>
-                <el-form-item label="id" prop="id">
-                    <el-input v-model="temp.name"></el-input>
-                </el-form-item>
-                <el-form-item label="phone" prop="phone">
-                    <el-input type="textarea" v-model="temp.description"></el-input>
-                </el-form-item>
-                <el-form-item label="coin" prop="coin">
-                    <el-input v-model.number="temp.coins"></el-input>
-                </el-form-item>
-                <el-form-item label="register_time" prop="register_time">
-                    <el-input v-model.number="temp.extra_coins"></el-input>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取消</el-button>
-                <el-button type="primary" @click="saveData">确认</el-button>
-            </div>
-        </el-dialog>
-
     </div>
 </template>
 
@@ -71,7 +31,8 @@
                     limit: 20,
                     serverName:'',
                     email:'',
-                    status:''
+                    status:'',
+                    info:''
                 },
                 temp: { id: undefined, name: '', description: '', coins: '', extra_coins: '', price: '' },
                 dialogFormVisible: false,
@@ -143,43 +104,23 @@
                 })
             },
             saveData () {
-                this.$refs['dataForm'].validate((valid) => {
-                    if (valid) {
-                        let url = 'recharge/add'
-                        let addMode = true
-                        let params = Object.assign({}, this.temp)
-                        if (params.id > 0) {
-                            url = 'recharge/edit'
-                            addMode = false
-                        }
-
-                        request({ url: url, method: 'post', data: params }).then(response => {
-                            const ret = response.data
-                            if (ret.code) {
-                                this.$message.error(ret.msg || '系统错误')
-                                return
-                            }
-                            if (addMode) {
-                                this.list.unshift(ret.data)
-                            } else {
-                                for (const i in ret.data) {
-                                    if (this.updatingRow[i]) {
-                                        this.updatingRow[i] = params[i]
-                                    }
-                                }
-                            }
-
-                            this.dialogFormVisible = false
-                            this.$notify({
-                                title: '成功',
-                                message: '提交成功',
-                                type: 'success',
-                                duration: 2000
-                            })
-                        }).catch(error => {
-                            this.$message.error(error.message)
-                        })
+                let url = 'account/recovery';
+                let params = Object.assign({}, this.listQuery);
+                request({ url: url, method: 'post', data: params }).then(response => {
+                    const ret = response.data;
+                    if (ret.code) {
+                        this.$message.error(ret.msg || '系统错误')
+                        return
                     }
+
+                    this.$notify({
+                        title: '成功',
+                        message: '提交成功',
+                        type: 'success',
+                        duration: 2000
+                    })
+                }).catch(error => {
+                    this.$message.error(error.message)
                 })
             },
             handleDelete (idx, row) {

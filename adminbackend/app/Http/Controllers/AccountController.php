@@ -145,7 +145,7 @@ class AccountController extends Controller
     public function todayStatistics(Request $request)
     {
         $updateTime = $request->input('updateTime');
-        $todayTimeStamp = strtotime($updateTime) - 8 * 60 * 60;
+        $todayTimeStamp = strtotime($updateTime);
         $rows = DB::table('qiri_account_detail')
             ->leftJoin('account', 'qiri_account_detail.account_id', '=', 'account.id')
             ->selectRaw('account.server_name,qiri_account_detail.sign_day,qiri_account_detail.oubo,account.status,count(account.id) as count')
@@ -158,4 +158,25 @@ class AccountController extends Controller
             'rows' => $rows
         ]);
     }
+
+    //回收交易猫帐号
+    public function recovery(Request $request)
+    {
+        $accountStr = $request->input('info');
+        $accountArrRows = explode("\n", $accountStr);
+        $updateWhere = [];
+        foreach($accountArrRows as $accountArrRow) {
+            $b = explode('	', $accountArrRow);
+            $accountStr = $b[1];
+            if(strpos($accountStr, '@163.com,') === false) {
+                return JSON::error(JSON::E_INTERNAL);
+            }
+            $updateWhere[] = explode(',', $accountStr)[0];
+        }
+        $r = DB::table('account')->whereIn('email', $updateWhere)->update(['status' => 2]);
+        $r2 = DB::table('qiri_account_detail')->leftJoin('account', 'qiri_account_detail.account_id', '=', 'account.id')->whereIn('email', $updateWhere)->update(['account.status' => 2, 'qiri_account_detail.sign_day' => 14]);
+
+        return JSON::ok();
+    }
+
 }
