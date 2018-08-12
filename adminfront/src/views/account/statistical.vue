@@ -13,15 +13,19 @@
             <el-button class="filter-item" type="primary" icon="el-icon-download" @click="markAccountSoldOut"></el-button>
         </div>
 
-        <el-table :key='tableKey' height="1000px" :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="display:inline-block;width:auto;margin-top:15px;">
+
+        <el-table :key='tableKey' height="1000px" :data="list" v-loading="listLoading" element-loading-text="给我一点时间"
+                  border fit highlight-current-row style="display:inline-block;width:auto;margin-top:15px;height:550px;">
             <el-table-column width="65px"  label="服务器" prop="server_name"></el-table-column>
             <el-table-column width="100px" label="欧泊" prop="oubo"></el-table-column>
             <el-table-column width="100px" label="签到天数" prop="sign_day"></el-table-column>
             <el-table-column width="100px" label="数量" prop="count"></el-table-column>
         </el-table>
 
+
         <div class="pagination-container">
-            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
+            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                           :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
         </div>
 
