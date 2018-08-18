@@ -179,4 +179,23 @@ class AccountController extends Controller
         return JSON::ok();
     }
 
+    //回收15天完成的账号到14天签到，用于服务器更新奖励物品的时候
+    public function backTo14(Request $request)
+    {
+        $where = [
+            ['qiri_account_detail.sign_day', '=', 15],
+            ['account.status', '=', 2]
+        ];
+        $updateData = [
+            'sign_day' => 14
+        ];
+        $effectRowCount = DB::table('qiri_account_detail')
+            ->leftJoin('account', 'qiri_account_detail.account_id', '=', 'account.id')
+            ->where($where)
+            ->update($updateData);
+
+        return JSON::ok([
+            'effectRowCount' => $effectRowCount
+        ]);
+    }
 }

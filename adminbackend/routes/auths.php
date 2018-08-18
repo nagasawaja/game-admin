@@ -21,6 +21,7 @@ return [
     'account/sold-out-account-list' => [ 'method' => 'post', 'ctrl' => 'AccountController@soldOutAccountList', 'title' => '已卖出帐号列表'],
     'account/today-statistics' => [ 'method' => 'post', 'ctrl' => 'AccountController@todayStatistics', 'title' => '今日帐号统计'],
     'account/recovery' => [ 'method' => 'post', 'ctrl' => 'AccountController@recovery', 'title' => '回收交易猫帐号'],
+    'account/back-to-14' => [ 'method' => 'post', 'ctrl' => 'AccountController@backTo14', 'title' => '回收15天完成的账号到14天签到'],
 
     //通用设置
     'systemConfig/sys-config-menu' => [ 'method' => 'get', 'ctrl' => 'SystemConfigController@sysConfigMenu', 'title' => '系统基础信息'],
