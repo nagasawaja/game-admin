@@ -22,6 +22,8 @@ return [
     'account/today-statistics' => [ 'method' => 'post', 'ctrl' => 'AccountController@todayStatistics', 'title' => '今日帐号统计'],
     'account/recovery' => [ 'method' => 'post', 'ctrl' => 'AccountController@recovery', 'title' => '回收交易猫帐号'],
     'account/back-to-14' => [ 'method' => 'post', 'ctrl' => 'AccountController@backTo14', 'title' => '回收15天完成的账号到14天签到'],
+    'account/query-sql-save' => [ 'method' => 'post', 'ctrl' => 'AccountController@querySqlSave', 'title' => '执行原生sql保存'],
+    'account/query-sql-menu' => [ 'method' => 'post', 'ctrl' => 'AccountController@querySqlMenu', 'title' => '执行原生sql菜单'],
 
     //通用设置
     'systemConfig/sys-config-menu' => [ 'method' => 'get', 'ctrl' => 'SystemConfigController@sysConfigMenu', 'title' => '系统基础信息'],

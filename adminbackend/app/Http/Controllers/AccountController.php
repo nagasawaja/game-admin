@@ -198,4 +198,51 @@ class AccountController extends Controller
             'effectRowCount' => $effectRowCount
         ]);
     }
+
+    //执行sql语句
+    public function querySqlSave(Request $request)
+    {
+        $sql = $request->input('sql');
+        $passwd = $request->input('passwd');
+        $originSql = $request->input('origin_sql');
+        $type = $request->input('type');
+
+        if($passwd != 'shuadhLiang.123') {
+            file_put_contents('/tmp/qiriAdmin.log', date('Y-m-d H:i:s', time()) . ' ' . $passwd . PHP_EOL, 8);
+            return json::error('123', 'fuck you');
+        }
+
+        $selectRes = '';
+        $updateRes = '';
+
+        if($type == 'origin_sql') {
+            //更新原生sql
+            $updateRes = DB::table('origin_sql')->where('id', '=', 1)->update(['content' => $originSql]);
+        } else {
+            //执行sql
+            $dbQueryType = substr($sql , 0 , 1);
+
+            switch($dbQueryType) {
+                case 's':
+                    $selectRes = DB::select($sql);
+                    break;
+                case 'u':
+                    $updateRes = DB::update($sql);
+                    break;
+                default:
+                    return json::erro(json::E_INTERNAL);
+            }
+        }
+
+        return json::ok(['select' => $selectRes, 'update' => $updateRes, 'type' => $type]);
+
+    }
+
+    //执行sql语句
+    public function querySqlMenu(Request $request)
+    {
+        $row = DB::table('origin_sql')->first();
+
+        return json::ok(['origin_sql_content' => $row->content]);
+    }
 }
