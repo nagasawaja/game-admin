@@ -56,7 +56,7 @@ class Account extends Model
             ['account.status', '=', 2],
             ['qiri_account_detail.oubo', '=', 16]
         ];
-        $rows = DB::table('qiri_account_detail')->leftJoin('account', 'qiri_account_detail.account_id', '=', 'account.id')->selectRaw('qiri_account_detail.account_id, qiri_account_detail.sign_day, qiri_account_detail.oubo, account.email, account_passwd, account.server_name')->where($where)->get();
+        $rows = DB::table('qiri_account_detail')->leftJoin('account', 'qiri_account_detail.account_id', '=', 'account.id')->selectRaw('qiri_account_detail.account_id, qiri_account_detail.sign_day, qiri_account_detail.oubo, account.email, account.passwd, account.server_name')->where($where)->get();
         foreach($rows as $row) {
             file_put_contents('/tmp/crontab.log', date('Y-m-d H:i:s', time()) . ' ' . json_encode($row) . PHP_EOL, 8);
         }
