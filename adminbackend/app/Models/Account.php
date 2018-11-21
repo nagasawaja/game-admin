@@ -47,6 +47,27 @@ class Account extends Model
         DB::table('qiri_account_detail')->leftJoin('account', 'qiri_account_detail.account_id', '=', 'account.id')->where($where)->update($updateData);
     }
 
+    public function recoverOuBo16()
+    {
+        //update qiri_account_detail as a left join account as b on a.account_id = b.id set sign_day = 7,oubo_update_time = 1522274400
+        //where sign_day = 999  and b.`status` = 2;
+        $where = [
+            ['qiri_account_detail.sign_day', '=', 15],
+            ['account.status', '=', 2],
+            ['qiri_account_detail.oubo', '=', 16]
+        ];
+        $rows = DB::table('qiri_account_detail')->leftJoin('account', 'qiri_account_detail.account_id', '=', 'account.id')->selectRaw('qiri_account_detail.account_id, qiri_account_detail.sign_day, qiri_account_detail.oubo, account.email, account_passwd, account.server_name')->where($where)->get();
+        foreach($rows as $row) {
+            file_put_contents('/tmp/crontab.log', date('Y-m-d H:i:s', time()) . ' ' . json_encode($row) . PHP_EOL, 8);
+        }
+        $updateData = [
+            'sign_day' => 14,
+            'oubo_update_time' => strtotime(date('Y-m-d 00:00:00', time())) + 27000,
+            'oubo' => 100
+        ];
+        DB::table('qiri_account_detail')->leftJoin('account', 'qiri_account_detail.account_id', '=', 'account.id')->where($where)->update($updateData);
+    }
+
     public static function singleton()
     {
         static $inst = null;
