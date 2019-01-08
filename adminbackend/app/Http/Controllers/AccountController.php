@@ -151,7 +151,7 @@ class AccountController extends Controller
             ->selectRaw('account.server_name,qiri_account_detail.sign_day,qiri_account_detail.oubo,account.status,count(account.id) as count')
             ->where('qiri_account_detail.update_time', '>=', $todayTimeStamp)
             ->where('qiri_account_detail.update_time', '<', $todayTimeStamp + 86400)
-            ->groupBy(['server_name', 'sign_day', 'account.status'])
+            ->groupBy(['server_name', 'sign_day', 'oubo', 'account.status'])
             ->get();
 
         return JSON::ok([
