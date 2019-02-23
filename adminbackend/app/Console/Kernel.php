@@ -26,13 +26,13 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->call(function () {
-            //每天清理一次sign_day=9999的帐号
+            //每小时清理一次sign_day=9999的帐号
             Account::singleton()->recoverAccount999();
-        })->daily()->name('recoverAccount999')->withoutOverlapping();
+        })->hourly()->name('recoverAccount999')->withoutOverlapping();
 
         $schedule->call(function () {
-            //每天清理一次oubo=16的识别欧泊错误的数据
+            //每小时清理一次oubo=16的识别欧泊错误的数据
             Account::singleton()->recoverOuBo16();
-        })->daily()->name('recoverOuBo16')->withoutOverlapping();
+        })->hourly()->name('recoverOuBo16')->withoutOverlapping();
     }
 }
