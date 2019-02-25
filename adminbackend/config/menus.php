@@ -1,7 +1,8 @@
 <?php
 
 return [
-    ['title' => '帐号相关', 'icon' => 'document', 'children' => [
+    ['title' => '帐号相关', 'icon' => 'document', 'children' =>
+        [
             ['title' => '帐号列表', 'path' => 'account/lists'],
             ['title' => '帐号统计', 'path' => 'account/statistical', 'home' => true],
             ['title' => '今日统计', 'path' => 'account/todayStatistics'],
@@ -10,5 +11,11 @@ return [
             ['title' => '重置账号到签到14天', 'path' => 'account/backTo14'],
             ['title' => '执行原生sql', 'path' => 'account/querySql']
         ],
+    ],
+    ['title' => '交易猫', 'icon' => 'document', 'children' =>
+        [
+            ['title' => '单个商品销量变化', 'path' => 'mao/goodsChangeHistory'],
+            ['title' => '商品总数量与销量比例', 'path' => 'mao/goodsScale'],
+        ]
     ]
 ];
