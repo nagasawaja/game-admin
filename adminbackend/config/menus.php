@@ -16,6 +16,7 @@ return [
         [
             ['title' => '单个商品销量变化', 'path' => 'mao/goodsChangeHistory'],
             ['title' => '商品总数量与销量比例', 'path' => 'mao/goodsScale'],
+            ['title' => '数据报表', 'path' => 'mao/dataReport'],
         ]
     ]
 ];

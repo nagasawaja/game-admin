@@ -39,7 +39,6 @@ class MaoController extends Controller
         ]);
     }
 
-
     //商品总数量与销量比例
     public function goodsScale(Request $request)
     {
@@ -49,6 +48,26 @@ class MaoController extends Controller
         return JSON::ok([
             'total' => $rows->count(),
             'items' => $rows,
+        ]);
+    }
+
+    //数据报表
+    public function dateReport(Request $request) {
+        $gameId = $request->input('game_id');
+        $stcCreateDatetimeStart = $request->input('stc_create_datetime_start');
+        $stcCreateDatetimeEnd = $request->input('stc_create_datetime_end');
+        $rows = DB::connection('jiaoyimao')
+            ->table('mao_games_stc')
+            ->where('create_datetime', '>=', $stcCreateDatetimeStart)
+            ->where('create_datetime', '<=', $stcCreateDatetimeEnd)
+            ->where('create_datetime', 'like', '%' . substr($stcCreateDatetimeStart, -8))
+            ->where('game_id', '=', $gameId)
+            ->select(DB::raw('game_id,sale_count,goods_total_count,substring(create_datetime,1,10) as create_datetime,title,stc * 100 as stc'))
+            ->get();
+
+
+        return JSON::ok([
+            'rows' => $rows,
         ]);
     }
 }
