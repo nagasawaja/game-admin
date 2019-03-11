@@ -85,7 +85,7 @@
         methods: {
             getList () {
                 this.listLoading = true
-                request({ url: 'account/sold-out-account-list', method: 'post', params: this.listQuery }).then(response => {
+                request({ url: 'account/soldOut', method: 'post', params: this.listQuery }).then(response => {
                     const result = response.data;
                     if (result.code) {
                         this.$message.error(result.msg || '系统错误')

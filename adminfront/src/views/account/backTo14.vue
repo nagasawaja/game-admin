@@ -103,7 +103,7 @@
             },
             saveData () {
                 this.visible2 = false;
-                let url = 'account/back-to-14';
+                let url = 'account/backTo14';
                 let params = Object.assign({}, this.listQuery);
                 request({ url: url, method: 'post', data: params }).then(response => {
                     const ret = response.data;

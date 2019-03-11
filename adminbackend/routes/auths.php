@@ -18,17 +18,17 @@ return [
     'account/statistical' => [ 'method' => 'post', 'ctrl' => 'AccountController@statistical', 'title' => '帐号统计'],
     'account/mark-account-sold-out' => [ 'method' => 'post', 'ctrl' => 'AccountController@markAccountSoldOut', 'title' => '将未卖出的帐号置成已卖出'],
     'account/sold-out-account-detail' => [ 'method' => 'post', 'ctrl' => 'AccountController@soldOutAccountDetail', 'title' => '已卖出帐号详细'],
-    'account/sold-out-account-list' => [ 'method' => 'post', 'ctrl' => 'AccountController@soldOutAccountList', 'title' => '已卖出帐号列表'],
-    'account/today-statistics' => [ 'method' => 'post', 'ctrl' => 'AccountController@todayStatistics', 'title' => '今日帐号统计'],
+    'account/soldOut' => [ 'method' => 'post', 'ctrl' => 'AccountController@soldOutAccountList', 'title' => '已卖出帐号列表'],
+    'account/todayStatistics' => [ 'method' => 'post', 'ctrl' => 'AccountController@todayStatistics', 'title' => '今日帐号统计'],
     'account/recovery' => [ 'method' => 'post', 'ctrl' => 'AccountController@recovery', 'title' => '回收交易猫帐号'],
-    'account/back-to-14' => [ 'method' => 'post', 'ctrl' => 'AccountController@backTo14', 'title' => '回收15天完成的账号到14天签到'],
+    'account/backTo14' => [ 'method' => 'post', 'ctrl' => 'AccountController@backTo14', 'title' => '回收15天完成的账号到14天签到'],
     'account/query-sql-save' => [ 'method' => 'post', 'ctrl' => 'AccountController@querySqlSave', 'title' => '执行原生sql保存'],
-    'account/query-sql-menu' => [ 'method' => 'post', 'ctrl' => 'AccountController@querySqlMenu', 'title' => '执行原生sql菜单'],
+    'account/querySql' => [ 'method' => 'post', 'ctrl' => 'AccountController@querySqlMenu', 'title' => '执行原生sql菜单'],
 
 
-    'mao/goods-change-history' => [ 'method' => 'post', 'ctrl' => 'MaoController@goodsChangeHistory', 'title' => '单个商品销量变化'],
-    'mao/goods-scale' => [ 'method' => 'post', 'ctrl' => 'MaoController@goodsScale', 'title' => '商品总数量与销量比例'],
-    'mao/data-report' => [ 'method' => 'post', 'ctrl' => 'MaoController@dateReport', 'title' => '数据报表'],
+    'mao/goodsChangeHistory' => [ 'method' => 'post', 'ctrl' => 'MaoController@goodsChangeHistory', 'title' => '单个商品销量变化'],
+    'mao/goodsScale' => [ 'method' => 'post', 'ctrl' => 'MaoController@goodsScale', 'title' => '商品总数量与销量比例'],
+    'mao/dataReport' => [ 'method' => 'post', 'ctrl' => 'MaoController@dateReport', 'title' => '数据报表'],
 
     //通用设置
     'systemConfig/sys-config-menu' => [ 'method' => 'get', 'ctrl' => 'SystemConfigController@sysConfigMenu', 'title' => '系统基础信息'],

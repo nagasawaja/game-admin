@@ -111,7 +111,7 @@
         methods: {
             getList () {
                 this.listLoading = true;
-                request({ url: 'mao/goods-change-history', method: 'post', params: this.listQuery }).then(response => {
+                request({ url: 'mao/goodsChangeHistory', method: 'post', params: this.listQuery }).then(response => {
                     const result = response.data;
                     if (result.code) {
                         this.$message.error(result.msg || '系统错误')

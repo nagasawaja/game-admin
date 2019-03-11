@@ -65,7 +65,7 @@
         methods: {
             getList () {
                 this.listLoading = true
-                request({ url: 'account/query-sql-menu', method: 'post', params: this.listQuery }).then(response => {
+                request({ url: 'account/querySql', method: 'post', params: this.listQuery }).then(response => {
                     const result = response.data;
                     if (result.code) {
                         this.$message.error(result.msg || '系统错误')
