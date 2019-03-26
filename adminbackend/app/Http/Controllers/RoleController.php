@@ -213,72 +213,27 @@ class RoleController extends Controller
 
         $roleid = (int) $request->input('roleid');
         $uris = trim($request->input('uris'));
-        if (!$uris) {
-            $sql = "update admin_role_priv set status=2 where role_id=$roleid";
-            DB::update($sql);
-        }
 
         $uris = explode(',', $uris);
-        $currRoles = DB::table('admin_role_priv')
-                ->where('role_id', $_SESSION['role_id'])
-                ->select('uri', 'status', 'id')
-                ->get()
-                ->toArray();
-        $currAvails = [];
-        $currRemoved = [];
-        $all = [];
-        $map = [];
-        foreach ($currRoles as $role) {
-            $uri = $role['uri'];
-            if ($role['status'] == 1) {
-                $currAvails[] = $uri;
-            } else {
-                $currRemoved[] = $uri;
+        foreach($uris as $k => $v) {
+            if ($v == "") {
+                unset($uris[$k]);
             }
-
-            $all[] = $uri;
-            $map[$uri] = $role['id'];
         }
 
-        $news = array_diff($uris, $all);
-        $last = array_diff($uris, $news);
-        $turnRemoved = array_diff($currAvails, $last);
-        $turnNormal = array_intersect($last, $currRemoved);
-        try {
-            if ($news) {
-                $sql = "insert into admin_role_priv(role_id,uri,status)values";
-                $vals = '';
-                foreach ($news as $uri) {
-                    $uri = addslashes($uri);
-                    $vals.=",($roleid,'$uri',1)";
-                }
+        DB::table('admin_role_priv')->where('role_id', '=', $roleid)->delete();
 
-                $vals[0] = ' ';
-                $sql.=$vals;
-                DB::insert($sql);
+        if(count($uris) > 1) {
+            $sql = "insert into admin_role_priv(role_id,uri,status)values";
+            $vals = '';
+            foreach ($uris as $uri) {
+                $uri = addslashes($uri);
+                $vals.=",($roleid,'$uri',1)";
             }
 
-            if ($turnRemoved) {
-                $ids = '';
-                foreach ($turnRemoved as $uri) {
-                    $ids.=",{$map[$uri]}";
-                }
-                $ids[0] = ' ';
-                $sql = "update admin_role_priv set status=2 where id in ($ids)";
-                DB::update($sql);
-            }
-
-            if ($turnNormal) {
-                $ids = '';
-                foreach ($turnNormal as $uri) {
-                    $ids.=",{$map[$uri]}";
-                }
-                $ids[0] = ' ';
-                $sql = "update admin_role_priv set status=1 where id in ($ids)";
-                DB::update($sql);
-            }
-        } catch (\Exception $ex) {
-            return JSON::E_INTERNAL($ex->getMessage());
+            $vals[0] = ' ';
+            $sql.=$vals;
+            DB::insert($sql);
         }
 
         return JSON::ok();

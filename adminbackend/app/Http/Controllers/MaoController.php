@@ -64,10 +64,35 @@ class MaoController extends Controller
             ->where('game_id', '=', $gameId)
             ->select(DB::raw('game_id,sale_count,goods_total_count,substring(create_datetime,1,10) as create_datetime,title,stc * 100 as stc'))
             ->get();
-
+        //游戏列表
+        $gameRows = DB::connection('jiaoyimao')->table('mao_games')->selectRaw('game_id, title')->get();
+        //热门游戏名单
+        $findStrRows = ['阴阳师', '7日之都', '实况足球', '第五人格'];
+        $hotGameRows = [];
+        foreach($gameRows as $k=> $gameRow) {
+            $gameRows[$k]->title = substr($gameRow->title,0,strpos($gameRow->title, '【'));
+            foreach($findStrRows as $findStrRow) {
+                if(strpos($gameRow->title, $findStrRow) !== false) {
+                    $hotGameRows[] = $gameRows[$k];
+                    unset($gameRows[$k]);
+                }
+            }
+        }
+        //整理后的名单
+        $finalGameRows = [
+            [
+                'label' => '热门游戏',
+                'option' => $hotGameRows
+            ],
+            [
+                'label' => '游戏',
+                'option' => $gameRows
+            ]
+        ];
 
         return JSON::ok([
             'rows' => $rows,
+            'final_game_rows' => $finalGameRows,
         ]);
     }
 }

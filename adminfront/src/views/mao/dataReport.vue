@@ -18,11 +18,25 @@
                     placeholder="选择结束日期"
                     :default-value="listQuery.stc_create_datetime_end">
             </el-date-picker>
-            gameId：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='gameId'  v-model="listQuery.game_id"></el-input>
+            gameId：<el-select v-model="listQuery.game_id" filterable >
+            <el-option-group
+                    v-for="group in final_game_rows"
+                    :key="group.game_id"
+                    :label="group.title"
+                    :value="group.game_id">
+                    <el-option
+                            v-for="item in group.option"
+                            :key="item.game_id"
+                            :label="item.title"
+                            :value="item.game_id">
+                    </el-option>
+                </el-option-group>
+            </el-select>
+            <!--gameId：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='gameId'  v-model="listQuery.game_id"></el-input>-->
 
             <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter"></el-button>
 
-                <el-tag size="large">{{gameTitle}}</el-tag>
+            <el-tag size="large">{{gameTitle}}</el-tag>
             <div style="margin: 10px 0;">
                 <el-tag size="large">阴阳师：4308</el-tag>
                 <el-tag size="large">永远的七日之都：6378</el-tag>
@@ -49,6 +63,7 @@
             stcCreate_datetime_start.setDate(stcCreate_datetime_start.getDate() -30)
             return {
                 list: [],
+                final_game_rows:[],
                 listQuery: {
                     page: 1,
                     limit: 10,
@@ -133,35 +148,74 @@
                         }
                     }
                 });
-                this.myChart.resize()
+
             },
             async handleFilter() {
-                //console.log(this.myChart)
-
-                this.myChart.clear()
-
                 const res =  await this.getList();
-                console.log("b",res)
-                this.initChart();
+                await this.removeData(this.myChart);
+                let labelArr = [];
+                for(let i =0; i<this.list.length; i++) {
+                    labelArr.push(this.list[i].create_datetime);
+                }
+                this.gameTitle = this.list[0].title;
+                const array_list = Object.values(this.list);
+                const stc = array_list.map(val=>{return val.stc});
+                const goods_total_count = array_list.map(val=>{return val.goods_total_count});
+                const sale_count = array_list.map(val=>{return val.sale_count});
+                let dd = [{
+                    label: 'stc',
+                    data: stc,
+                    backgroundColor:['rgba(0, 5, 5, 0.1)'],
+                    borderWidth: 1
+                },{
+                    label: 'goods_total_count',
+                    data: goods_total_count,
+                    backgroundColor:['rgba(255, 99, 132, 0.2)'],
+                    borderWidth: 1
+                },{
+                    label: 'sale_count',
+                    data: sale_count,
+                    backgroundColor:['rgba(255, 206, 86, 0.2)'],
+                    borderWidth: 1
+                }]
+                this.addData(this.myChart, labelArr, dd);
+            },
+            removeData(c) {
+                while(c.data.labels.pop() != undefined) {}
+                c.data.datasets.forEach((dataset) => {
+                    while(dataset.data.pop() != undefined) {
+                        console.log('a')
+                    };
+                });
+
+                c.update();
+
+            },
+            addData(c, label, data) {
+                for(let i=0; i<label.length; i ++) {
+                    c.data.labels.push(label[i]);
+                }
+                for(let i = 0; i< data.length; i++) {
+                    for(let k = 0; k< data[i].data.length; k++) {
+                        c.data.datasets[i].data.push(data[i].data[k]);
+                    }
+                }
+                c.update();
             },
             async getList () {
                 this.listLoading = true;
-                const res = await request({ url: 'mao/dataReport', method: 'post', params: this.listQuery, timeout:10000})
-                //     .then(response => {
-                //     const result = response.data;
-                //     if (result.code) {
-                //         this.$message.error(result.msg || '系统错误');
-                //         this.listLoading = false;
-                //         return;
-                //     }
-                //     console.log("finish")
-                //     this.list = result.data.rows;
-                //     this.listLoading = false;
-                // })
-
-                if(res.data.code) {
-                    this.list = res.data.rows;
-                }
+                const res = await request({ url: 'mao/dataReport', method: 'post', params: this.listQuery, timeout:10000}).then(response => {
+                    const result = response.data;
+                    if (result.code) {
+                        this.$message.error(result.msg || '系统错误');
+                        this.listLoading = false;
+                        return;
+                    }
+                    console.log("finish");
+                    this.list = result.data.rows;
+                    this.final_game_rows = result.data.final_game_rows;
+                    this.listLoading = false;
+                });
                 return "a"
             }
         }
