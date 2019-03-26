@@ -128,9 +128,24 @@
                         }]
                     },
                     options: {
-                        responsive: false,
-                        tooltips: {
-                            mode: 'point'
+                        animation: {
+                            duration: 0,
+                            onComplete: function () {
+                                var chartInstance = this.chart,
+                                ctx = chartInstance.ctx;
+                                ctx.font = Chart.helpers.fontString(15, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+                                ctx.textAlign = 'center';
+                                ctx.textBaseline = 'bottom';
+                                ctx.fillStyle = this.chart.config.options.defaultFontColor;
+
+                                this.data.datasets.forEach(function (dataset, i) {
+                                    var meta = chartInstance.controller.getDatasetMeta(i);
+                                    meta.data.forEach(function (bar, index) {
+                                        var data = dataset.data[index];
+                                        ctx.fillText(data, bar._model.x - 7, bar._model.y - 5);
+                                    });
+                                });
+                            }
                         },
                         scales: {
                             yAxes: [{

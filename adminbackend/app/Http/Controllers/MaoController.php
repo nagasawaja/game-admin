@@ -65,7 +65,7 @@ class MaoController extends Controller
             ->where('create_datetime', '<=', $stcCreateDatetimeEnd)
             ->where('create_datetime', 'like', '%' . substr($stcCreateDatetimeStart, -8))
             ->where('game_id', '=', $gameId)
-            ->select(DB::raw('game_id,sale_count,goods_total_count,substring(create_datetime,1,10) as create_datetime,title,stc * 100 as stc'))
+            ->select(DB::raw('game_id,sale_count,goods_total_count,substring(create_datetime,1,10) as create_datetime,title,TRUNCATE(stc, 2) as stc'))
             ->get();
         //获取游戏列表
         $gameRows = Mao::singleton()->getGameList();
