@@ -35,14 +35,7 @@
             <!--gameId：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='gameId'  v-model="listQuery.game_id"></el-input>-->
 
             <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter"></el-button>
-
             <el-tag size="large">{{gameTitle}}</el-tag>
-            <div style="margin: 10px 0;">
-                <el-tag size="large">阴阳师：4308</el-tag>
-                <el-tag size="large">永远的七日之都：6378</el-tag>
-                <el-tag size="large">第五人格：6587</el-tag>
-                <el-tag size="large">FIFA：7744</el-tag>
-            </div>
 
         </div>
         <div style="min-width:500px;width:100%;max-height:500px;position: relative;" id="myChartDiv" ref="myChartDiv_ref">

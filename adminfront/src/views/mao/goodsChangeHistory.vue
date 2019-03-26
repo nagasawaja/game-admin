@@ -8,17 +8,30 @@
                 value-format="yyyy-MM-dd"
                 placeholder="选择开始日期"
                 :default-value="listQuery.goods_detail_create_datetime_start">
-        </el-date-picker>
-        <el-date-picker
+            </el-date-picker>
+            <el-date-picker
                 v-model="listQuery.goods_detail_create_datetime_end"
                 align="right"
                 type="date"
                 value-format="yyyy-MM-dd"
                 placeholder="选择结束日期"
                 :default-value="listQuery.goods_detail_create_datetime_end">
-        </el-date-picker>
-
-            gameId：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='gameId'  v-model="listQuery.game_id"></el-input>
+             </el-date-picker>
+            gameId：
+            <el-select v-model="listQuery.game_id" filterable clearable>
+                <el-option-group
+                        v-for="group in final_game_rows"
+                        :key="group.game_id"
+                        :label="group.title"
+                        :value="group.game_id">
+                    <el-option
+                            v-for="item in group.option"
+                            :key="item.game_id"
+                            :label="item.title"
+                            :value="item.game_id">
+                    </el-option>
+                </el-option-group>
+            </el-select>
             <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter"></el-button>
             <el-button class="filter-item" type="primary" icon="el-icon-download" @click="markAccountSoldOut"></el-button>
         </div>
@@ -85,6 +98,7 @@
                 list: null,
                 total: 0,
                 listLoading: true,
+                final_game_rows:[],
                 textarea: '',
                 listQuery: {
                     page: 1,
@@ -121,6 +135,7 @@
 
                     this.list = result.data.items;
                     this.total = result.data.total;
+                    this.final_game_rows = result.data.final_game_rows;
                     this.listLoading = false
                 })
             },
