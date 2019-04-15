@@ -10,7 +10,7 @@ class Mao extends Model
 {
     //游戏列表
    public function getGameList() {
-       $gameRows = DB::connection('jiaoyimao')->table('mao_games')->selectRaw('game_id, title')->get();
+       $gameRows = DB::table('mao_games')->selectRaw('game_id, title')->get();
        //热门游戏名单
        $findStrRows = ['阴阳师', '7日之都', '实况足球', '第五人格'];
        $hotGameRows = [];

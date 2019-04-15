@@ -1,6 +1,7 @@
 <?php
 
 return [
+    //guanliyuan
     'admin/info' => [ 'method' => 'get', 'ctrl' => 'AdminController@info', 'title' => '管理员信息', 'allrole' => true],
     'admin/lists' => [ 'method' => 'get', 'ctrl' => 'AdminController@lists', 'title' => '管理员列表'],
     'admin/add' => [ 'method' => 'post', 'ctrl' => 'AdminController@add', 'title' => '添加管理员'],
@@ -14,18 +15,25 @@ return [
     'role/editAuth' => [ 'method' => 'post', 'ctrl' => 'RoleController@editAuth', 'title' => '编辑角色权限'],
     'role/listAuth' => [ 'method' => 'get', 'ctrl' => 'RoleController@listAuth', 'title' => '角色权限列表', 'allrole' => true],
 
+    //f7
     'account/lists' => [ 'method' => 'post', 'ctrl' => 'AccountController@lists', 'title' => '帐号列表'],
-    'account/statistical' => [ 'method' => 'post', 'ctrl' => 'AccountController@statistical', 'title' => '帐号统计'],
-    'account/mark-account-sold-out' => [ 'method' => 'post', 'ctrl' => 'AccountController@markAccountSoldOut', 'title' => '将未卖出的帐号置成已卖出'],
-    'account/sold-out-account-detail' => [ 'method' => 'post', 'ctrl' => 'AccountController@soldOutAccountDetail', 'title' => '已卖出帐号详细'],
-    'account/soldOut' => [ 'method' => 'post', 'ctrl' => 'AccountController@soldOutAccountList', 'title' => '已卖出帐号列表'],
-    'account/todayStatistics' => [ 'method' => 'post', 'ctrl' => 'AccountController@todayStatistics', 'title' => '今日帐号统计'],
-    'account/recovery' => [ 'method' => 'post', 'ctrl' => 'AccountController@recovery', 'title' => '回收交易猫帐号'],
-    'account/backTo14' => [ 'method' => 'post', 'ctrl' => 'AccountController@backTo14', 'title' => '回收15天完成的账号到14天签到'],
+    'account/statistical' => [ 'method' => 'post', 'ctrl' => 'AccountController@statistical', 'title' => 'f7帐号统计'],
+    'account/mark-account-sold-out' => [ 'method' => 'post', 'ctrl' => 'AccountController@markAccountSoldOut', 'title' => 'f7将未卖出的帐号置成已卖出'],
+    'account/sold-out-account-detail' => [ 'method' => 'post', 'ctrl' => 'AccountController@soldOutAccountDetail', 'title' => 'f7已卖出帐号详细'],
+    'account/soldOut' => [ 'method' => 'post', 'ctrl' => 'AccountController@soldOutAccountList', 'title' => 'f7已卖出帐号列表'],
+    'account/todayStatistics' => [ 'method' => 'post', 'ctrl' => 'AccountController@todayStatistics', 'title' => 'f7今日帐号统计'],
+    'account/recovery' => [ 'method' => 'post', 'ctrl' => 'AccountController@recovery', 'title' => 'f7回收交易猫帐号'],
+    'account/backTo14' => [ 'method' => 'post', 'ctrl' => 'AccountController@backTo14', 'title' => 'f7回收15天完成的账号到14天签到'],
+
+    //sql
     'account/query-sql-save' => [ 'method' => 'post', 'ctrl' => 'AccountController@querySqlSave', 'title' => '执行原生sql保存'],
     'account/querySql' => [ 'method' => 'post', 'ctrl' => 'AccountController@querySqlMenu', 'title' => '执行原生sql菜单'],
 
+    //id5
+    'id5Account/statistical' => [ 'method' => 'post', 'ctrl' => 'Id5AccountController@statistical', 'title' => 'id5帐号统计'],
+    'id5Account/todayStatistics' => [ 'method' => 'post', 'ctrl' => 'Id5AccountController@todayStatistics', 'title' => 'id5今日帐号统计'],
 
+    //jiaoyimao
     'mao/goodsChangeHistory' => [ 'method' => 'post', 'ctrl' => 'MaoController@goodsChangeHistory', 'title' => '单个商品销量变化'],
     'mao/goodsScale' => [ 'method' => 'post', 'ctrl' => 'MaoController@goodsScale', 'title' => '商品总数量与销量比例'],
     'mao/dataReport' => [ 'method' => 'post', 'ctrl' => 'MaoController@dateReport', 'title' => '数据报表'],

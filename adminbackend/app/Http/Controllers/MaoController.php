@@ -22,7 +22,7 @@ class MaoController extends Controller
         if ($request->input('game_id') > 0) {
             $gameIds = [$request->input('game_id')];
         }
-        $rows = DB::connection('jiaoyimao')->table("mao_games_goods")
+        $rows = DB::table("mao_games_goods")
             ->join("mao_games", "mao_games.game_id", '=', 'mao_games_goods.game_id')
             ->join('mao_games_goods_detail', 'mao_games_goods.goods_id', '=', 'mao_games_goods_detail.goods_id')
             ->orderBy(DB::raw('mao_games.id , mao_games_goods.goods_id, create_datetime'))
@@ -46,7 +46,7 @@ class MaoController extends Controller
     public function goodsScale(Request $request)
     {
         $stcCreateDatetime = $request->input('stc_create_datetime');
-        $rows = DB::connection('jiaoyimao')->table('mao_games_stc')->where('create_datetime','=', $stcCreateDatetime)->get();
+        $rows = DB::table('mao_games_stc')->where('create_datetime','=', $stcCreateDatetime)->get();
 
         return JSON::ok([
             'total' => $rows->count(),
@@ -59,8 +59,7 @@ class MaoController extends Controller
         $gameId = $request->input('game_id');
         $stcCreateDatetimeStart = $request->input('stc_create_datetime_start');
         $stcCreateDatetimeEnd = $request->input('stc_create_datetime_end');
-        $rows = DB::connection('jiaoyimao')
-            ->table('mao_games_stc')
+        $rows = DB::table('mao_games_stc')
             ->where('create_datetime', '>=', $stcCreateDatetimeStart)
             ->where('create_datetime', '<=', $stcCreateDatetimeEnd)
             ->where('create_datetime', 'like', '%' . substr($stcCreateDatetimeStart, -8))
