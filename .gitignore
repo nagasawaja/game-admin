@@ -3,5 +3,5 @@
 /vendor
 *.log
 /.idea/
-/storage/
+/adminbackend/storage
 
