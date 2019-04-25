@@ -1,6 +1,12 @@
 <template>
     <div class="app-container calendar-list-container">
         <div class="filter-container">
+            服务器：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='服务器'  v-model="listQuery.serverName"></el-input>
+            <br/>
+            精华：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='精华'  v-model="listQuery.jing_hua"></el-input>
+            线索：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='线索'  v-model="listQuery.xian_suo"></el-input>
+            <br/>
+            状态：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='状态'  v-model="listQuery.status"></el-input>
             提取数量：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='提取数量'  v-model="listQuery.getNumber"></el-input>
             <el-button class="filter-item" type="primary" icon="el-icon-search" @click="getList"></el-button>
             <el-button class="filter-item" type="primary" icon="el-icon-download" @click="markAccountSoldOut"></el-button>
@@ -48,15 +54,15 @@
                 list: null,
                 total: 0,
                 listLoading: true,
+                textarea: '',
                 listQuery: {
                     page: 1,
                     limit: 20,
-                    serverName:'chunri',
+                    serverName:'163master',
                     getNumber:10,
-                    email:'',
                     status:2,
-                    oubo:'',
-                    signDay:15
+                    jing_hua:'',
+                    xian_suo:'',
                 },
                 temp: { id: undefined, name: '', description: '', coins: '', extra_coins: '', price: '' },
                 dialogFormVisible: false,
@@ -85,7 +91,7 @@
             },
             markAccountSoldOut () {
                 this.listLoading = true;
-                request({ url: 'account/mark-account-sold-out', method: 'post', params: this.listQuery }).then(response => {
+                request({ url: 'id5Account/mark-account-sold-out', method: 'post', params: this.listQuery }).then(response => {
                     const result = response.data;
                     if (result.code) {
                         this.$message.error(result.msg || '系统错误')
@@ -93,7 +99,7 @@
                         return
                     }
 
-                    request({ url: 'account/sold-out-account-detail', method: 'post', params: {id: result.data.id} }).then(response => {
+                    request({ url: 'id5Account/sold-out-account-detail', method: 'post', params: {id: result.data.id} }).then(response => {
                         const result = response.data;
                         if(result.code) {
                             this.$message.error(result.msg || '系统错误')
@@ -104,7 +110,7 @@
                         this.textarea = result.data.rows.content;
                     })
                     this.listLoading = false;
-                    this.dialogTitle = '服务器:' + this.listQuery.serverName + '----欧泊:' + this.listQuery.oubo + '----提取数量:' + this.listQuery.getNumber;
+                    this.dialogTitle = '服务器:' + this.listQuery.serverName + '----精华:' + this.listQuery.jing_hua + '----线索:' + this.listQuery.xian_suo + '----提取数量:' + this.listQuery.getNumber;
                 })
             },
             handleSizeChange (val) {

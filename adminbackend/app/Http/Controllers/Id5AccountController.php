@@ -54,4 +54,99 @@ class Id5AccountController extends Controller
             'rows' => $rows
         ]);
     }
+
+    //提取帐号
+    public function markAccountSoldOut(Request $request)
+    {
+        //接收处理参数
+        $status = trim($request->input('status'));
+        $serverName = trim($request->input('serverName'));
+        $getNumber = floor(($request->input('getNumber')));
+        $jingHua = floor(($request->input('jing_hua')));
+        $xianSuo = floor(($request->input('xian_suo')));
+
+        if($getNumber > 50 || $getNumber <=0 || $jingHua <=0 || $xianSuo <=0 || $serverName == '' || $status != 2) {
+            return JSON::error(JSON::E_INTERNAL, '参数不符合标准');
+        }
+
+        //接收处理参数
+        $email = trim($request->input('email'));
+        $status = trim($request->input('status'));
+        $serverName = trim($request->input('serverName'));
+        $getNumber = floor(($request->input('getNumber')));
+        $oubo = floor(($request->input('oubo')));
+        $signDay = floor(($request->input('signDay')));
+
+        //帐号数据
+        $tmpWhere = [
+            ['a.status', '=', $status],
+            ['a.server_name', '=', $serverName],
+            ['iad.jing_hua', '=', $jingHua],
+            ['iad.xian_suo', '=', $xianSuo]
+        ];
+        $query = DB::table('account as a')
+            ->leftJoin('id5_account_detail as iad', function($join) {$join->on('a.id', '=', 'iad.account_id');})
+            ->where($tmpWhere)
+            ->take($getNumber);
+        $rows = $query->selectRaw('a.id, a.email, a.passwd')->get();
+        $accountStr = '';
+        $idRows = [];
+        foreach($rows as $row) {
+            $idRows[] = $row->id;
+            $accountStr .= $row->email . ',' . $row->passwd . "\r\n";
+        }
+        if(count($idRows) == 0) {
+            return JSON::error(JSON::E_INTERNAL, '没有数据');
+        }
+
+        $insertData = [
+            'title' => date('Y-m-d H:i:s', time()) . ',服务器:' . $serverName . ',精华:' . $jingHua . ',线索:' . $xianSuo,
+            'content' => $accountStr,
+            'create_time' => time(),
+            'account_number' => count($rows)
+        ];
+        $id = DB::table('id5_sold_out_account')->insertGetId($insertData);
+
+        DB::table('account')->whereIn('id', $idRows)->update(['status' => 3]);
+
+        return JSON::ok([
+            'id' => $id
+        ]);
+    }
+
+    //已卖出帐号详细
+    public function soldOutAccountDetail(Request $request)
+    {
+        $id = $request->input('id');
+        $rows = DB::table('id5_sold_out_account')->where('id', '=', $id)->first();
+        return JSON::ok([
+            'rows' => $rows
+        ]);
+    }
+
+    //已卖出帐号列表
+    public function soldOutAccountList(Request $request)
+    {
+        $valiRules = [
+            'limit' => 'integer|between:1,50',
+            'page' => 'integer|min:1',
+        ];
+
+        if ($r = $this->validateFail($request, $valiRules)) {
+            return $r;
+        }
+
+
+        $take = trim($request->input('limit'));
+        $skip = (trim($request->input('page')) - 1) * $take;
+
+        $query = DB::table('id5_sold_out_account')
+            ->selectRaw('id, title, create_time, account_number');
+        $total = $query->count();
+        $rows = $query->take($take)->skip($skip)->orderBy('id', 'desc')->get();
+        return JSON::ok([
+            'rows' => $rows,
+            'total' => $total
+        ]);
+    }
 }

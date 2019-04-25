@@ -32,6 +32,9 @@ return [
     //id5
     'id5Account/statistical' => [ 'method' => 'post', 'ctrl' => 'Id5AccountController@statistical', 'title' => 'id5帐号统计'],
     'id5Account/todayStatistics' => [ 'method' => 'post', 'ctrl' => 'Id5AccountController@todayStatistics', 'title' => 'id5今日帐号统计'],
+    'id5Account/mark-account-sold-out' => [ 'method' => 'post', 'ctrl' => 'Id5AccountController@markAccountSoldOut', 'title' => 'id5将未卖出的帐号置成已卖出'],
+    'id5Account/sold-out-account-detail' => [ 'method' => 'post', 'ctrl' => 'Id5AccountController@soldOutAccountDetail', 'title' => 'id5已卖出帐号详细'],
+    'id5Account/soldOut' => [ 'method' => 'post', 'ctrl' => 'Id5AccountController@soldOutAccountList', 'title' => 'id5已卖出帐号列表'],
 
     //jiaoyimao
     'mao/goodsChangeHistory' => [ 'method' => 'post', 'ctrl' => 'MaoController@goodsChangeHistory', 'title' => '单个商品销量变化'],

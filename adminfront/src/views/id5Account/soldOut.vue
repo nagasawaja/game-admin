@@ -20,7 +20,7 @@
 
         <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;margin-top:15px;">
             <el-table-column width="65px"  label="id" prop="id"></el-table-column>
-            <el-table-column width="300px" label="title" prop="title"></el-table-column>
+            <el-table-column width="350px" label="title" prop="title"></el-table-column>
             <el-table-column width="150px" label="account_number" prop="account_number"></el-table-column>
             <el-table-column width="150px" label="create_time">
                 <template slot-scope="scope">
@@ -85,7 +85,7 @@
         methods: {
             getList () {
                 this.listLoading = true
-                request({ url: 'account/soldOut', method: 'post', params: this.listQuery }).then(response => {
+                request({ url: 'id5Account/soldOut', method: 'post', params: this.listQuery }).then(response => {
                     const result = response.data;
                     if (result.code) {
                         this.$message.error(result.msg || '系统错误')
@@ -98,7 +98,7 @@
                 })
             },
             showSoldAccountDetail(row) {
-                request({ url: 'account/sold-out-account-detail', method: 'post', params: {id:row.id} }).then(response => {
+                request({ url: 'id5Account/sold-out-account-detail', method: 'post', params: {id:row.id} }).then(response => {
                     const result = response.data;
                     if(result.code) {
                         this.$message.error(result.msg || '系统错误')

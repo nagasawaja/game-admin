@@ -11,6 +11,7 @@ return [
             ['title' => 'f7重置账号到签到14天', 'path' => 'account/backTo14'],
             ['title' => 'id5帐号统计', 'path' => 'id5Account/statistical'],
             ['title' => 'id5今日统计', 'path' => 'id5Account/todayStatistics'],
+            ['title' => 'id5已卖出帐号', 'path' => 'id5Account/soldOut'],
         ],
     ],
 
