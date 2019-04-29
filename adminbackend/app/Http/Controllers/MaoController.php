@@ -15,7 +15,7 @@ class MaoController extends Controller
         $gameIds = false;
         $where = [
             ['goods_count', '<', 100],
-            ['price', '>', 5.00],
+            ['price', '>=', 0.98],
             ['mao_games_goods_detail.create_datetime', '>=', $request->input('goods_detail_create_datetime_start')],
             ['mao_games_goods_detail.create_datetime', '<', $request->input('goods_detail_create_datetime_end')]
         ];
