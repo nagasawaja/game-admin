@@ -10,6 +10,35 @@ use App\Models\Account;
 
 class Id5AccountController extends Controller
 {
+    //帐号列表
+    public function lists(Request $request)
+    {
+        $valiRules = [
+            'limit' => 'required|integer|between:1,50',
+            'page' => 'required|integer|min:1',
+        ];
+
+        if ($r = $this->validateFail($request, $valiRules)) {
+            return $r;
+        }
+
+        $query = Account::singleton()->getId5AccountQuery($request);
+
+        $accountSelectRaw = 'a.id, a.server_name, a.status, a.email, a.passwd, ';
+        $id5AccountDetailSelectRaw = 'iad.sign_day, iad.error_times, iad.jing_hua, iad.xian_suo, iad.ling_gan, iad.jing_hua_update_time, iad.email_time, iad.update_time, iad.create_time';
+        $take = trim($request->input('limit'));
+        $skip = (trim($request->input('page')) - 1) * $take;
+
+        $total = $query->count();
+        $rows = $query->selectRaw($accountSelectRaw . $id5AccountDetailSelectRaw)->take($take)->skip($skip)->get();
+
+        //返回数据
+        return JSON::ok([
+            'total' => $total,
+            'rows' => $rows,
+        ]);
+    }
+
     //帐号统计
     public function statistical(Request $request)
     {
@@ -63,30 +92,31 @@ class Id5AccountController extends Controller
         $serverName = trim($request->input('serverName'));
         $getNumber = floor(($request->input('getNumber')));
         $jingHua = floor(($request->input('jing_hua')));
-        $xianSuo = floor(($request->input('xian_suo')));
+        $xianSuo1 = floor(($request->input('xian_suo_1')));
+        $xianSuo2 = floor(($request->input('xian_suo_2')));
 
-        if($getNumber > 50 || $getNumber <=0 || $jingHua <=0 || $xianSuo <=0 || $serverName == '' || $status != 2) {
+        if($getNumber > 50 || $getNumber <=0 || $jingHua <=0 || $xianSuo1 <=0 || $serverName == '' || $status != 2) {
             return JSON::error(JSON::E_INTERNAL, '参数不符合标准');
         }
 
         //接收处理参数
-        $email = trim($request->input('email'));
         $status = trim($request->input('status'));
         $serverName = trim($request->input('serverName'));
         $getNumber = floor(($request->input('getNumber')));
-        $oubo = floor(($request->input('oubo')));
-        $signDay = floor(($request->input('signDay')));
 
         //帐号数据
         $tmpWhere = [
             ['a.status', '=', $status],
             ['a.server_name', '=', $serverName],
             ['iad.jing_hua', '=', $jingHua],
-            ['iad.xian_suo', '=', $xianSuo]
+            ['iad.xian_suo', '>=', $xianSuo1]
         ];
         $query = DB::table('account as a')
             ->leftJoin('id5_account_detail as iad', function($join) {$join->on('a.id', '=', 'iad.account_id');})
             ->where($tmpWhere)
+            ->when($xianSuo2, function($query) use($xianSuo2) {
+                $query->where('iad.xian_suo', '<=', $xianSuo2);
+            })
             ->take($getNumber);
         $rows = $query->selectRaw('a.id, a.email, a.passwd')->get();
         $accountStr = '';
@@ -100,7 +130,7 @@ class Id5AccountController extends Controller
         }
 
         $insertData = [
-            'title' => date('Y-m-d H:i:s', time()) . ',服务器:' . $serverName . ',精华:' . $jingHua . ',线索:' . $xianSuo,
+            'title' => date('Y-m-d H:i:s', time()) . ',服务器:' . $serverName . ',精华:' . $jingHua . ',线索:' . $xianSuo1 .'-'. $xianSuo2,
             'content' => $accountStr,
             'create_time' => time(),
             'account_number' => count($rows)

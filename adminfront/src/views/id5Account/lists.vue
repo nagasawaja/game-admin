@@ -5,22 +5,34 @@
             状态：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='状态'  v-model="listQuery.status"></el-input>
             <br/>
             服务器：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='服务器'  v-model="listQuery.serverName"></el-input>
-            欧泊：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='欧泊'  v-model="listQuery.oubo"></el-input>
+            线索：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='线索1'  v-model="listQuery.xian_suo_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='线索2'  v-model="listQuery.xian_suo_2"></el-input>
             <br/>
-            签到天数：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='签到天数'  v-model="listQuery.signDay"></el-input>
-            提取数量：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='提取数量'  v-model="listQuery.getNumber"></el-input>
+            签到天数：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='签到天数1'  v-model="listQuery.sign_day_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='签到天数2'  v-model="listQuery.sign_day_2"></el-input>
+            错误次数：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='错误次数1'  v-model="listQuery.error_times_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='错误次数2'  v-model="listQuery.error_times_2"></el-input>
             <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter"></el-button>
             <el-button class="filter-item" type="primary" icon="el-icon-download" @click="markAccountSoldOut"></el-button>
         </div>
 
         <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;margin-top:15px;">
             <el-table-column width="65px"  label="帐号id" prop="id"></el-table-column>
-            <el-table-column width="300px" label="邮箱" prop="email"></el-table-column>
-            <el-table-column width="150px" label="密码" prop="passwd"></el-table-column>
-            <el-table-column width="150px" label="状态" prop="status"></el-table-column>
+            <el-table-column width="200px" label="邮箱" prop="email"></el-table-column>
+            <el-table-column width="125px" label="密码" prop="passwd"></el-table-column>
+            <el-table-column width="100px" label="精华" prop="jing_hua"></el-table-column>
+            <el-table-column width="100px" label="线索" prop="xian_suo"></el-table-column>
+            <el-table-column width="100px" label="灵感" prop="ling_gan"></el-table-column>
+            <el-table-column width="100px" label="状态" prop="status"></el-table-column>
+            <el-table-column width="100px" label="签到天数" prop="sign_day"></el-table-column>
+            <el-table-column width="100px" label="错误次数" prop="error_times"></el-table-column>
+            <el-table-column width="150px" label="登陆时间" prop="update_time">
+                <template slot-scope="scope">{{scope.row.update_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
+            </el-table-column>
+            <el-table-column width="150px" label="邮件时间" prop="email_time">
+                <template slot-scope="scope">{{scope.row.email_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
+            </el-table-column>
+            <el-table-column width="150px" label="创建时间" prop="create_time">
+                <template slot-scope="scope">{{scope.row.create_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
+            </el-table-column>
             <el-table-column width="150px" label="服务器" prop="server_name"></el-table-column>
-            <el-table-column width="150px" label="签到天数" prop="sign_day"></el-table-column>
-            <el-table-column width="150px" label="欧泊" prop="oubo"></el-table-column>
         </el-table>
 
         <div class="pagination-container">
@@ -60,11 +72,14 @@
                     page: 1,
                     limit: 20,
                     serverName:'',
-                    getNumber:'',
                     email:'',
                     status:'',
-                    oubo:'',
-                    signDay:''
+                    xian_suo_1: '',
+                    xian_suo_2: '',
+                    error_times_1: '',
+                    error_times_2: '',
+                    sign_day_1: '',
+                    sign_day_2: '',
                 },
                 temp: { id: undefined, name: '', description: '', coins: '', extra_coins: '', price: '' },
                 dialogFormVisible: false,
@@ -78,7 +93,7 @@
         methods: {
             getList () {
                 this.listLoading = true;
-                request({ url: 'account/lists', method: 'post', params: this.listQuery }).then(response => {
+                request({ url: 'id5Account/lists', method: 'post', params: this.listQuery }).then(response => {
                     const result = response.data;
                     if (result.code) {
                         this.$message.error(result.msg || '系统错误')

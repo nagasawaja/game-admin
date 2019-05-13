@@ -16,7 +16,7 @@ return [
     'role/listAuth' => [ 'method' => 'get', 'ctrl' => 'RoleController@listAuth', 'title' => '角色权限列表', 'allrole' => true],
 
     //f7
-    'account/lists' => [ 'method' => 'post', 'ctrl' => 'AccountController@lists', 'title' => '帐号列表'],
+    'account/lists' => [ 'method' => 'post', 'ctrl' => 'AccountController@lists', 'title' => 'f7帐号列表'],
     'account/statistical' => [ 'method' => 'post', 'ctrl' => 'AccountController@statistical', 'title' => 'f7帐号统计'],
     'account/mark-account-sold-out' => [ 'method' => 'post', 'ctrl' => 'AccountController@markAccountSoldOut', 'title' => 'f7将未卖出的帐号置成已卖出'],
     'account/sold-out-account-detail' => [ 'method' => 'post', 'ctrl' => 'AccountController@soldOutAccountDetail', 'title' => 'f7已卖出帐号详细'],
@@ -30,6 +30,7 @@ return [
     'account/querySql' => [ 'method' => 'post', 'ctrl' => 'AccountController@querySqlMenu', 'title' => '执行原生sql菜单'],
 
     //id5
+    'id5Account/lists' => [ 'method' => 'post', 'ctrl' => 'Id5AccountController@lists', 'title' => 'id5帐号列表'],
     'id5Account/statistical' => [ 'method' => 'post', 'ctrl' => 'Id5AccountController@statistical', 'title' => 'id5帐号统计'],
     'id5Account/todayStatistics' => [ 'method' => 'post', 'ctrl' => 'Id5AccountController@todayStatistics', 'title' => 'id5今日帐号统计'],
     'id5Account/mark-account-sold-out' => [ 'method' => 'post', 'ctrl' => 'Id5AccountController@markAccountSoldOut', 'title' => 'id5将未卖出的帐号置成已卖出'],

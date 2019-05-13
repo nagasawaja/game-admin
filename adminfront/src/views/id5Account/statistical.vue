@@ -4,7 +4,7 @@
             服务器：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='服务器'  v-model="listQuery.serverName"></el-input>
             <br/>
             精华：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='精华'  v-model="listQuery.jing_hua"></el-input>
-            线索：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='线索'  v-model="listQuery.xian_suo"></el-input>
+            线索：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='线索1'  v-model="listQuery.xian_suo_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='线索2'  v-model="listQuery.xian_suo_2"></el-input>
             <br/>
             状态：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='状态'  v-model="listQuery.status"></el-input>
             提取数量：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='提取数量'  v-model="listQuery.getNumber"></el-input>
@@ -62,7 +62,8 @@
                     getNumber:10,
                     status:2,
                     jing_hua:'',
-                    xian_suo:'',
+                    xian_suo_1:'',
+                    xian_suo_2:'',
                 },
                 temp: { id: undefined, name: '', description: '', coins: '', extra_coins: '', price: '' },
                 dialogFormVisible: false,
@@ -110,7 +111,7 @@
                         this.textarea = result.data.rows.content;
                     })
                     this.listLoading = false;
-                    this.dialogTitle = '服务器:' + this.listQuery.serverName + '----精华:' + this.listQuery.jing_hua + '----线索:' + this.listQuery.xian_suo + '----提取数量:' + this.listQuery.getNumber;
+                    this.dialogTitle = '服务器:' + this.listQuery.serverName + '----精华:' + this.listQuery.jing_hua + '----线索:' + this.listQuery.xian_suo_1 + '-' + this.listQuery.xian_suo_2 + '----提取数量:' + this.listQuery.getNumber;
                 })
             },
             handleSizeChange (val) {
