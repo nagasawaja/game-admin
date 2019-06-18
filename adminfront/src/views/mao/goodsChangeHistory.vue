@@ -111,7 +111,7 @@
                     signDay:'',
                     goods_detail_create_datetime_start:new Date().format("yyyy-MM-dd"),
                     goods_detail_create_datetime_end:goodsDetail_create_datetime_end.format("yyyy-MM-dd"),
-                    game_id:0,
+                    game_id:6587,
                 },
                 temp: { id: undefined, name: '', description: '', coins: '', extra_coins: '', price: '' },
                 dialogFormVisible: false,
