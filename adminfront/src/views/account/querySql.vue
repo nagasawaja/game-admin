@@ -1,7 +1,7 @@
 <template>
     <div class="app-container calendar-list-container">
-        <div>
-            <el-form ref="dataForm" :model="temp" label-position="left" label-width="300px" style='width: 700px;'>
+        <div class="content-left">
+            <el-form ref="dataForm" :model="temp">
                 <el-input
                         type="textarea"
                         :rows="3"
@@ -24,9 +24,18 @@
                         v-model="originSql">
                 </el-input>
             </div>
+
             <div style="float: left;">
                 <el-button type="primary" @click="saveData('origin_sql')">确认</el-button>
             </div>
+        </div>
+        <div class="content-right">
+            <json-viewer
+                    :value= jsonViewData
+                    :expand-depth=50
+                    copyable
+                    boxed
+                    sort></json-viewer>
         </div>
     </div>
 </template>
@@ -56,7 +65,8 @@
                 temp: { id: undefined, name: '', description: '', coins: '', extra_coins: '', price: '' },
                 dialogFormVisible: false,
                 dialogTitle: '',
-                filterOption: filterOption
+                filterOption: filterOption,
+                jsonViewData: {}
             }
         },
         created () {
@@ -136,7 +146,7 @@
                         this.$message.error(ret.msg || '系统错误')
                         return
                     }
-
+                    this.jsonViewData = ret;
                     this.$notify({
                         title: '成功',
                         message: '提交成功',
@@ -160,8 +170,18 @@
     }
 </script>
 
-<style>
+<style scoped>
+    .app-container {
+        display: flex;
+    }
     el-tag {
         display:block
+    }
+    .content-left {
+        flex: 1;
+        padding-right: 10px;
+    }
+    .content-right {
+        flex: 1;
     }
 </style>

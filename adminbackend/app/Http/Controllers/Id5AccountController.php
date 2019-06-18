@@ -24,7 +24,7 @@ class Id5AccountController extends Controller
 
         $query = Account::singleton()->getId5AccountQuery($request);
 
-        $accountSelectRaw = 'a.id, a.server_name, a.status, a.email, a.passwd, ';
+        $accountSelectRaw = 'a.id, a.server_name, a.status, a.email, a.passwd, a.is_clean, ';
         $id5AccountDetailSelectRaw = 'iad.sign_day, iad.error_times, iad.jing_hua, iad.xian_suo, iad.ling_gan, iad.jing_hua_update_time, iad.email_time, iad.update_time, iad.create_time';
         $take = trim($request->input('limit'));
         $skip = (trim($request->input('page')) - 1) * $take;
@@ -47,7 +47,7 @@ class Id5AccountController extends Controller
         $qiriAccountDetailRaw = 'id5A.xian_suo, id5A.sign_day, id5A.ling_gan,id5A.jing_hua,id5A.error_times';
         $rows = DB::table('account as a')
             ->leftJoin('id5_account_detail as id5A', 'a.id', '=', 'id5A.account_id')
-            ->whereNotIn('a.status', [3,4,5])
+            ->whereIn('a.status', [1,2])
             ->where('server_name', '=', '163master')
             ->when($serverNameRows, function($query) use($serverNameRows) {$query->whereIn('a.server_name', $serverNameRows);})
             ->groupBy(['jing_hua', 'xian_suo', 'ling_gan', 'sign_day'])

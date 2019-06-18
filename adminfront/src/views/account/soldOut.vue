@@ -1,23 +1,5 @@
 <template>
     <div class="app-container calendar-list-container">
-        <div class="filter-container">
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='邮箱'  v-model="listQuery.email"></el-input>
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='状态'  v-model="listQuery.status"></el-input>
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='服务器'  v-model="listQuery.serverName"></el-input>
-            <el-date-picker
-                    v-model="listQuery.login_time"
-                    type="daterange"
-                    align="right"
-                    value-format="yyyy-MM-dd"
-                    unlink-panels
-                    range-separator="至"
-                    start-placeholder="登录时间开始"
-                    end-placeholder="登录时间结束"
-                    :picker-options="filterOption.DATE_FILTER_OPTION">
-            </el-date-picker>
-            <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter"></el-button>
-        </div>
-
         <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;margin-top:15px;">
             <el-table-column width="65px"  label="id" prop="id"></el-table-column>
             <el-table-column width="300px" label="title" prop="title"></el-table-column>

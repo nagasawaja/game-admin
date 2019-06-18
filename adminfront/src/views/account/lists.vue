@@ -1,26 +1,38 @@
 <template>
     <div class="app-container calendar-list-container">
         <div class="filter-container">
+            帐号Id：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='帐号Id'  v-model="listQuery.accountId"></el-input>
             邮箱：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='邮箱'  v-model="listQuery.email"></el-input>
             状态：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='状态'  v-model="listQuery.status"></el-input>
             <br/>
             服务器：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='服务器'  v-model="listQuery.serverName"></el-input>
-            欧泊：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='欧泊'  v-model="listQuery.oubo"></el-input>
+            欧泊：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='欧泊1'  v-model="listQuery.oubo1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='欧泊2'  v-model="listQuery.oubo2"></el-input>
             <br/>
-            签到天数：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='签到天数'  v-model="listQuery.signDay"></el-input>
-            提取数量：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='提取数量'  v-model="listQuery.getNumber"></el-input>
-            <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter"></el-button>
-            <el-button class="filter-item" type="primary" icon="el-icon-download" @click="markAccountSoldOut"></el-button>
+            签到天数：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='签到天数1'  v-model="listQuery.sign_day_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='签到天数2'  v-model="listQuery.sign_day_2"></el-input>
+            错误次数：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='错误次数1'  v-model="listQuery.error_times_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='错误次数2'  v-model="listQuery.error_times_2"></el-input>
+            <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
         </div>
 
         <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;margin-top:15px;">
             <el-table-column width="65px"  label="帐号id" prop="id"></el-table-column>
-            <el-table-column width="300px" label="邮箱" prop="email"></el-table-column>
+            <el-table-column width="200px" label="邮箱" prop="email"></el-table-column>
             <el-table-column width="150px" label="密码" prop="passwd"></el-table-column>
+            <el-table-column width="90px" label="欧泊" prop="oubo"></el-table-column>
+            <el-table-column width="90px" label="签到天数" prop="sign_day"></el-table-column>
+            <el-table-column width="150px" label="下次拿欧泊" prop="oubo_update_time">
+                <template slot-scope="scope">{{scope.row.oubo_update_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
+            </el-table-column>
+            <el-table-column width="150px" label="错误次数" prop="error_times"></el-table-column>
+            <el-table-column width="150px" label="下次邮件时间" prop="email_time">
+                <template slot-scope="scope">{{scope.row.email_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
+            </el-table-column>
             <el-table-column width="150px" label="状态" prop="status"></el-table-column>
             <el-table-column width="150px" label="服务器" prop="server_name"></el-table-column>
-            <el-table-column width="150px" label="签到天数" prop="sign_day"></el-table-column>
-            <el-table-column width="150px" label="欧泊" prop="oubo"></el-table-column>
+            <el-table-column width="150px" label="三无帐号" prop="is_clean">
+                <template slot-scope="scope">
+                    <el-tag>{{scope.row.is_clean==1?'是':'否'}}</el-tag>
+                </template>
+            </el-table-column>
         </el-table>
 
         <div class="pagination-container">
@@ -62,9 +74,14 @@
                     serverName:'',
                     getNumber:'',
                     email:'',
-                    status:'',
-                    oubo:'',
-                    signDay:''
+                    status:2,
+                    oubo1:'',
+                    oubo2:'',
+                    error_times_1: 10,
+                    error_times_2: '',
+                    sign_day_1: '',
+                    sign_day_2: '',
+                    accountId:''
                 },
                 temp: { id: undefined, name: '', description: '', coins: '', extra_coins: '', price: '' },
                 dialogFormVisible: false,

@@ -1,17 +1,7 @@
 <template>
     <div class="app-container calendar-list-container">
         <div class="filter-container">
-            <el-date-picker
-                    v-model="listQuery.updateTime"
-                    align="right"
-                    type="date"
-                    value-format="yyyy-MM-dd"
-                    placeholder="选择日期"
-                    :default-value="listQuery.updateTime">
-            </el-date-picker>
-
-            <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter"></el-button>
-            <el-button class="filter-item" type="primary" icon="el-icon-download" @click="markAccountSoldOut"></el-button>
+            <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">刷新</el-button>
         </div>
 
         <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;margin-top:15px;">

@@ -1,7 +1,6 @@
 <template>
     <div class="app-container calendar-list-container">
         <div class="filter-container">
-            邮箱：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='邮箱'  v-model="listQuery.email"></el-input>
             状态：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='状态'  v-model="listQuery.status"></el-input>
             <br/>
             服务器：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='服务器'  v-model="listQuery.serverName"></el-input>
@@ -9,10 +8,9 @@
             <br/>
             签到天数：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='签到天数'  v-model="listQuery.signDay"></el-input>
             提取数量：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='提取数量'  v-model="listQuery.getNumber"></el-input>
-            <el-button class="filter-item" type="primary" icon="el-icon-search" @click="getList"></el-button>
-            <el-button class="filter-item" type="primary" icon="el-icon-download" @click="markAccountSoldOut"></el-button>
+            <el-button class="filter-item" type="primary" icon="el-icon-search" @click="getList">刷新</el-button>
+            <el-button class="filter-item" type="primary" icon="el-icon-download" @click="markAccountSoldOut">导出</el-button>
         </div>
-
 
         <el-table :key='tableKey' height="550px" :data="list" v-loading="listLoading" element-loading-text="给我一点时间"
                   border fit highlight-current-row style="display:inline-block;width:auto;margin-top:15px">

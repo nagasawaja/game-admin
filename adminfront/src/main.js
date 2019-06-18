@@ -12,6 +12,9 @@ import Element from 'element-ui'
 import './icons' // icon
 import './permission' // permission control
 import * as filters from './filters' // global filters
+import JsonViewer from 'vue-json-viewer'
+// Import JsonViewer as a Vue.js plugin
+Vue.use(JsonViewer)
 // register global utility filters.
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])

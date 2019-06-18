@@ -1,6 +1,7 @@
 <template>
     <div class="app-container calendar-list-container">
         <div class="filter-container">
+            帐号Id：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='帐号Id'  v-model="listQuery.accountId"></el-input>
             邮箱：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='邮箱'  v-model="listQuery.email"></el-input>
             状态：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='状态'  v-model="listQuery.status"></el-input>
             <br/>
@@ -9,8 +10,7 @@
             <br/>
             签到天数：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='签到天数1'  v-model="listQuery.sign_day_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='签到天数2'  v-model="listQuery.sign_day_2"></el-input>
             错误次数：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='错误次数1'  v-model="listQuery.error_times_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='错误次数2'  v-model="listQuery.error_times_2"></el-input>
-            <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter"></el-button>
-            <el-button class="filter-item" type="primary" icon="el-icon-download" @click="markAccountSoldOut"></el-button>
+            <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
         </div>
 
         <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;margin-top:15px;">
@@ -33,6 +33,11 @@
                 <template slot-scope="scope">{{scope.row.create_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
             </el-table-column>
             <el-table-column width="150px" label="服务器" prop="server_name"></el-table-column>
+            <el-table-column width="150px" label="三无帐号" prop="is_clean">
+                <template slot-scope="scope">
+                    <el-tag>{{scope.row.is_clean==1?'是':'否'}}</el-tag>
+                </template>
+            </el-table-column>
         </el-table>
 
         <div class="pagination-container">
@@ -73,13 +78,14 @@
                     limit: 20,
                     serverName:'',
                     email:'',
-                    status:'',
+                    status:2,
                     xian_suo_1: '',
                     xian_suo_2: '',
                     error_times_1: '',
                     error_times_2: '',
                     sign_day_1: '',
                     sign_day_2: '',
+                    accountId:''
                 },
                 temp: { id: undefined, name: '', description: '', coins: '', extra_coins: '', price: '' },
                 dialogFormVisible: false,

@@ -7,9 +7,9 @@
             线索：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='线索1'  v-model="listQuery.xian_suo_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='线索2'  v-model="listQuery.xian_suo_2"></el-input>
             <br/>
             状态：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='状态'  v-model="listQuery.status"></el-input>
-            提取数量：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='提取数量'  v-model="listQuery.getNumber"></el-input>
-            <el-button class="filter-item" type="primary" icon="el-icon-search" @click="getList"></el-button>
-            <el-button class="filter-item" type="primary" icon="el-icon-download" @click="markAccountSoldOut"></el-button>
+            提取数量：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"   placeholder='提取数量'  v-model="listQuery.getNumber"></el-input>
+            <el-button class="filter-item" type="primary" icon="el-icon-search" @click="getList">刷新</el-button>
+            <el-button class="filter-item" type="primary" icon="el-icon-download" @click="markAccountSoldOut">导出</el-button>
         </div>
 
 
