@@ -19,11 +19,13 @@
     "element-ui": "^2.1.0",
     "js-cookie": "^2.2.0",
     "js-md5": "^0.7.3",
+    "macaddress": "^0.2.9",
     "normalize.css": "^7.0.0",
     "nprogress": "^0.2.0",
     "screenfull": "^3.3.2",
     "vue": "^2.5.2",
     "vue-chartjs": "^3.4.0",
+    "vue-json-viewer": "^2.2.0",
     "vue-router": "^3.0.1",
     "vue-wechat-title": "^2.0.4",
     "vuex": "^3.0.1"
