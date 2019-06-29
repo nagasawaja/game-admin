@@ -57,7 +57,7 @@
                 listQuery: {
                     page: 1,
                     limit: 20,
-                    serverName:'chunri',
+                    serverName:'',
                     getNumber:10,
                     email:'',
                     status:2,

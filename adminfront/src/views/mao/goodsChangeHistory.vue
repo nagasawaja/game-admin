@@ -42,6 +42,7 @@
             <el-table-column width="85px" label="price" prop="price"></el-table-column>
             <el-table-column width="70px" label="sGc" content="123" prop="single_goods_count"></el-table-column>
             <el-table-column width="150px" label="goods_id" prop="goods_id"></el-table-column>
+            <el-table-column width="150px" label="seller_name" prop="seller_name"></el-table-column>
             <el-table-column width="150px" label="goods_sale_time" prop="goods_sale_create_datetime"></el-table-column>
             <el-table-column width="150px" label="game_id" prop="game_id"></el-table-column>
             <el-table-column width="350px" label="goods_url" prop="goods_url"></el-table-column>
