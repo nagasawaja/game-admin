@@ -13,6 +13,8 @@ class MaoController extends Controller
     public function goodsChangeHistory(Request $request)
     {
         $gameIds = false;
+        $sellerName = trim($request->input('seller_name'));
+        $goodsId = trim($request->input('goods_id'));
         $where = [
             ['goods_count', '<', 100],
             ['price', '>=', 0.98],
@@ -29,6 +31,12 @@ class MaoController extends Controller
             ->whereRaw(DB::raw("mao_games_goods.goods_id in (select goods_id from mao_games_goods_detail group by goods_id having count(*) >= 2)"))
             ->selectRaw("mao_games.title as game_title, mao_games_goods_detail.title as goods_title,price,mao_games_goods_detail.goods_count as single_goods_count,mao_games_goods.goods_id as goods_id,mao_games_goods_detail.create_datetime as goods_sale_create_datetime,mao_games.game_id,mao_games_goods.url as goods_url,mao_games_goods.seller_name")
             ->where($where)
+            ->when($sellerName, function($query) use($sellerName) {
+                $query->where("mao_games_goods.seller_name", '=', $sellerName);
+            })
+            ->when($goodsId, function($query) use($goodsId) {
+                $query->where("mao_games_goods.goods_id", '=', $goodsId);
+            })
             ->when($gameIds, function($query) use($gameIds)  {
                 $query->whereIn("mao_games.game_id", $gameIds);
             })->get();

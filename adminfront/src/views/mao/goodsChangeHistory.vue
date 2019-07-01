@@ -32,10 +32,11 @@
                     </el-option>
                 </el-option-group>
             </el-select>
-            <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter"></el-button>
-            <el-button class="filter-item" type="primary" icon="el-icon-download" @click="markAccountSoldOut"></el-button>
+            seller_name：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='seller_name'  v-model="listQuery.seller_name"></el-input>
+            goods_id：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='goods_id'  v-model="listQuery.goods_id"></el-input>
+            <br/>
+            <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
         </div>
-
         <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;margin-top:15px;">
             <el-table-column width="210px" label="title" prop="game_title"></el-table-column>
             <el-table-column width="210px" label="title" prop="goods_title"></el-table-column>
@@ -44,7 +45,6 @@
             <el-table-column width="150px" label="goods_id" prop="goods_id"></el-table-column>
             <el-table-column width="150px" label="seller_name" prop="seller_name"></el-table-column>
             <el-table-column width="150px" label="goods_sale_time" prop="goods_sale_create_datetime"></el-table-column>
-            <el-table-column width="150px" label="game_id" prop="game_id"></el-table-column>
             <el-table-column width="350px" label="goods_url" prop="goods_url"></el-table-column>
             <el-table-column width="150px" label="game_id" prop="game_id"></el-table-column>
         </el-table>
@@ -105,6 +105,8 @@
                     page: 1,
                     limit: 500,
                     serverName:'',
+                    seller_name:'',
+                    goods_id:'',
                     getNumber:'',
                     email:'',
                     status:'',
