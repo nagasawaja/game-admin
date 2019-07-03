@@ -38,14 +38,18 @@
             <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
         </div>
         <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;margin-top:15px;">
-            <el-table-column width="210px" label="title" prop="game_title"></el-table-column>
             <el-table-column width="210px" label="title" prop="goods_title"></el-table-column>
             <el-table-column width="85px" label="price" prop="price"></el-table-column>
             <el-table-column width="70px" label="sGc" content="123" prop="single_goods_count"></el-table-column>
-            <el-table-column width="150px" label="goods_id" prop="goods_id"></el-table-column>
             <el-table-column width="150px" label="seller_name" prop="seller_name"></el-table-column>
             <el-table-column width="150px" label="goods_sale_time" prop="goods_sale_create_datetime"></el-table-column>
-            <el-table-column width="350px" label="goods_url" prop="goods_url"></el-table-column>
+            <el-table-column width="350px" label="goods_url" prop="goods_url">
+                <template slot-scope="scope">
+                    <a :href="scope.row.goods_url" target="_blank" class="buttonText">{{scope.row.goods_url}}</a>
+                </template>
+            </el-table-column>
+            <el-table-column width="150px" label="goods_id" prop="goods_id"></el-table-column>
+            <el-table-column width="210px" label="title" prop="game_title"></el-table-column>
             <el-table-column width="150px" label="game_id" prop="game_id"></el-table-column>
         </el-table>
 

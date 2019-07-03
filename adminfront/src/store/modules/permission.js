@@ -54,7 +54,7 @@ const permission = {
   },
   mutations: {
     SET_ROUTERS: (state, routers) => {
-      routers.push({ path: '*', component: { template: '<h2>页面不存在<a style="font-size:13px;margin-left:8px;color:#333" href="javascript:history.back()">返回</a></h2>' }, hidden: true })
+        routers.push({ path: '*', component: Layout, children:[{path:'/',component: ()=>import('@/views/404')}], hidden: true })
       state.routes = routers
     },
     SET_SIDE_MENUS: (state, sideMenus) => {
