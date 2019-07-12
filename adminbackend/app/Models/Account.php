@@ -17,8 +17,10 @@ class Account extends Model
         $getNumber = floor(($request->input('getNumber')));
         $oubo1 = floor(($request->input('oubo1')));
         $oubo2 = floor(($request->input('oubo2')));
+        $oubo = floor(($request->input('oubo')));
         $signDay1 = floor(($request->input('sign_day_1')));
         $signDay2 = floor(($request->input('sign_day_2')));
+        $signDay = floor(($request->input('signDay')));
         $errorTimes1 = floor(($request->input('error_times_1')));
         $errorTimes2 = floor(($request->input('error_times_2')));
         $accountId = floor(($request->input('accountId')));
@@ -31,11 +33,13 @@ class Account extends Model
             ->when($oubo1 != '', function($query) use($oubo1) {$query->where('oubo', '>=', $oubo1);})
             ->when($oubo2 != '', function($query) use($oubo2) {$query->where('oubo', '<=', $oubo2);})
             ->when($status, function($query) use($status) {$query->where('status', '=', $status);})
+            ->when($oubo, function($query) use($oubo) {$query->where('oubo', '=', $oubo);})
             ->when($serverName, function($query) use($serverName) {$query->where('server_name', '=', $serverName);})
             ->when($accountId, function($query) use($accountId) {$query->where('a.id', '=', $accountId);})
             ->when($getNumber, function($query) use($getNumber) {$query->take($getNumber);})
             ->when($signDay1 != '', function($query) use($signDay1) {$query->where('sign_day', '>=', $signDay1);})
             ->when($signDay2 != '', function($query) use($signDay2) {$query->where('sign_day', '<=', $signDay2);})
+            ->when($signDay, function($query) use($signDay) {$query->where('sign_day', '=', $signDay);})
             ->when($errorTimes1 != '', function($query) use($errorTimes1) {$query->where('error_times', '>=', $errorTimes1);})
             ->when($errorTimes2 != '', function($query) use($errorTimes2) {$query->where('error_times', '<=', $errorTimes2);})
             ->where('a.game_id', '=', 6378);
