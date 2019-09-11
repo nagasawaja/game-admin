@@ -12,10 +12,10 @@ class Mao extends Model
    public function getGameList() {
        $gameRows = DB::table('mao_games')->selectRaw('game_id, title')->get();
        //热门游戏名单
-       $findStrRows = ['阴阳师', '7日之都', '实况足球', '第五人格'];
+       $findStrRows = ['阴阳师【苹果版】礼包', '永远的7日之都【苹果版】礼包', '实况足球【苹果版】礼包', '第五人格【苹果版】礼包'];
        $hotGameRows = [];
        foreach($gameRows as $k=> $gameRow) {
-           $gameRows[$k]->title = substr($gameRow->title,0,strpos($gameRow->title, '【'));
+           $gameRows[$k]->title = $gameRow->title;
            foreach($findStrRows as $findStrRow) {
                if(strpos($gameRow->title, $findStrRow) !== false) {
                    $hotGameRows[] = $gameRows[$k];
