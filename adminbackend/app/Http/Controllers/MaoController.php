@@ -24,13 +24,30 @@ class MaoController extends Controller
         if ($request->input('game_id') > 0) {
             $gameIds = [$request->input('game_id')];
         }
+        $bb = DB::table("mao_games_goods_detail")
+            ->join("mao_games_goods", "mao_games_goods.goods_id", '=', 'mao_games_goods_detail.goods_id')
+            ->selectRaw('mao_games_goods_detail.goods_id')
+            ->whereIn('mao_games_goods.game_id', $gameIds)
+            ->where('mao_games_goods_detail.create_datetime', '<', $request->input('goods_detail_create_datetime_end'))
+            ->where('mao_games_goods_detail.create_datetime', '>=', $request->input('goods_detail_create_datetime_start'))
+            ->groupBy('mao_games_goods_detail.goods_id')
+            ->havingRaw('count(mao_games_goods_detail.goods_id) >= 2')
+            ->get();
+        if($bb == null) {
+            $goodsIdIn = [];
+        } else {
+            $goodsIdIn = [];
+            foreach($bb as $k => $v) {
+                $goodsIdIn[] = $v->goods_id;
+            }
+        }
         $rows = DB::table("mao_games_goods")
             ->join("mao_games", "mao_games.game_id", '=', 'mao_games_goods.game_id')
             ->join('mao_games_goods_detail', 'mao_games_goods.goods_id', '=', 'mao_games_goods_detail.goods_id')
             ->orderBy(DB::raw('mao_games.id , mao_games_goods.goods_id, create_datetime'))
-            ->whereRaw(DB::raw("mao_games_goods.goods_id in (select goods_id from mao_games_goods_detail group by goods_id having count(*) >= 2)"))
             ->selectRaw("mao_games.title as game_title, mao_games_goods_detail.title as goods_title,price,mao_games_goods_detail.goods_count as single_goods_count,mao_games_goods.goods_id as goods_id,mao_games_goods_detail.create_datetime as goods_sale_create_datetime,mao_games.game_id,mao_games_goods.url as goods_url,mao_games_goods.seller_name")
             ->where($where)
+            ->whereIn("mao_games_goods.goods_id", $goodsIdIn)
             ->when($sellerName, function($query) use($sellerName) {
                 $query->where("mao_games_goods.seller_name", '=', $sellerName);
             })
