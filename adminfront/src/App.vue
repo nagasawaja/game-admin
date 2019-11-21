@@ -21,7 +21,11 @@ export default {
         }
     },
 
-
+    mounted() {
+        setTimeout(()=> {
+            $('#live2d-widget').draggable()
+        },3000)
+    },
     created() {
         setTimeout(() => {
             var a = {
