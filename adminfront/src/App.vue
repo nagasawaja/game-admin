@@ -37,7 +37,8 @@ export default {
                 model: {jsonPath: '/static/live2dw/mashiro/ryoufuku.model.json'},
                 display: {position: 'right', width: 450, height: 450},
                 mobile: {show: false},
-                log: true
+                log: true,
+                index:2,
             };
             var b = {
                 pluginRootPath: '/static/live2dw/',
@@ -48,7 +49,8 @@ export default {
                 model: {jsonPath: '/static/live2dw/mashiro/seifuku.model.json'},
                 display: {position: 'right', width: 450, height: 450},
                 mobile: {show: false},
-                log: true
+                log: true,
+                index:2,
             };
             var c = {
                 pluginRootPath: '/static/live2dw/',
@@ -59,7 +61,8 @@ export default {
                 model: {jsonPath: '/static/live2dw/mashiro/shifuku.model.json'},
                 display: {position: 'right', width: 450, height: 450},
                 mobile: {show: false},
-                log: true
+                log: true,
+                index:1
             };
             var items = [a, b, c]
             console.log(items[Math.floor(Math.random()*items.length)])
