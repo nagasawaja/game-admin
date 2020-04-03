@@ -25,6 +25,10 @@ return [
     'account/recovery' => [ 'method' => 'post', 'ctrl' => 'AccountController@recovery', 'title' => 'f7回收交易猫帐号'],
     'account/backTo14' => [ 'method' => 'post', 'ctrl' => 'AccountController@backTo14', 'title' => 'f7回收15天完成的账号到14天签到'],
 
+    //football
+    'footballAccount/lists' => [ 'method' => 'post', 'ctrl' => 'FootballAccountController@lists', 'title' => 'football帐号列表'],
+    'footballAccount/statistical' => [ 'method' => 'post', 'ctrl' => 'FootballAccountController@statistical', 'title' => 'football帐号统计'],
+
     //sql
     'account/query-sql-save' => [ 'method' => 'post', 'ctrl' => 'AccountController@querySqlSave', 'title' => '执行原生sql保存'],
     'account/querySql' => [ 'method' => 'post', 'ctrl' => 'AccountController@querySqlMenu', 'title' => '执行原生sql菜单'],

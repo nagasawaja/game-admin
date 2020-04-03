@@ -1,48 +1,34 @@
 <template>
     <div class="app-container calendar-list-container">
         <div class="filter-container">
-            帐号Id：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='帐号Id'  v-model="listQuery.accountId"></el-input>
-            邮箱：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='邮箱'  v-model="listQuery.email"></el-input>
-            状态：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='状态'  v-model="listQuery.status"></el-input>
-            <br/>
             服务器：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='服务器'  v-model="listQuery.serverName"></el-input>
-            线索：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='线索1'  v-model="listQuery.xian_suo_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='线索2'  v-model="listQuery.xian_suo_2"></el-input>
-            精华：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='精华1'  v-model="listQuery.jing_hua_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='精华2'  v-model="listQuery.jing_hua_2"></el-input>
             <br/>
-            签到天数：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='签到天数1'  v-model="listQuery.sign_day_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='签到天数2'  v-model="listQuery.sign_day_2"></el-input>
-            错误次数：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='错误次数1'  v-model="listQuery.error_times_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='错误次数2'  v-model="listQuery.error_times_2"></el-input>
-            <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
+            黑球：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='黑球1'  v-model="listQuery.black_player_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='黑球2'  v-model="listQuery.black_player_2"></el-input>
+            金球：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='金球1'  v-model="listQuery.gold_player_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='金球2'  v-model="listQuery.gold_player_2"></el-input>
+            <br/>
+            金币：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='金币1'  v-model="listQuery.gold_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='金币2'  v-model="listQuery.gold_1"></el-input>
+            资金：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='资金1'  v-model="listQuery.money_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='资金2'  v-model="listQuery.money_2"></el-input>
+            <br/>
+            状态：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='状态'  v-model="listQuery.status"></el-input>
+            提取数量：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"   placeholder='提取数量'  v-model="listQuery.getNumber"></el-input>
+            <el-button class="filter-item" type="primary" icon="el-icon-search" @click="getList">刷新</el-button>
+            <el-button class="filter-item" type="primary" icon="el-icon-download" @click="markAccountSoldOut">导出</el-button>
         </div>
 
-        <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;margin-top:15px;">
-            <el-table-column width="65px"  label="帐号id" prop="id"></el-table-column>
-            <el-table-column width="200px" label="邮箱" prop="email"></el-table-column>
-            <el-table-column width="125px" label="密码" prop="passwd"></el-table-column>
-            <el-table-column width="100px" label="精华" prop="jing_hua"></el-table-column>
-            <el-table-column width="100px" label="线索" prop="xian_suo"></el-table-column>
-            <el-table-column width="100px" label="灵感" prop="ling_gan"></el-table-column>
-            <el-table-column width="100px" label="状态" prop="status"></el-table-column>
-            <el-table-column width="100px" label="签到天数" prop="sign_day"></el-table-column>
-            <el-table-column width="100px" label="错误次数" prop="error_times"></el-table-column>
-            <el-table-column width="150px" label="登陆时间" prop="update_time">
-                <template slot-scope="scope">{{scope.row.update_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
-            </el-table-column>
-            <el-table-column width="150px" label="邮件时间" prop="email_time">
-                <template slot-scope="scope">{{scope.row.email_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
-            </el-table-column>
-            <el-table-column width="150px" label="创建时间" prop="create_time">
-                <template slot-scope="scope">{{scope.row.create_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
-            </el-table-column>
-            <el-table-column width="150px" label="服务器" prop="server_name"></el-table-column>
-            <el-table-column width="150px" label="三无帐号" prop="is_clean">
-                <template slot-scope="scope">
-                    <el-tag>{{scope.row.is_clean==1?'是':'否'}}</el-tag>
-                </template>
-            </el-table-column>
-        </el-table>
 
+        <el-table :key='tableKey' height="550px" :data="list" v-loading="listLoading" element-loading-text="给我一点时间"
+                  border fit highlight-current-row style="display:inline-block;width:auto;margin-top:15px">
+            <el-table-column width="100px" label="黑球" prop="black_player"></el-table-column>
+            <el-table-column width="100px" label="金球" prop="gold_player"></el-table-column>
+            <el-table-column width="100px" label="金币" prop="gold"></el-table-column>
+            <el-table-column width="100px" label="资金" prop="money"></el-table-column>
+            <el-table-column width="100px" label="银球" prop="silver_player"></el-table-column>
+            <el-table-column width="100px" label="签到天数" prop="sign_day"></el-table-column>
+            <el-table-column width="100px" label="数量" prop="count"></el-table-column>
+        </el-table>
         <div class="pagination-container">
-            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
+            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                           :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
         </div>
 
@@ -77,18 +63,17 @@
                 listQuery: {
                     page: 1,
                     limit: 20,
-                    serverName:'',
-                    email:'',
-                    status:'',
-                    xian_suo_1: '',
-                    xian_suo_2: '',
-                    jing_hua_1: '',
-                    jing_hua_2: '',
-                    error_times_1: '',
-                    error_times_2: '',
-                    sign_day_1: '',
-                    sign_day_2: '',
-                    accountId:''
+                    serverName:'football_master',
+                    getNumber:10,
+                    status:2,
+                    black_player_1:'',
+                    black_player_2:'',
+                    gold_player_1:'',
+                    gold_player_2:'',
+                    gold_1:'',
+                    gold_2:'',
+                    money_1:'',
+                    money_2:'',
                 },
                 temp: { id: undefined, name: '', description: '', coins: '', extra_coins: '', price: '' },
                 dialogFormVisible: false,
@@ -101,8 +86,8 @@
         },
         methods: {
             getList () {
-                this.listLoading = true;
-                request({ url: 'id5Account/lists', method: 'post', params: this.listQuery }).then(response => {
+                this.listLoading = true
+                request({ url: 'footballAccount/statistical', method: 'post', params: this.listQuery }).then(response => {
                     const result = response.data;
                     if (result.code) {
                         this.$message.error(result.msg || '系统错误')
@@ -111,13 +96,13 @@
                     }
 
                     this.list = result.data.rows;
-                    this.total = result.data.total;
+                    this.total = 10;
                     this.listLoading = false
                 })
             },
             markAccountSoldOut () {
                 this.listLoading = true;
-                request({ url: 'account/mark-account-sold-out', method: 'post', params: this.listQuery }).then(response => {
+                request({ url: 'id5Account/mark-account-sold-out', method: 'post', params: this.listQuery }).then(response => {
                     const result = response.data;
                     if (result.code) {
                         this.$message.error(result.msg || '系统错误')
@@ -125,7 +110,7 @@
                         return
                     }
 
-                    request({ url: 'account/sold-out-account-detail', method: 'post', params: {id: result.data.id} }).then(response => {
+                    request({ url: 'id5Account/sold-out-account-detail', method: 'post', params: {id: result.data.id} }).then(response => {
                         const result = response.data;
                         if(result.code) {
                             this.$message.error(result.msg || '系统错误')
@@ -135,7 +120,8 @@
                         this.dialogFormVisible = true;
                         this.textarea = result.data.rows.content;
                     })
-                    this.listLoading = false
+                    this.listLoading = false;
+                    this.dialogTitle = '服务器:' + this.listQuery.serverName + '----精华:' + this.listQuery.jing_hua + '----线索:' + this.listQuery.xian_suo_1 + '-' + this.listQuery.xian_suo_2 + '----提取数量:' + this.listQuery.getNumber;
                 })
             },
             handleSizeChange (val) {
@@ -162,15 +148,15 @@
                 this.temp = temp
             },
             handleCreate () {
-                this.resetTemp();
-                this.dialogTitle = '添加充值套餐';
-                this.dialogFormVisible = true;
+                this.resetTemp()
+                this.dialogTitle = '添加充值套餐'
+                this.dialogFormVisible = true
                 this.$nextTick(() => {
                     this.$refs['dataForm'].clearValidate()
                 })
             },
             handleFilter() {
-                this.listQuery.page = 1;
+                this.listQuery.page = 1
                 this.getList()
             },
             handleUpdate (idx, row) {

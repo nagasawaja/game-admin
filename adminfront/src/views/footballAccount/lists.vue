@@ -6,8 +6,12 @@
             状态：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='状态'  v-model="listQuery.status"></el-input>
             <br/>
             服务器：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='服务器'  v-model="listQuery.serverName"></el-input>
-            线索：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='线索1'  v-model="listQuery.xian_suo_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='线索2'  v-model="listQuery.xian_suo_2"></el-input>
-            精华：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='精华1'  v-model="listQuery.jing_hua_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='精华2'  v-model="listQuery.jing_hua_2"></el-input>
+            金币：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='金币1'  v-model="listQuery.gold_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='金币2'  v-model="listQuery.gold_2"></el-input>
+            资金：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='资金1'  v-model="listQuery.money_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='资金2'  v-model="listQuery.money_2"></el-input>
+            <br/>
+            黑球：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='黑球1'  v-model="listQuery.black_player_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='黑球2'  v-model="listQuery.black_player_2"></el-input>
+            金球：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='金球1'  v-model="listQuery.gold_player_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='金球2'  v-model="listQuery.gold_player_2"></el-input>
+            银球：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='银球1'  v-model="listQuery.silver_player_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='银球2'  v-model="listQuery.silver_player_2"></el-input>
             <br/>
             签到天数：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='签到天数1'  v-model="listQuery.sign_day_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='签到天数2'  v-model="listQuery.sign_day_2"></el-input>
             错误次数：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='错误次数1'  v-model="listQuery.error_times_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='错误次数2'  v-model="listQuery.error_times_2"></el-input>
@@ -18,9 +22,11 @@
             <el-table-column width="65px"  label="帐号id" prop="id"></el-table-column>
             <el-table-column width="200px" label="邮箱" prop="email"></el-table-column>
             <el-table-column width="125px" label="密码" prop="passwd"></el-table-column>
-            <el-table-column width="100px" label="精华" prop="jing_hua"></el-table-column>
-            <el-table-column width="100px" label="线索" prop="xian_suo"></el-table-column>
-            <el-table-column width="100px" label="灵感" prop="ling_gan"></el-table-column>
+            <el-table-column width="100px" label="金币" prop="gold"></el-table-column>
+            <el-table-column width="100px" label="资金" prop="money"></el-table-column>
+            <el-table-column width="100px" label="黑球" prop="black_player"></el-table-column>
+            <el-table-column width="100px" label="金球" prop="gold_player"></el-table-column>
+            <el-table-column width="100px" label="银球" prop="silver_player"></el-table-column>
             <el-table-column width="100px" label="状态" prop="status"></el-table-column>
             <el-table-column width="100px" label="签到天数" prop="sign_day"></el-table-column>
             <el-table-column width="100px" label="错误次数" prop="error_times"></el-table-column>
@@ -80,15 +86,22 @@
                     serverName:'',
                     email:'',
                     status:'',
-                    xian_suo_1: '',
-                    xian_suo_2: '',
-                    jing_hua_1: '',
-                    jing_hua_2: '',
+                    gold_1: '',
+                    gold_2: '',
+                    money_1: '',
+                    money_2: '',
+                    black_player_1: '',
+                    black_player_2: '',
+                    gold_player_1: '',
+                    gold_player_2: '',
+                    silver_player_1: '',
+                    silver_player_2: '',
                     error_times_1: '',
                     error_times_2: '',
                     sign_day_1: '',
                     sign_day_2: '',
-                    accountId:''
+                    accountId:'',
+                    email_time:'',
                 },
                 temp: { id: undefined, name: '', description: '', coins: '', extra_coins: '', price: '' },
                 dialogFormVisible: false,
@@ -102,7 +115,7 @@
         methods: {
             getList () {
                 this.listLoading = true;
-                request({ url: 'id5Account/lists', method: 'post', params: this.listQuery }).then(response => {
+                request({ url: 'footballAccount/lists', method: 'post', params: this.listQuery }).then(response => {
                     const result = response.data;
                     if (result.code) {
                         this.$message.error(result.msg || '系统错误')
