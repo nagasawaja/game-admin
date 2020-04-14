@@ -133,6 +133,43 @@ class Account extends Model
         return $query;
     }
 
+    // dream account list
+    public function getDreamAccountQuery(Request $request)
+    {
+        //接收处理参数
+        $email = trim($request->input('email'));
+        $status = trim($request->input('status'));
+        $serverName = trim($request->input('serverName'));
+        $signDay1 = floor(($request->input('sign_day_1')));
+        $signDay2 = floor(($request->input('sign_day_2')));
+        $errorTimes1 = floor(($request->input('error_times_1')));
+        $errorTimes2 = floor(($request->input('error_times_2')));
+        $moJing1 = floor(($request->input('mo_jing_1')));
+        $moJing2 = floor(($request->input('mo_jing_2')));
+        $shengMoQuan1 = floor(($request->input('sheng_mo_quan_1')));
+        $shengMoQuan2 = floor(($request->input('sheng_mo_quan_2')));
+        $accountId = floor(($request->input('accountId')));
+
+        //帐号数据
+
+        $query = DB::table('account as a')
+            ->leftJoin('dream_account_detail as d', function($join) {$join->on('a.id', '=', 'd.account_id');})
+            ->when($email, function($query) use($email) {$query->where('email', 'like', $email . '%');})
+            ->when($signDay1 != '', function($query) use($signDay1) {$query->where('sign_day', '>=', $signDay1);})
+            ->when($signDay2 != '', function($query) use($signDay2) {$query->where('sign_day', '<=', $signDay2);})
+            ->when($errorTimes1 != '', function($query) use($errorTimes1) {$query->where('error_times', '>=', $errorTimes1);})
+            ->when($errorTimes2 != '', function($query) use($errorTimes2) {$query->where('error_times', '<=', $errorTimes2);})
+            ->when($status, function($query) use($status) {$query->where('status', '=', $status);})
+            ->when($serverName, function($query) use($serverName) {$query->where('server_name', '=', $serverName);})
+            ->when($accountId, function($query) use($accountId) {$query->where('a.id', '=', $accountId);})
+            ->when($moJing1 != '', function($query) use($moJing1) {$query->where('mo_jing', '>=', $moJing1);})
+            ->when($moJing2 != '', function($query) use($moJing2) {$query->where('mo_jing', '<=', $moJing2);})
+            ->when($shengMoQuan1 != '', function($query) use($shengMoQuan1) {$query->where('sheng_mo_quan', '>=', $shengMoQuan1);})
+            ->when($shengMoQuan2 != '', function($query) use($shengMoQuan2) {$query->where('sheng_mo_quan', '<=', $shengMoQuan2);})
+            ->where('a.game_id', '=', 7266);
+
+        return $query;
+    }
     public function recoverAccount999()
     {
         //update qiri_account_detail as a left join account as b on a.account_id = b.id set sign_day = 7,oubo_update_time = 1522274400
