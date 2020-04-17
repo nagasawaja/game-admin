@@ -49,7 +49,7 @@ class FootballAccountController extends Controller
             ->whereIn('a.status', [1,2])
             ->where('server_name', '=', 'football_master')
             ->when($serverNameRows, function($query) use($serverNameRows) {$query->whereIn('a.server_name', $serverNameRows);})
-            ->groupBy(['black_player', 'gold_player', 'gold', 'money','silver_player'])
+            ->groupBy(['black_player', 'gold_player', 'gold', 'money', "sign_day"])
             ->orderBy('fad.black_player', 'desc')
             ->orderBy('fad.gold_player', 'desc')
             ->orderBy('fad.gold', 'desc')
