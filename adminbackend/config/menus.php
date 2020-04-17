@@ -26,6 +26,7 @@ return [
             ['title' => '商品总数量与销量比例', 'path' => 'mao/goodsScale'],
             ['title' => '数据报表', 'path' => 'mao/dataReport'],
             ['title' => '执行原生sql', 'path' => 'account/querySql'],
+            ['title' => '工具箱', 'path' => 'mao/tools']
         ]
     ],
     ['title' => '管理员设置', 'icon' => 'menu', 'children' => [

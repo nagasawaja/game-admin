@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Responses\JSON;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 use App\Models\Account;
 
 class FootballAccountController extends Controller
@@ -156,5 +157,18 @@ class FootballAccountController extends Controller
             'rows' => $rows,
             'total' => $total
         ]);
+    }
+
+    // 重置邮件
+    public function resetEmail() {
+        $keys = Redis::keys("football*");
+        foreach($keys as $k=>$v) {
+            Redis::del($v);
+        }
+        $updateData = [
+            'email_time' => 1
+        ];
+        DB::table('football_account_detail')->update($updateData);
+        return JSON::ok([]);
     }
 }

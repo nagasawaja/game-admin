@@ -28,6 +28,7 @@ return [
     //football
     'footballAccount/lists' => [ 'method' => 'post', 'ctrl' => 'FootballAccountController@lists', 'title' => 'football帐号列表'],
     'footballAccount/statistical' => [ 'method' => 'post', 'ctrl' => 'FootballAccountController@statistical', 'title' => 'football帐号统计'],
+    'footballAccount/resetEmail' => [ 'method' => 'post', 'ctrl' => 'FootballAccountController@resetEmail', 'title' => 'football重置邮件'],
 
     //dream
     'dreamAccount/lists' => [ 'method' => 'post', 'ctrl' => 'DreamAccountController@lists', 'title' => 'dream帐号列表'],
