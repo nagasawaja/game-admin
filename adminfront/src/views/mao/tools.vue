@@ -1,20 +1,27 @@
 <template>
-    <div>
-        <div>
-            football
-        </div>
-        <el-button size="medium" style="" type="primary" @click="resetFootballEmail">获取邮件</el-button>
-        <div>
+    <div class="app-container calendar-list-container">
+        <div class="content-left">
             <div>
-                dream
+                football
+                <div>
+                    <el-button size="medium" style="" type="primary" @click="resetFootballEmail">获取邮件</el-button>
+                </div>
             </div>
-            <el-button size="medium" style="" type="danger" slot="reference">重置账号2</el-button>
-        </div>
-        <div>
             <div>
-                f7
+                id5
+                <div>
+                    <el-button size="medium" style="" type="primary" @click="resetFootballEmail">获取邮件</el-button>
+                </div>
             </div>
-            <el-button size="medium" style="" type="danger" slot="reference">重置账号3</el-button>
+
+        </div>
+        <div class="content-right">
+            <json-viewer
+                    :value= jsonViewData
+                    :expand-depth=50
+                    copyable
+                    boxed
+                    sort></json-viewer>
         </div>
     </div>
 </template>
@@ -22,9 +29,12 @@
 <script>
     import request from '@/utils/request'
     export default {
-        name: 'admin-lists',
+        data () {
+            return {
+                jsonViewData: {}
+            }
+        },
         methods: {
-            //
             resetFootballEmail() {
                 let url = 'footballAccount/resetEmail';
                 let params = Object.assign({}, this.listQuery);
@@ -34,7 +44,7 @@
                         this.$message.error(ret.msg || '系统错误')
                         return
                     }
-                    alert(ret.data.effectRowCount);
+                    this.jsonViewData = ret;
                     this.$notify({
                         title: '成功',
                         message: '提交成功',

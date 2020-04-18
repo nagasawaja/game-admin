@@ -99,4 +99,14 @@ class MaoController extends Controller
             'final_game_rows' => $gameRows['final_game_rows'],
         ]);
     }
+
+    // 脚本数据
+    public function scriptRecord(Request $request) {
+        $stcCreateDatetime = $request->input('stc_create_datetime');
+        $rows = DB::table('script_record')->where('record_date','=', $stcCreateDatetime)->orderBy("game_id")->orderBy("status")->get();
+
+        return JSON::ok([
+            'items' => $rows,
+        ]);
+    }
 }
