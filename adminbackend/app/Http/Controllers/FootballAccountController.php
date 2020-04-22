@@ -54,6 +54,7 @@ class FootballAccountController extends Controller
             ->orderBy('fad.black_player', 'desc')
             ->orderBy('fad.gold_player', 'desc')
             ->orderBy('fad.gold', 'desc')
+            ->orderBy('sign_day', 'desc')
             ->selectRaw($accountSelectRaw . $qiriAccountDetailRaw)
             ->get();
 
@@ -70,31 +71,36 @@ class FootballAccountController extends Controller
         $status = trim($request->input('status'));
         $serverName = trim($request->input('serverName'));
         $getNumber = floor(($request->input('getNumber')));
-        $jingHua = floor(($request->input('jing_hua')));
-        $xianSuo1 = floor(($request->input('xian_suo_1')));
-        $xianSuo2 = floor(($request->input('xian_suo_2')));
+        $gold1 = floor(($request->input('gold_1')));
+        $gold2 = floor(($request->input('gold_2')));
+        $blackPlayer1 = floor(($request->input('black_player_1')));
+        $blackPlayer2 = floor(($request->input('black_player_2')));
+        $goldPlayer1 = floor(($request->input('gold_player_1')));
+        $goldPlayer2 = floor(($request->input('gold_player_2')));
 
-        if($getNumber > 50 || $getNumber <=0 || $jingHua <=0 || $xianSuo1 <=0 || $serverName == '' || $status != 2) {
+        if($getNumber > 50 || $getNumber <=0 || $gold1 <=0 || $blackPlayer1 <=0 || $goldPlayer1 <=0 || $serverName == '' || $status != 2) {
             return JSON::error(JSON::E_INTERNAL, '参数不符合标准');
         }
-
-        //接收处理参数
-        $status = trim($request->input('status'));
-        $serverName = trim($request->input('serverName'));
-        $getNumber = floor(($request->input('getNumber')));
 
         //帐号数据
         $tmpWhere = [
             ['a.status', '=', $status],
             ['a.server_name', '=', $serverName],
-            ['iad.jing_hua', '=', $jingHua],
-            ['iad.xian_suo', '>=', $xianSuo1]
+            ['football.black_player', '>=', $blackPlayer1],
+            ['football.gold_player', '>=', $goldPlayer1],
+            ['football.gold', '>=', $gold1]
         ];
         $query = DB::table('account as a')
-            ->leftJoin('id5_account_detail as iad', function($join) {$join->on('a.id', '=', 'iad.account_id');})
+            ->leftJoin('football_account_detail as football', function($join) {$join->on('a.id', '=', 'football.account_id');})
             ->where($tmpWhere)
-            ->when($xianSuo2, function($query) use($xianSuo2) {
-                $query->where('iad.xian_suo', '<=', $xianSuo2);
+            ->when($gold2, function($query) use($gold2) {
+                $query->where('football.gold', '<=', $gold2);
+            })
+            ->when($blackPlayer2, function($query) use($blackPlayer2) {
+                $query->where('football.black_player', '<=', $blackPlayer2);
+            })
+            ->when($goldPlayer2, function($query) use($goldPlayer2) {
+                $query->where('football.gold_player', '<=', $goldPlayer2);
             })
             ->take($getNumber);
         $rows = $query->selectRaw('a.id, a.email, a.passwd')->get();
@@ -109,12 +115,15 @@ class FootballAccountController extends Controller
         }
 
         $insertData = [
-            'title' => date('Y-m-d H:i:s', time()) . ',服务器:' . $serverName . ',精华:' . $jingHua . ',线索:' . $xianSuo1 .'-'. $xianSuo2,
+            'title' => date('Y-m-d H:i:s', time()) . ',服务器:' . $serverName
+                . ',黑球:' . $blackPlayer1 . '-' . $blackPlayer2
+                . ',金球:' . $goldPlayer1 .'-'. $goldPlayer2
+                . ',金币:' . $gold1 .'-'. $gold2,
             'content' => $accountStr,
             'create_time' => time(),
             'account_number' => count($rows)
         ];
-        $id = DB::table('id5_sold_out_account')->insertGetId($insertData);
+        $id = DB::table('football_sold_out_account')->insertGetId($insertData);
 
         DB::table('account')->whereIn('id', $idRows)->update(['status' => 3]);
 
@@ -127,7 +136,7 @@ class FootballAccountController extends Controller
     public function soldOutAccountDetail(Request $request)
     {
         $id = $request->input('id');
-        $rows = DB::table('id5_sold_out_account')->where('id', '=', $id)->first();
+        $rows = DB::table('football_sold_out_account')->where('id', '=', $id)->first();
         return JSON::ok([
             'rows' => $rows
         ]);
@@ -149,7 +158,7 @@ class FootballAccountController extends Controller
         $take = trim($request->input('limit'));
         $skip = (trim($request->input('page')) - 1) * $take;
 
-        $query = DB::table('id5_sold_out_account')
+        $query = DB::table('football_sold_out_account')
             ->selectRaw('id, title, create_time, account_number');
         $total = $query->count();
         $rows = $query->take($take)->skip($skip)->orderBy('id', 'desc')->get();

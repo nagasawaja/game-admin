@@ -3,11 +3,8 @@
         <div class="filter-container">
             服务器：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='服务器'  v-model="listQuery.serverName"></el-input>
             <br/>
-            黑球：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='黑球1'  v-model="listQuery.black_player_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='黑球2'  v-model="listQuery.black_player_2"></el-input>
-            金球：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='金球1'  v-model="listQuery.gold_player_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='金球2'  v-model="listQuery.gold_player_2"></el-input>
-            <br/>
-            金币：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='金币1'  v-model="listQuery.gold_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='金币2'  v-model="listQuery.gold_1"></el-input>
-            资金：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='资金1'  v-model="listQuery.money_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='资金2'  v-model="listQuery.money_2"></el-input>
+            圣魔券：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='圣魔券1'  v-model="listQuery.sheng_mo_quan_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='圣魔券2'  v-model="listQuery.sheng_mo_quan_2"></el-input>
+            魔晶：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='魔晶1'  v-model="listQuery.mo_jing_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='魔晶2'  v-model="listQuery.mo_jing_2"></el-input>
             <br/>
             状态：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='状态'  v-model="listQuery.status"></el-input>
             提取数量：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"   placeholder='提取数量'  v-model="listQuery.getNumber"></el-input>
@@ -18,11 +15,8 @@
 
         <el-table :key='tableKey' height="550px" :data="list" v-loading="listLoading" element-loading-text="给我一点时间"
                   border fit highlight-current-row style="display:inline-block;width:auto;margin-top:15px">
-            <el-table-column width="100px" label="黑球" prop="black_player"></el-table-column>
-            <el-table-column width="100px" label="金球" prop="gold_player"></el-table-column>
-            <el-table-column width="100px" label="金币" prop="gold"></el-table-column>
-            <el-table-column width="100px" label="资金" prop="money"></el-table-column>
-            <el-table-column width="100px" label="银球" prop="silver_player"></el-table-column>
+            <el-table-column width="100px" label="圣魔券" prop="sheng_mo_quan"></el-table-column>
+            <el-table-column width="100px" label="魔晶" prop="mo_jing"></el-table-column>
             <el-table-column width="100px" label="签到天数" prop="sign_day"></el-table-column>
             <el-table-column width="100px" label="数量" prop="count"></el-table-column>
         </el-table>
@@ -63,17 +57,13 @@
                 listQuery: {
                     page: 1,
                     limit: 20,
-                    serverName:'football_master',
+                    serverName:'dream_master',
                     getNumber:10,
                     status:2,
-                    black_player_1:'',
-                    black_player_2:'',
-                    gold_player_1:'',
-                    gold_player_2:'',
-                    gold_1:'',
-                    gold_2:'',
-                    money_1:'',
-                    money_2:'',
+                    sheng_mo_quan_1:'',
+                    sheng_mo_quan_2:'',
+                    mo_jing_1:'',
+                    mo_jing_2:'',
                 },
                 temp: { id: undefined, name: '', description: '', coins: '', extra_coins: '', price: '' },
                 dialogFormVisible: false,
@@ -87,7 +77,7 @@
         methods: {
             getList () {
                 this.listLoading = true
-                request({ url: 'footballAccount/statistical', method: 'post', params: this.listQuery }).then(response => {
+                request({ url: 'dreamAccount/statistical', method: 'post', params: this.listQuery }).then(response => {
                     const result = response.data;
                     if (result.code) {
                         this.$message.error(result.msg || '系统错误')
@@ -102,7 +92,7 @@
             },
             markAccountSoldOut () {
                 this.listLoading = true;
-                request({ url: 'id5Account/mark-account-sold-out', method: 'post', params: this.listQuery }).then(response => {
+                request({ url: 'dreamAccount/mark-account-sold-out', method: 'post', params: this.listQuery }).then(response => {
                     const result = response.data;
                     if (result.code) {
                         this.$message.error(result.msg || '系统错误')
@@ -110,7 +100,7 @@
                         return
                     }
 
-                    request({ url: 'id5Account/sold-out-account-detail', method: 'post', params: {id: result.data.id} }).then(response => {
+                    request({ url: 'dreamAccount/sold-out-account-detail', method: 'post', params: {id: result.data.id} }).then(response => {
                         const result = response.data;
                         if(result.code) {
                             this.$message.error(result.msg || '系统错误')

@@ -15,8 +15,10 @@ return [
             ['title' => 'id5已卖出帐号', 'path' => 'id5Account/soldOut'],
             ['title' => 'football帐号列表', 'path' => 'footballAccount/lists'],
             ['title' => 'football帐号统计', 'path' => 'footballAccount/statistical'],
+            ['title' => 'football已卖出帐号', 'path' => 'footballAccount/soldOut'],
             ['title' => 'dream帐号列表', 'path' => 'dreamAccount/lists'],
             ['title' => 'dream帐号统计', 'path' => 'dreamAccount/statistical'],
+            ['title' => 'dream已卖出帐号', 'path' => 'dreamAccount/soldOut']
         ],
     ],
 

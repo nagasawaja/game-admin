@@ -28,11 +28,17 @@ return [
     //football
     'footballAccount/lists' => [ 'method' => 'post', 'ctrl' => 'FootballAccountController@lists', 'title' => 'football帐号列表'],
     'footballAccount/statistical' => [ 'method' => 'post', 'ctrl' => 'FootballAccountController@statistical', 'title' => 'football帐号统计'],
+    'footballAccount/mark-account-sold-out' => [ 'method' => 'post', 'ctrl' => 'FootballAccountController@markAccountSoldOut', 'title' => 'football将未卖出的帐号置成已卖出'],
+    'footballAccount/sold-out-account-detail' => [ 'method' => 'post', 'ctrl' => 'FootballAccountController@soldOutAccountDetail', 'title' => 'football已卖出帐号详细'],
+    'footballAccount/soldOut' => [ 'method' => 'post', 'ctrl' => 'FootballAccountController@soldOutAccountList', 'title' => 'football已卖出帐号列表'],
     'footballAccount/resetEmail' => [ 'method' => 'post', 'ctrl' => 'FootballAccountController@resetEmail', 'title' => 'football重置邮件'],
 
     //dream
     'dreamAccount/lists' => [ 'method' => 'post', 'ctrl' => 'DreamAccountController@lists', 'title' => 'dream帐号列表'],
     'dreamAccount/statistical' => [ 'method' => 'post', 'ctrl' => 'DreamAccountController@statistical', 'title' => 'dream帐号统计'],
+    'dreamAccount/mark-account-sold-out' => [ 'method' => 'post', 'ctrl' => 'DreamAccountController@markAccountSoldOut', 'title' => 'dream将未卖出的帐号置成已卖出'],
+    'dreamAccount/sold-out-account-detail' => [ 'method' => 'post', 'ctrl' => 'DreamAccountController@soldOutAccountDetail', 'title' => 'dream已卖出帐号详细'],
+    'dreamAccount/soldOut' => [ 'method' => 'post', 'ctrl' => 'DreamAccountController@soldOutAccountList', 'title' => 'dream已卖出帐号列表'],
 
     //sql
     'account/query-sql-save' => [ 'method' => 'post', 'ctrl' => 'AccountController@querySqlSave', 'title' => '执行原生sql保存'],
@@ -51,6 +57,9 @@ return [
     'mao/goodsScale' => [ 'method' => 'post', 'ctrl' => 'MaoController@goodsScale', 'title' => '商品总数量与销量比例'],
     'mao/dataReport' => [ 'method' => 'post', 'ctrl' => 'MaoController@dateReport', 'title' => '数据报表'],
     'mao/scriptRecord' => [ 'method' => 'post', 'ctrl' => 'MaoController@scriptRecord', 'title' => '脚本数据'],
+    'mao/gameStatus' => [ 'method' => 'post', 'ctrl' => 'MaoController@gameStatus', 'title' => '查看游戏状态'],
+    'mao/revertGameStatus' => [ 'method' => 'post', 'ctrl' => 'MaoController@revertGameStatus', 'title' => '修改游戏状态'],
+    'mao/clearRedisAccountCache' => [ 'method' => 'post', 'ctrl' => 'MaoController@clearRedisAccountCache', 'title' => '清空帐号redisCache'],
 
     //通用设置
     'systemConfig/sys-config-menu' => [ 'method' => 'get', 'ctrl' => 'SystemConfigController@sysConfigMenu', 'title' => '系统基础信息'],

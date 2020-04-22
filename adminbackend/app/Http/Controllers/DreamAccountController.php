@@ -42,16 +42,16 @@ class DreamAccountController extends Controller
     {
         $serverNameRows = trim($request->input('serverNameRows'));
         $accountSelectRaw = 'a.server_name, count(*) as count, ';
-        $qiriAccountDetailRaw = 'fad.gold, fad.money, fad.black_player,fad.gold_player,fad.silver_player,fad.sign_day';
+        $qiriAccountDetailRaw = 'd.sign_day, d.sheng_mo_quan, d.mo_jing';
         $rows = DB::table('account as a')
-            ->leftJoin('football_account_detail as fad', 'a.id', '=', 'fad.account_id')
+            ->leftJoin('dream_account_detail as d', 'a.id', '=', 'd.account_id')
             ->whereIn('a.status', [1,2])
-            ->where('server_name', '=', 'football_master')
+            ->where('server_name', '=', 'dream_master')
             ->when($serverNameRows, function($query) use($serverNameRows) {$query->whereIn('a.server_name', $serverNameRows);})
-            ->groupBy(['black_player', 'gold_player', 'gold', 'money','silver_player'])
-            ->orderBy('fad.black_player', 'desc')
-            ->orderBy('fad.gold_player', 'desc')
-            ->orderBy('fad.gold', 'desc')
+            ->groupBy(['sheng_mo_quan', 'mo_jing', 'sign_day'])
+            ->orderBy('d.sheng_mo_quan', 'desc')
+            ->orderBy('d.mo_jing', 'desc')
+            ->orderBy('d.sign_day', 'desc')
             ->selectRaw($accountSelectRaw . $qiriAccountDetailRaw)
             ->get();
 
@@ -68,11 +68,12 @@ class DreamAccountController extends Controller
         $status = trim($request->input('status'));
         $serverName = trim($request->input('serverName'));
         $getNumber = floor(($request->input('getNumber')));
-        $jingHua = floor(($request->input('jing_hua')));
-        $xianSuo1 = floor(($request->input('xian_suo_1')));
-        $xianSuo2 = floor(($request->input('xian_suo_2')));
+        $shengMoQuan1 = floor(($request->input('sheng_mo_quan_1')));
+        $shengMoQuan2 = floor(($request->input('sheng_mo_quan_2')));
+        $moJing1 = floor(($request->input('mo_jing_1')));
+        $moJing2 = floor(($request->input('mo_jing_2')));
 
-        if($getNumber > 50 || $getNumber <=0 || $jingHua <=0 || $xianSuo1 <=0 || $serverName == '' || $status != 2) {
+        if($getNumber > 50 || $getNumber <=0 || $shengMoQuan1 <=0 || $moJing1 <=0 || $serverName == '' || $status != 2) {
             return JSON::error(JSON::E_INTERNAL, '参数不符合标准');
         }
 
@@ -85,14 +86,17 @@ class DreamAccountController extends Controller
         $tmpWhere = [
             ['a.status', '=', $status],
             ['a.server_name', '=', $serverName],
-            ['iad.jing_hua', '=', $jingHua],
-            ['iad.xian_suo', '>=', $xianSuo1]
+            ['d.sheng_mo_quan', '>=', $shengMoQuan1],
+            ['d.mo_jing', '>=', $moJing1]
         ];
         $query = DB::table('account as a')
-            ->leftJoin('id5_account_detail as iad', function($join) {$join->on('a.id', '=', 'iad.account_id');})
+            ->leftJoin('dream_account_detail as d', function($join) {$join->on('a.id', '=', 'd.account_id');})
             ->where($tmpWhere)
-            ->when($xianSuo2, function($query) use($xianSuo2) {
-                $query->where('iad.xian_suo', '<=', $xianSuo2);
+            ->when($shengMoQuan2, function($query) use($shengMoQuan2) {
+                $query->where('d.sheng_mo_quan', '<=', $shengMoQuan2);
+            })
+            ->when($moJing2, function($query) use($moJing2) {
+                $query->where('d.mo_jing', '<=', $moJing2);
             })
             ->take($getNumber);
         $rows = $query->selectRaw('a.id, a.email, a.passwd')->get();
@@ -107,12 +111,14 @@ class DreamAccountController extends Controller
         }
 
         $insertData = [
-            'title' => date('Y-m-d H:i:s', time()) . ',服务器:' . $serverName . ',精华:' . $jingHua . ',线索:' . $xianSuo1 .'-'. $xianSuo2,
+            'title' => date('Y-m-d H:i:s', time()) . ',服务器:' . $serverName
+                . ',圣魔券:' . $shengMoQuan1. '-' . $shengMoQuan2
+                . ',魔晶:' . $moJing1 .'-'. $moJing2,
             'content' => $accountStr,
             'create_time' => time(),
             'account_number' => count($rows)
         ];
-        $id = DB::table('id5_sold_out_account')->insertGetId($insertData);
+        $id = DB::table('dream_sold_out_account')->insertGetId($insertData);
 
         DB::table('account')->whereIn('id', $idRows)->update(['status' => 3]);
 
@@ -125,7 +131,7 @@ class DreamAccountController extends Controller
     public function soldOutAccountDetail(Request $request)
     {
         $id = $request->input('id');
-        $rows = DB::table('id5_sold_out_account')->where('id', '=', $id)->first();
+        $rows = DB::table('dream_sold_out_account')->where('id', '=', $id)->first();
         return JSON::ok([
             'rows' => $rows
         ]);
@@ -147,7 +153,7 @@ class DreamAccountController extends Controller
         $take = trim($request->input('limit'));
         $skip = (trim($request->input('page')) - 1) * $take;
 
-        $query = DB::table('id5_sold_out_account')
+        $query = DB::table('dream_sold_out_account')
             ->selectRaw('id, title, create_time, account_number');
         $total = $query->count();
         $rows = $query->take($take)->skip($skip)->orderBy('id', 'desc')->get();

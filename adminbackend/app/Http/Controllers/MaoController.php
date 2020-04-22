@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Responses\JSON;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 use App\Models\Mao;
 
 class MaoController extends Controller
@@ -108,5 +109,30 @@ class MaoController extends Controller
         return JSON::ok([
             'items' => $rows,
         ]);
+    }
+
+    // 游戏状态
+    public function gameStatus(Request $request) {
+        $hgetall = Redis::hGetAll("game_status");
+        return JSON::ok([
+            'items' => $hgetall
+        ]);
+    }
+
+    // 修改游戏状态
+    public function revertGameStatus(Request $request) {
+        $gameName = $request->input('gameName');
+        $modifyStatus = $request->input('modifyStatus');
+        Redis::hSet("game_status", $gameName, $modifyStatus);
+        return JSON::ok([], $gameName. ' changTo ' . $modifyStatus ." success");
+    }
+
+    public function clearRedisAccountCache(Request $request) {
+        $gameName = $request->input('gameName');
+        $keys = Redis::keys($gameName."*");
+        foreach($keys as $k=>$v) {
+            Redis::del($v);
+        }
+        return JSON::ok([], "clear ". $gameName ." success");
     }
 }

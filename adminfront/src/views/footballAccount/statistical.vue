@@ -102,7 +102,7 @@
             },
             markAccountSoldOut () {
                 this.listLoading = true;
-                request({ url: 'id5Account/mark-account-sold-out', method: 'post', params: this.listQuery }).then(response => {
+                request({ url: 'footballAccount/mark-account-sold-out', method: 'post', params: this.listQuery }).then(response => {
                     const result = response.data;
                     if (result.code) {
                         this.$message.error(result.msg || '系统错误')
@@ -110,7 +110,7 @@
                         return
                     }
 
-                    request({ url: 'id5Account/sold-out-account-detail', method: 'post', params: {id: result.data.id} }).then(response => {
+                    request({ url: 'footballAccount/sold-out-account-detail', method: 'post', params: {id: result.data.id} }).then(response => {
                         const result = response.data;
                         if(result.code) {
                             this.$message.error(result.msg || '系统错误')
@@ -121,7 +121,10 @@
                         this.textarea = result.data.rows.content;
                     })
                     this.listLoading = false;
-                    this.dialogTitle = '服务器:' + this.listQuery.serverName + '----精华:' + this.listQuery.jing_hua + '----线索:' + this.listQuery.xian_suo_1 + '-' + this.listQuery.xian_suo_2 + '----提取数量:' + this.listQuery.getNumber;
+                    this.dialogTitle = '服务器:' + this.listQuery.serverName + '----黑球:' + this.listQuery.black_player_1 + '-' + this.listQuery.black_player_2
+                        + '----金球:' + this.listQuery.gold_player_1 + '-' + this.listQuery.gold_player_2
+                        + '----金币' + this.listQuery.gold_1 + '-' + this.listQuery.gold_2
+                        + '----提取数量:' + this.listQuery.getNumber;
                 })
             },
             handleSizeChange (val) {

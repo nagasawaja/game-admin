@@ -67,7 +67,7 @@
         methods: {
             getList () {
                 this.listLoading = true
-                request({ url: 'footballAccount/soldOut', method: 'post', params: this.listQuery }).then(response => {
+                request({ url: 'dreamAccount/soldOut', method: 'post', params: this.listQuery }).then(response => {
                     const result = response.data;
                     if (result.code) {
                         this.$message.error(result.msg || '系统错误')
@@ -80,7 +80,7 @@
                 })
             },
             showSoldAccountDetail(row) {
-                request({ url: 'footballAccount/sold-out-account-detail', method: 'post', params: {id:row.id} }).then(response => {
+                request({ url: 'dreamAccount/sold-out-account-detail', method: 'post', params: {id:row.id} }).then(response => {
                     const result = response.data;
                     if(result.code) {
                         this.$message.error(result.msg || '系统错误')
