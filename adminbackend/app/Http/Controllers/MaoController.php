@@ -135,4 +135,37 @@ class MaoController extends Controller
         }
         return JSON::ok([], "clear ". $gameName ." success");
     }
+
+    // 恢复账号异常
+    public function recoverAccountStatus(Request $request) {
+        $gameName = $request->input('gameName');
+        $yesterday = date('Y-m-d', time());
+        $updateMap = ['status' => 2];
+        $affectRow = 0;
+        switch($gameName) {
+            case 'id5':
+                $affectRow = DB::table('account as a')->join('id5_account_detail as id5', 'a.id', '=', 'id5.account_id')
+                    ->whereIn('a.status', [90,91,92])
+                    ->where('id5.update_time', '<', strtotime($yesterday))
+                    ->update($updateMap);
+            case 'f7':
+                $affectRow = DB::table('account as a')->join('qiri_account_detail as f7', 'a.id', '=', 'f7.account_id')
+                    ->whereIn('a.status', [6,8])
+                    ->where('f7.update_time', '<', strtotime($yesterday))
+                    ->update($updateMap);
+            case 'football':
+                $affectRow = DB::table('account as a')->join('football_account_detail as football', 'a.id', '=', 'football.account_id')
+                    ->whereIn('a.status', [201,202])
+                    ->where('football.update_time', '<', strtotime($yesterday))
+                    ->update($updateMap);
+            case 'dream':
+                $affectRow = DB::table('account as a')->join('dream_account_detail as dream', 'a.id', '=', 'dream.account_id')
+                    ->whereIn('a.status', [301,302])
+                    ->where('dream.update_time', '<', strtotime($yesterday))
+                    ->update($updateMap);
+            default:
+
+        }
+        return JSON::ok([],'recoverAccountStatus ' . $gameName . ';' . 'affect ' . $affectRow);
+    }
 }

@@ -7,6 +7,7 @@
                     <el-button size="medium" style="" type="primary" @click="resetFootballEmail">获取邮件</el-button>
                     <el-button size="medium" style="" type="info" @click="revertGameStatus('football')">帐号{{(GameStatus.football == 1) ? "true":"false"}}</el-button>
                     <el-button size="medium" style="" type="success" @click="clearRedisAccountCache('football')">清理redisCache</el-button>
+                    <el-button size="medium" style="" type="success" @click="recoverAccountStatus('football')">恢复账号异常</el-button>
                 </div>
             </div>
             <div>
@@ -14,6 +15,7 @@
                 <div>
                     <el-button size="medium" style="" type="info" @click="revertGameStatus('id5')">帐号{{(GameStatus.id5 == 1) ? "true":"false"}}</el-button>
                     <el-button size="medium" style="" type="success" @click="clearRedisAccountCache('id5')">清理redisCache</el-button>
+                    <el-button size="medium" style="" type="success" @click="recoverAccountStatus('id5')">恢复账号异常</el-button>
                 </div>
             </div>
             <div>
@@ -21,6 +23,7 @@
                 <div>
                     <el-button size="medium" style="" type="info" @click="revertGameStatus('dream')">帐号{{(GameStatus.dream == 1) ? "true":"false"}}</el-button>
                     <el-button size="medium" style="" type="success" @click="clearRedisAccountCache('dream')">清理redisCache</el-button>
+                    <el-button size="medium" style="" type="success" @click="recoverAccountStatus('dream')">恢复账号异常</el-button>
                 </div>
             </div>
             <div>
@@ -28,6 +31,7 @@
                 <div>
                     <el-button size="medium" style="" type="info" @click="revertGameStatus('f7')">帐号{{(GameStatus.f7 == 1) ? "true":"false"}}</el-button>
                     <el-button size="medium" style="" type="success" @click="clearRedisAccountCache('f7')">清理redisCache</el-button>
+                    <el-button size="medium" style="" type="success" @click="recoverAccountStatus('f7')">恢复账号异常</el-button>
                 </div>
             </div>
         </div>
@@ -100,6 +104,12 @@
             },
             clearRedisAccountCache(gameName) {
                 request({url:'mao/clearRedisAccountCache', method: 'post', data:{gameName:gameName}}).then(response => {
+                    let responseBody = response.data;
+                    this.jsonViewData = responseBody;
+                })
+            },
+            recoverAccountStatus(gameName) {
+                request({url:'mao/recoverAccountStatus', method: 'post', data:{gameName:gameName}}).then(response => {
                     let responseBody = response.data;
                     this.jsonViewData = responseBody;
                 })

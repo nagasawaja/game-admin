@@ -60,6 +60,7 @@ return [
     'mao/gameStatus' => [ 'method' => 'post', 'ctrl' => 'MaoController@gameStatus', 'title' => '查看游戏状态'],
     'mao/revertGameStatus' => [ 'method' => 'post', 'ctrl' => 'MaoController@revertGameStatus', 'title' => '修改游戏状态'],
     'mao/clearRedisAccountCache' => [ 'method' => 'post', 'ctrl' => 'MaoController@clearRedisAccountCache', 'title' => '清空帐号redisCache'],
+    'mao/recoverAccountStatus' => [ 'method' => 'post', 'ctrl' => 'MaoController@recoverAccountStatus', 'title' => '恢复账号异常'],
 
     //通用设置
     'systemConfig/sys-config-menu' => [ 'method' => 'get', 'ctrl' => 'SystemConfigController@sysConfigMenu', 'title' => '系统基础信息'],
