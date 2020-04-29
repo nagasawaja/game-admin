@@ -4,6 +4,14 @@
             帐号Id：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='帐号Id'  v-model="listQuery.accountId"></el-input>
             邮箱：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='邮箱'  v-model="listQuery.email"></el-input>
             状态：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='状态'  v-model="listQuery.status"></el-input>
+            状态2：  <el-select style="width: 500px;" v-model="listQuery.statusList" multiple placeholder="请选择">
+                        <el-option
+                                v-for="item in constant.statusAccount"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
             <br/>
             服务器：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='服务器'  v-model="listQuery.serverName"></el-input>
             欧泊：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='欧泊1'  v-model="listQuery.oubo1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='欧泊2'  v-model="listQuery.oubo2"></el-input>
@@ -11,6 +19,24 @@
             签到天数：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='签到天数1'  v-model="listQuery.sign_day_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='签到天数2'  v-model="listQuery.sign_day_2"></el-input>
             错误次数：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='错误次数1'  v-model="listQuery.error_times_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='错误次数2'  v-model="listQuery.error_times_2"></el-input>
             <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
+            <br/>
+            最后更新时间：<el-date-picker
+                v-model="listQuery.goods_detail_update_date1"
+                align="right"
+                type="date"
+                value-format="yyyy-MM-dd"
+                placeholder="选择开始日期"
+                :default-value="listQuery.goods_detail_update_date1">
+            </el-date-picker>
+            -
+            <el-date-picker
+                    v-model="listQuery.goods_detail_update_date2"
+                    align="right"
+                    type="date"
+                    value-format="yyyy-MM-dd"
+                    placeholder="选择开始日期"
+                    :default-value="listQuery.goods_detail_update_date2">
+            </el-date-picker>
         </div>
 
         <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;margin-top:15px;">
@@ -19,6 +45,9 @@
             <el-table-column width="150px" label="密码" prop="passwd"></el-table-column>
             <el-table-column width="90px" label="欧泊" prop="oubo"></el-table-column>
             <el-table-column width="90px" label="签到天数" prop="sign_day"></el-table-column>
+            <el-table-column width="150px" label="update_time" prop="update_time">
+                <template slot-scope="scope">{{scope.row.update_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
+            </el-table-column>
             <el-table-column width="150px" label="下次拿欧泊" prop="oubo_update_time">
                 <template slot-scope="scope">{{scope.row.oubo_update_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
             </el-table-column>
@@ -62,7 +91,9 @@
     export default {
         name: 'admin-lists',
         data () {
+
             return {
+                constant: require('@/utils/constant'),
                 tableKey: 0,
                 list: null,
                 total: 0,
@@ -75,13 +106,16 @@
                     getNumber:'',
                     email:'',
                     status:'',
+                    statusList: [],
                     oubo1:'',
                     oubo2:'',
                     error_times_1: '',
                     error_times_2: '',
                     sign_day_1: '',
                     sign_day_2: '',
-                    accountId:''
+                    accountId:'',
+                    goods_detail_update_date1: '',
+                    goods_detail_update_date2: '',
                 },
                 temp: { id: undefined, name: '', description: '', coins: '', extra_coins: '', price: '' },
                 dialogFormVisible: false,

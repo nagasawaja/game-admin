@@ -24,6 +24,10 @@ class Account extends Model
         $errorTimes1 = floor(($request->input('error_times_1')));
         $errorTimes2 = floor(($request->input('error_times_2')));
         $accountId = floor(($request->input('accountId')));
+        $goodsDetailUpdateDate1 = ($request->input('goods_detail_update_date1'));
+        $goodsDetailUpdateDate2 = ($request->input('goods_detail_update_date2'));
+        $statusList = $request->input('statusList');
+
 
         //帐号数据
 
@@ -42,6 +46,9 @@ class Account extends Model
             ->when($signDay, function($query) use($signDay) {$query->where('sign_day', '=', $signDay);})
             ->when($errorTimes1 != '', function($query) use($errorTimes1) {$query->where('error_times', '>=', $errorTimes1);})
             ->when($errorTimes2 != '', function($query) use($errorTimes2) {$query->where('error_times', '<=', $errorTimes2);})
+            ->when($goodsDetailUpdateDate1 != '', function($query) use($goodsDetailUpdateDate1) {$query->where('qad.update_time', '>=', strtotime($goodsDetailUpdateDate1));})
+            ->when($goodsDetailUpdateDate2 != '', function($query) use($goodsDetailUpdateDate2) {$query->where('qad.update_time', '<', strtotime($goodsDetailUpdateDate2)+86400);})
+            ->when(count($statusList) != 0, function($query) use($statusList) {$query->whereIn('a.status', $statusList);})
             ->where('a.game_id', '=', 6378);
 
         return $query;
@@ -62,6 +69,9 @@ class Account extends Model
         $jingHua1 = floor(($request->input('jing_hua_1')));
         $jingHua2 = floor(($request->input('jing_hua_2')));
         $accountId = floor(($request->input('accountId')));
+        $goodsDetailUpdateDate1 = ($request->input('goods_detail_update_date1'));
+        $goodsDetailUpdateDate2 = ($request->input('goods_detail_update_date2'));
+        $statusList = $request->input('statusList');
 
         //帐号数据
 
@@ -79,6 +89,9 @@ class Account extends Model
             ->when($xianSuo2 != '', function($query) use($xianSuo2) {$query->where('xian_suo', '<=', $xianSuo2);})
             ->when($jingHua1 != '', function($query) use($jingHua1) {$query->where('jing_hua', '>=', $jingHua1);})
             ->when($jingHua2 != '', function($query) use($jingHua2) {$query->where('jing_hua', '<=', $jingHua2);})
+            ->when($goodsDetailUpdateDate1 != '', function($query) use($goodsDetailUpdateDate1) {$query->where('iad.update_time', '>=', strtotime($goodsDetailUpdateDate1));})
+            ->when($goodsDetailUpdateDate2 != '', function($query) use($goodsDetailUpdateDate2) {$query->where('iad.update_time', '<', strtotime($goodsDetailUpdateDate2)+86400);})
+            ->when(count($statusList) != 0, function($query) use($statusList) {$query->whereIn('a.status', $statusList);})
             ->where('a.game_id', '=', 6587);
 
         return $query;
@@ -105,6 +118,9 @@ class Account extends Model
         $silverPlayer1 = floor(($request->input('silver_player_1')));
         $silverPlayer2 = floor(($request->input('silver_player_2')));
         $accountId = floor(($request->input('accountId')));
+        $goodsDetailUpdateDate1 = ($request->input('goods_detail_update_date1'));
+        $goodsDetailUpdateDate2 = ($request->input('goods_detail_update_date2'));
+        $statusList = $request->input('statusList');
 
         //帐号数据
 
@@ -128,6 +144,9 @@ class Account extends Model
             ->when($goldPlayer2 != '', function($query) use($goldPlayer2) {$query->where('gold_player', '<=', $goldPlayer2);})
             ->when($silverPlayer1 != '', function($query) use($silverPlayer1) {$query->where('silver_player', '<=', $silverPlayer1);})
             ->when($silverPlayer2 != '', function($query) use($silverPlayer2) {$query->where('silver_player', '<=', $silverPlayer2);})
+            ->when($goodsDetailUpdateDate1 != '', function($query) use($goodsDetailUpdateDate1) {$query->where('fad.update_time', '>=', strtotime($goodsDetailUpdateDate1));})
+            ->when($goodsDetailUpdateDate2 != '', function($query) use($goodsDetailUpdateDate2) {$query->where('fad.update_time', '<', strtotime($goodsDetailUpdateDate2)+86400);})
+            ->when(count($statusList) != 0, function($query) use($statusList) {$query->whereIn('a.status', $statusList);})
             ->where('a.game_id', '=', 7744);
 
         return $query;
@@ -149,6 +168,9 @@ class Account extends Model
         $shengMoQuan1 = floor(($request->input('sheng_mo_quan_1')));
         $shengMoQuan2 = floor(($request->input('sheng_mo_quan_2')));
         $accountId = floor(($request->input('accountId')));
+        $goodsDetailUpdateDate1 = ($request->input('goods_detail_update_date1'));
+        $goodsDetailUpdateDate2 = ($request->input('goods_detail_update_date2'));
+        $statusList = $request->input('statusList');
 
         //帐号数据
 
@@ -166,6 +188,9 @@ class Account extends Model
             ->when($moJing2 != '', function($query) use($moJing2) {$query->where('mo_jing', '<=', $moJing2);})
             ->when($shengMoQuan1 != '', function($query) use($shengMoQuan1) {$query->where('sheng_mo_quan', '>=', $shengMoQuan1);})
             ->when($shengMoQuan2 != '', function($query) use($shengMoQuan2) {$query->where('sheng_mo_quan', '<=', $shengMoQuan2);})
+            ->when($goodsDetailUpdateDate1 != '', function($query) use($goodsDetailUpdateDate1) {$query->where('d.update_time', '>=', strtotime($goodsDetailUpdateDate1));})
+            ->when($goodsDetailUpdateDate2 != '', function($query) use($goodsDetailUpdateDate2) {$query->where('d.update_time', '<', strtotime($goodsDetailUpdateDate2)+86400);})
+            ->when(count($statusList) != 0, function($query) use($statusList) {$query->whereIn('a.status', $statusList);})
             ->where('a.game_id', '=', 7266);
 
         return $query;

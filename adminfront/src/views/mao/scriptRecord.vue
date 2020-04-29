@@ -49,7 +49,7 @@
     import request from '@/utils/request'
     import * as filterOption from '@/utils/filter_option'
     import * as constant from '@/utils/constant'
-    console.log(constant)
+
     Date.prototype.format = function (fmt) {
         var o = {
             "M+": this.getMonth() + 1, //月份

@@ -26,7 +26,7 @@ class AccountController extends Controller
         $query = Account::singleton()->getAccountQuery($request);
 
         $accountSelectRaw = 'a.id, a.server_name, a.status, a.email, a.passwd, a.is_clean, ';
-        $qiriAccountDetailSelectRaw = 'qad.oubo, qad.sign_day, qad.error_times, qad.email_time, qad.oubo_update_time ';
+        $qiriAccountDetailSelectRaw = 'qad.oubo, qad.sign_day, qad.error_times, qad.email_time, qad.oubo_update_time, qad.update_time';
         $take = trim($request->input('limit'));
         $skip = (trim($request->input('page')) - 1) * $take;
 

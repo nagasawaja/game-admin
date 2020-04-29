@@ -150,7 +150,7 @@ class MaoController extends Controller
                     ->update($updateMap);
             case 'f7':
                 $affectRow = DB::table('account as a')->join('qiri_account_detail as f7', 'a.id', '=', 'f7.account_id')
-                    ->whereIn('a.status', [6,8])
+                    ->whereIn('a.status', [6,8,999])
                     ->where('f7.update_time', '<', strtotime($yesterday))
                     ->update($updateMap);
             case 'football':

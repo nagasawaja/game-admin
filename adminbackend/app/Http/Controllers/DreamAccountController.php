@@ -23,7 +23,7 @@ class DreamAccountController extends Controller
 
         $query = Account::singleton()->getDreamAccountQuery($request);
         $accountSelectRaw = 'a.id, a.server_name, a.status, a.email, a.passwd, a.is_clean, ';
-        $dreamAccountDetailSelectRaw = 'd.sign_day, d.error_times, d.mo_jing, d.sheng_mo_quan, a.device_name as idcard_name, a.idcard as idcard_num';
+        $dreamAccountDetailSelectRaw = 'd.sign_day, d.error_times, d.mo_jing, d.sheng_mo_quan, a.device_name as idcard_name, a.idcard as idcard_num, d.update_time';
         $take = trim($request->input('limit'));
         $skip = (trim($request->input('page')) - 1) * $take;
 

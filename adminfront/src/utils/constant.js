@@ -7,4 +7,10 @@ export const TYPE_SERVICE_PRODUCT_FREE = 2; //免费
 
 export const gameIdMap = {6378:"f7", 7266:"dream", 6587:"id5", 7744:"football"};
 
+export const statusAccount = [
+    {value:'4', label:'封禁4'}, {value:'6', label:'超时6'}, {value:'8', label:'未知8'},
+    {value:'1', label:'新号1'}, {value:'2', label:'流程2'},
+    {value:'3', label:'已卖3'}, {value:'5', label:'密错5'},{value:'7', label:'停用7'},
+    ];
+
 
