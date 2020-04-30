@@ -148,24 +148,27 @@ class MaoController extends Controller
                     ->whereIn('a.status', [6,8])
                     ->where('id5.update_time', '<', strtotime($yesterday))
                     ->update($updateMap);
+                break;
             case 'f7':
                 $affectRow = DB::table('account as a')->join('qiri_account_detail as f7', 'a.id', '=', 'f7.account_id')
                     ->whereIn('a.status', [6,8])
                     ->where('f7.update_time', '<', strtotime($yesterday))
                     ->update($updateMap);
+                break;
             case 'football':
                 $affectRow = DB::table('account as a')->join('football_account_detail as football', 'a.id', '=', 'football.account_id')
                     ->whereIn('a.status', [6,8])
                     ->where('football.update_time', '<', strtotime($yesterday))
                     ->update($updateMap);
+                break;
             case 'dream':
                 $affectRow = DB::table('account as a')->join('dream_account_detail as dream', 'a.id', '=', 'dream.account_id')
                     ->whereIn('a.status', [6,8])
                     ->where('dream.update_time', '<', strtotime($yesterday))
                     ->update($updateMap);
-            default:
-
+                break;
         }
+        var_dump($affectRow);
         return JSON::ok([],'recoverAccountStatus ' . $gameName . ';' . 'affect ' . $affectRow);
     }
 }
