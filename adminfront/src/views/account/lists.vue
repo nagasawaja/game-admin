@@ -37,6 +37,23 @@
                     placeholder="选择开始日期"
                     :default-value="listQuery.goods_detail_update_date2">
             </el-date-picker>
+            创建时间：
+            <el-date-picker
+                    v-model="listQuery.stc_create_datetime_start"
+                    align="right"
+                    type="datetime"
+                    value-format="yyyy-MM-dd HH:00:00"
+                    placeholder="选择开始日期"
+                    :default-value="listQuery.stc_create_datetime_start">
+            </el-date-picker>
+            <el-date-picker
+                    v-model="listQuery.stc_create_datetime_end"
+                    align="right"
+                    type="datetime"
+                    value-format="yyyy-MM-dd HH:00:00"
+                    placeholder="选择结束日期"
+                    :default-value="listQuery.stc_create_datetime_end">
+            </el-date-picker>
         </div>
 
         <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;margin-top:15px;">
@@ -46,6 +63,8 @@
             <el-table-column width="90px" label="欧泊" prop="oubo"></el-table-column>
             <el-table-column width="90px" label="签到天数" prop="sign_day"></el-table-column>
             <el-table-column width="150px" label="create_time" prop="create_time">
+                <template slot-scope="scope">{{scope.row.update_time | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</template>
+            </el-table-column>
             <el-table-column width="150px" label="update_time" prop="update_time">
                 <template slot-scope="scope">{{scope.row.update_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
             </el-table-column>
@@ -117,6 +136,8 @@
                     accountId:'',
                     goods_detail_update_date1: '',
                     goods_detail_update_date2: '',
+                    stc_create_datetime_start: '',
+                    stc_create_datetime_end: '',
                 },
                 temp: { id: undefined, name: '', description: '', coins: '', extra_coins: '', price: '' },
                 dialogFormVisible: false,
