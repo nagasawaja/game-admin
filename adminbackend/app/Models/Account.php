@@ -128,6 +128,8 @@ class Account extends Model
         $accountId = floor(($request->input('accountId')));
         $goodsDetailUpdateDate1 = ($request->input('goods_detail_update_date1'));
         $goodsDetailUpdateDate2 = ($request->input('goods_detail_update_date2'));
+        $stcCreateDatetimeStart = ($request->input('stc_create_datetime_start'));
+        $stcCreateDatetimeEnd = ($request->input('stc_create_datetime_end'));
         $statusList = $request->input('statusList');
 
         //帐号数据
@@ -154,6 +156,8 @@ class Account extends Model
             ->when($silverPlayer2 != '', function($query) use($silverPlayer2) {$query->where('silver_player', '<=', $silverPlayer2);})
             ->when($goodsDetailUpdateDate1 != '', function($query) use($goodsDetailUpdateDate1) {$query->where('fad.update_time', '>=', strtotime($goodsDetailUpdateDate1));})
             ->when($goodsDetailUpdateDate2 != '', function($query) use($goodsDetailUpdateDate2) {$query->where('fad.update_time', '<', strtotime($goodsDetailUpdateDate2)+86400);})
+            ->when($stcCreateDatetimeStart != '', function($query) use($stcCreateDatetimeStart) {$query->where('fad.create_time', '>=', strtotime($stcCreateDatetimeStart));})
+            ->when($stcCreateDatetimeEnd != '', function($query) use($stcCreateDatetimeEnd) {$query->where('fad.create_time', '<=', strtotime($stcCreateDatetimeEnd));})
             ->when(count($statusList) != 0, function($query) use($statusList) {$query->whereIn('a.status', $statusList);})
             ->where('a.game_id', '=', 7744);
 
@@ -178,6 +182,8 @@ class Account extends Model
         $accountId = floor(($request->input('accountId')));
         $goodsDetailUpdateDate1 = ($request->input('goods_detail_update_date1'));
         $goodsDetailUpdateDate2 = ($request->input('goods_detail_update_date2'));
+        $stcCreateDatetimeStart = ($request->input('stc_create_datetime_start'));
+        $stcCreateDatetimeEnd = ($request->input('stc_create_datetime_end'));
         $statusList = $request->input('statusList');
 
         //帐号数据
@@ -198,6 +204,8 @@ class Account extends Model
             ->when($shengMoQuan2 != '', function($query) use($shengMoQuan2) {$query->where('sheng_mo_quan', '<=', $shengMoQuan2);})
             ->when($goodsDetailUpdateDate1 != '', function($query) use($goodsDetailUpdateDate1) {$query->where('d.update_time', '>=', strtotime($goodsDetailUpdateDate1));})
             ->when($goodsDetailUpdateDate2 != '', function($query) use($goodsDetailUpdateDate2) {$query->where('d.update_time', '<', strtotime($goodsDetailUpdateDate2)+86400);})
+            ->when($stcCreateDatetimeStart != '', function($query) use($stcCreateDatetimeStart) {$query->where('d.create_time', '>=', strtotime($stcCreateDatetimeStart));})
+            ->when($stcCreateDatetimeEnd != '', function($query) use($stcCreateDatetimeEnd) {$query->where('d.create_time', '<=', strtotime($stcCreateDatetimeEnd));})
             ->when(count($statusList) != 0, function($query) use($statusList) {$query->whereIn('a.status', $statusList);})
             ->where('a.game_id', '=', 7266);
 
