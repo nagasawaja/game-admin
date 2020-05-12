@@ -11,6 +11,8 @@ export const statusAccount = [
     {value:'4', label:'封禁4'}, {value:'6', label:'超时6'}, {value:'8', label:'未知8'},
     {value:'1', label:'新号1'}, {value:'2', label:'流程2'},
     {value:'3', label:'已卖3'}, {value:'5', label:'密错5'},{value:'7', label:'停用7'},
-    ];
+];
+
+export const orderByOption = [{value:"update_time", label:"update_time"}, {value:"update_time desc", label:"update_time desc"}];
 
 

@@ -24,8 +24,8 @@
             最后更新时间：<el-date-picker
                 v-model="listQuery.goods_detail_update_date1"
                 align="right"
-                type="date"
-                value-format="yyyy-MM-dd"
+                type="datetime"
+                value-format="yyyy-MM-dd HH:mm:ss"
                 placeholder="选择开始日期"
                 :default-value="listQuery.goods_detail_update_date1">
         </el-date-picker>
@@ -33,8 +33,8 @@
             <el-date-picker
                     v-model="listQuery.goods_detail_update_date2"
                     align="right"
-                    type="date"
-                    value-format="yyyy-MM-dd"
+                    type="datetime"
+                    value-format="yyyy-MM-dd HH:mm:ss"
                     placeholder="选择开始日期"
                     :default-value="listQuery.goods_detail_update_date2">
             </el-date-picker>
@@ -55,6 +55,14 @@
                     placeholder="选择结束日期"
                     :default-value="listQuery.stc_create_datetime_end">
             </el-date-picker>
+            gameId：  <el-select v-model="listQuery.order_by_option" placeholder="orderBy">
+            <el-option
+                    v-for="item in constant.orderByOption"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+            </el-option>
+        </el-select>
         </div>
 
         <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;margin-top:15px;">
@@ -70,7 +78,7 @@
                 <template slot-scope="scope">{{scope.row.create_time | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</template>
             </el-table-column>
             <el-table-column width="150px" label="update_time" prop="update_time">
-                <template slot-scope="scope">{{scope.row.update_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
+                <template slot-scope="scope">{{scope.row.update_time | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</template>
             </el-table-column>
             <el-table-column width="100px" label="错误次数" prop="error_times"></el-table-column>
             <el-table-column width="150px" label="登陆时间" prop="update_time">
@@ -141,6 +149,7 @@
                     goods_detail_update_date2:'',
                     stc_create_datetime_start: '',
                     stc_create_datetime_end: '',
+                    order_by_option:"",
                 },
                 temp: { id: undefined, name: '', description: '', coins: '', extra_coins: '', price: '' },
                 dialogFormVisible: false,

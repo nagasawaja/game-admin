@@ -77,6 +77,7 @@ class Account extends Model
         $goodsDetailUpdateDate2 = ($request->input('goods_detail_update_date2'));
         $stcCreateDatetimeStart = ($request->input('stc_create_datetime_start'));
         $stcCreateDatetimeEnd = ($request->input('stc_create_datetime_end'));
+        $orderBy = ($request->input('order_by_option'));
         $statusList = $request->input('statusList');
 
         //帐号数据
@@ -96,11 +97,13 @@ class Account extends Model
             ->when($jingHua1 != '', function($query) use($jingHua1) {$query->where('jing_hua', '>=', $jingHua1);})
             ->when($jingHua2 != '', function($query) use($jingHua2) {$query->where('jing_hua', '<=', $jingHua2);})
             ->when($goodsDetailUpdateDate1 != '', function($query) use($goodsDetailUpdateDate1) {$query->where('iad.update_time', '>=', strtotime($goodsDetailUpdateDate1));})
-            ->when($goodsDetailUpdateDate2 != '', function($query) use($goodsDetailUpdateDate2) {$query->where('iad.update_time', '<', strtotime($goodsDetailUpdateDate2)+86400);})
+            ->when($goodsDetailUpdateDate2 != '', function($query) use($goodsDetailUpdateDate2) {$query->where('iad.update_time', '<=', strtotime($goodsDetailUpdateDate2));})
             ->when($stcCreateDatetimeStart != '', function($query) use($stcCreateDatetimeStart) {$query->where('iad.create_time', '>=', strtotime($stcCreateDatetimeStart));})
             ->when($stcCreateDatetimeEnd != '', function($query) use($stcCreateDatetimeEnd) {$query->where('iad.create_time', '<=', strtotime($stcCreateDatetimeEnd));})
             ->when(count($statusList) != 0, function($query) use($statusList) {$query->whereIn('a.status', $statusList);})
-            ->where('a.game_id', '=', 6587);
+            ->where('a.game_id', '=', 6587)
+            ->when($orderBy != '', function($query) use($orderBy) {$query->orderByRaw("iad.".$orderBy);});
+
 
         return $query;
     }
