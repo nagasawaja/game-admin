@@ -63,7 +63,7 @@
             <el-table-column width="90px" label="欧泊" prop="oubo"></el-table-column>
             <el-table-column width="90px" label="签到天数" prop="sign_day"></el-table-column>
             <el-table-column width="150px" label="create_time" prop="create_time">
-                <template slot-scope="scope">{{scope.row.update_time | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</template>
+                <template slot-scope="scope">{{scope.row.create_time | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</template>
             </el-table-column>
             <el-table-column width="150px" label="update_time" prop="update_time">
                 <template slot-scope="scope">{{scope.row.update_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>

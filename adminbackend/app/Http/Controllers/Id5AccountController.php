@@ -109,7 +109,8 @@ class Id5AccountController extends Controller
             ['a.status', '=', $status],
             ['a.server_name', '=', $serverName],
             ['iad.jing_hua', '=', $jingHua],
-            ['iad.xian_suo', '>=', $xianSuo1]
+            ['iad.xian_suo', '>=', $xianSuo1],
+            ['a.remakr', '!=', '777']
         ];
         $query = DB::table('account as a')
             ->leftJoin('id5_account_detail as iad', function($join) {$join->on('a.id', '=', 'iad.account_id');})
