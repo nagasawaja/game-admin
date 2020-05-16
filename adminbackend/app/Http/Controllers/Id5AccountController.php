@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Constants;
 use App\Models\Account;
+use function foo\func;
 
 class Id5AccountController extends Controller
 {
@@ -91,11 +92,12 @@ class Id5AccountController extends Controller
         $status = trim($request->input('status'));
         $serverName = trim($request->input('serverName'));
         $getNumber = floor(($request->input('getNumber')));
-        $jingHua = floor(($request->input('jing_hua')));
+        $jingHua1 = floor(($request->input('jing_hua1')));
+        $jingHua2 = floor(($request->input('jing_hua2')));
         $xianSuo1 = floor(($request->input('xian_suo_1')));
         $xianSuo2 = floor(($request->input('xian_suo_2')));
 
-        if($getNumber > 50 || $getNumber <=0 || $jingHua <=0 || $xianSuo1 <=0 || $serverName == '' || $status != 2) {
+        if($getNumber > 50 || $getNumber <=0 || $jingHua1 <=0 || $jingHua2 <= 0 || $xianSuo1 <=0 || $serverName == '' || $status != 2) {
             return JSON::error(JSON::E_INTERNAL, '参数不符合标准');
         }
 
@@ -108,7 +110,7 @@ class Id5AccountController extends Controller
         $tmpWhere = [
             ['a.status', '=', $status],
             ['a.server_name', '=', $serverName],
-            ['iad.jing_hua', '=', $jingHua],
+            ['iad.jing_hua', '>=', $jingHua1],
             ['iad.xian_suo', '>=', $xianSuo1],
             ['a.remark', '!=', '777']
         ];
@@ -117,6 +119,9 @@ class Id5AccountController extends Controller
             ->where($tmpWhere)
             ->when($xianSuo2, function($query) use($xianSuo2) {
                 $query->where('iad.xian_suo', '<=', $xianSuo2);
+            })
+            ->when($jingHua2, function($query) use($jingHua2) {
+                $query->where('iad.jing_hua', '<=', $jingHua2);
             })
             ->take($getNumber);
         $rows = $query->selectRaw('a.id, a.email, a.passwd')->get();
@@ -131,7 +136,7 @@ class Id5AccountController extends Controller
         }
 
         $insertData = [
-            'title' => date('Y-m-d H:i:s', time()) . ',服务器:' . $serverName . ',精华:' . $jingHua . ',线索:' . $xianSuo1 .'-'. $xianSuo2,
+            'title' => date('Y-m-d H:i:s', time()) . ',服务器:' . $serverName . ',精华1:' . $jingHua1 . '-' . $jingHua2 . ',线索:' . $xianSuo1 .'-'. $xianSuo2,
             'content' => $accountStr,
             'create_time' => time(),
             'account_number' => count($rows)

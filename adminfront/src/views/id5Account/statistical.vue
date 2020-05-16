@@ -3,7 +3,7 @@
         <div class="filter-container">
             服务器：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='服务器'  v-model="listQuery.serverName"></el-input>
             <br/>
-            精华：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='精华'  v-model="listQuery.jing_hua"></el-input>
+            精华：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='精华1'  v-model="listQuery.jing_hua1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='精华2'  v-model="listQuery.jing_hua2"></el-input>
             线索：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='线索1'  v-model="listQuery.xian_suo_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='线索2'  v-model="listQuery.xian_suo_2"></el-input>
             <br/>
             状态：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='状态'  v-model="listQuery.status"></el-input>
@@ -61,7 +61,8 @@
                     serverName:'163master',
                     getNumber:10,
                     status:2,
-                    jing_hua:'',
+                    jing_hua1:'',
+                    jing_hua2:'',
                     xian_suo_1:'',
                     xian_suo_2:'',
                 },
