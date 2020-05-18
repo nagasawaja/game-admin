@@ -75,10 +75,8 @@ class FootballAccountController extends Controller
         $gold2 = floor(($request->input('gold_2')));
         $blackPlayer1 = floor(($request->input('black_player_1')));
         $blackPlayer2 = floor(($request->input('black_player_2')));
-        $goldPlayer1 = floor(($request->input('gold_player_1')));
-        $goldPlayer2 = floor(($request->input('gold_player_2')));
 
-        if($getNumber > 50 || $getNumber <=0 || $gold1 <=0 || $blackPlayer1 <=0 || $goldPlayer1 <=0 || $serverName == '' || $status != 2) {
+        if($getNumber > 50 || $getNumber <=0 || $gold1 <=0 || $blackPlayer1 <=0 || $serverName == '' || $status != 2) {
             return JSON::error(JSON::E_INTERNAL, '参数不符合标准');
         }
 
@@ -87,7 +85,6 @@ class FootballAccountController extends Controller
             ['a.status', '=', $status],
             ['a.server_name', '=', $serverName],
             ['football.black_player', '>=', $blackPlayer1],
-            ['football.gold_player', '>=', $goldPlayer1],
             ['football.gold', '>=', $gold1]
         ];
         $query = DB::table('account as a')
@@ -98,9 +95,6 @@ class FootballAccountController extends Controller
             })
             ->when($blackPlayer2, function($query) use($blackPlayer2) {
                 $query->where('football.black_player', '<=', $blackPlayer2);
-            })
-            ->when($goldPlayer2, function($query) use($goldPlayer2) {
-                $query->where('football.gold_player', '<=', $goldPlayer2);
             })
             ->take($getNumber);
         $rows = $query->selectRaw('a.id, a.email, a.passwd')->get();
@@ -117,7 +111,6 @@ class FootballAccountController extends Controller
         $insertData = [
             'title' => date('Y-m-d H:i:s', time()) . ',服务器:' . $serverName
                 . ',黑球:' . $blackPlayer1 . '-' . $blackPlayer2
-                . ',金球:' . $goldPlayer1 .'-'. $goldPlayer2
                 . ',金币:' . $gold1 .'-'. $gold2,
             'content' => $accountStr,
             'create_time' => time(),
