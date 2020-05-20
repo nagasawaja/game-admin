@@ -50,6 +50,7 @@ class Id5AccountController extends Controller
             ->leftJoin('id5_account_detail as id5A', 'a.id', '=', 'id5A.account_id')
             ->whereIn('a.status', [1,2])
             ->where('server_name', '=', '163master')
+            ->where('remark', '!=', '777')
             ->when($serverNameRows, function($query) use($serverNameRows) {$query->whereIn('a.server_name', $serverNameRows);})
             ->groupBy(['jing_hua', 'xian_suo', 'ling_gan', 'sign_day'])
             ->orderBy('id5A.jing_hua', 'desc')
