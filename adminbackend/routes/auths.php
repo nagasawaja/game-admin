@@ -25,6 +25,7 @@ return [
     'account/recovery' => [ 'method' => 'post', 'ctrl' => 'AccountController@recovery', 'title' => 'f7回收交易猫帐号'],
     'account/backTo14' => [ 'method' => 'post', 'ctrl' => 'AccountController@backTo14', 'title' => 'f7回收15天完成的账号到14天签到'],
 
+
     //football
     'footballAccount/lists' => [ 'method' => 'post', 'ctrl' => 'FootballAccountController@lists', 'title' => 'football帐号列表'],
     'footballAccount/statistical' => [ 'method' => 'post', 'ctrl' => 'FootballAccountController@statistical', 'title' => 'football帐号统计'],
@@ -43,6 +44,8 @@ return [
     //sql
     'account/query-sql-save' => [ 'method' => 'post', 'ctrl' => 'AccountController@querySqlSave', 'title' => '执行原生sql保存'],
     'account/querySql' => [ 'method' => 'post', 'ctrl' => 'AccountController@querySqlMenu', 'title' => '执行原生sql菜单'],
+    'account/queryRedis' => [ 'method' => 'post', 'ctrl' => 'AccountController@queryRedis', 'title' => '执行原生redis菜单'],
+    'account/queryRedisSave' => [ 'method' => 'post', 'ctrl' => 'AccountController@queryRedisSave', 'title' => '执行原生redis'],
 
     //id5
     'id5Account/lists' => [ 'method' => 'post', 'ctrl' => 'Id5AccountController@lists', 'title' => 'id5帐号列表'],
@@ -61,6 +64,8 @@ return [
     'mao/revertGameStatus' => [ 'method' => 'post', 'ctrl' => 'MaoController@revertGameStatus', 'title' => '修改游戏状态'],
     'mao/clearRedisAccountCache' => [ 'method' => 'post', 'ctrl' => 'MaoController@clearRedisAccountCache', 'title' => '清空帐号redisCache'],
     'mao/recoverAccountStatus' => [ 'method' => 'post', 'ctrl' => 'MaoController@recoverAccountStatus', 'title' => '恢复账号异常'],
+    'mao/getIdCard' => [ 'method' => 'post', 'ctrl' => 'MaoController@getIdCard', 'title' => '获取一个idcard'],
+    'mao/redisEveryDayLen' => [ 'method' => 'post', 'ctrl' => 'MaoController@redisEveryDayLen', 'title' => 'redisEveryDayLen'],
 
     //通用设置
     'systemConfig/sys-config-menu' => [ 'method' => 'get', 'ctrl' => 'SystemConfigController@sysConfigMenu', 'title' => '系统基础信息'],

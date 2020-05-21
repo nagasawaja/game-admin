@@ -168,7 +168,15 @@ class MaoController extends Controller
                     ->update($updateMap);
                 break;
         }
-        var_dump($affectRow);
         return JSON::ok([],'recoverAccountStatus ' . $gameName . ';' . 'affect ' . $affectRow);
     }
+
+    // 获取一个idcard
+    public function getIdCard(Request $request) {
+        $row = DB::table('idcard')->first();
+        DB::table('idcard')->where('id', '=', $row->id)->delete();
+        return JSON::ok(['idcard'=> $row]);
+    }
+
+
 }

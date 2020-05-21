@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Constants;
 use App\Models\Account;
+use Illuminate\Support\Facades\Redis;
 
 class AccountController extends Controller
 {
@@ -216,7 +217,7 @@ class AccountController extends Controller
 
         if($type == 'origin_sql') {
             //更新原生sql
-            $updateRes = DB::table('origin_sql')->where('id', '=', 1)->update(['content' => $originSql]);
+            $updateRes = DB::table('origin_sql')->where('content_type', '=', 'sql')->update(['content' => $originSql]);
         } else {
             //执行sql
             $dbQueryType = substr($sql , 0 , 1);
@@ -240,8 +241,35 @@ class AccountController extends Controller
     //执行sql语句
     public function querySqlMenu(Request $request)
     {
-        $row = DB::table('origin_sql')->first();
+        $row = DB::table('origin_sql')->where('content_type', '=', 'sql')->first();
 
         return json::ok(['origin_sql_content' => $row->content]);
+    }
+
+    //执行reis语句
+    public function queryRedis(Request $request)
+    {
+        $row = DB::table('origin_sql')->where('content_type', '=', 'redis')->first();
+
+        return json::ok(['origin_redis_content' => $row->content]);
+    }
+
+    //执行redis语句
+    public function queryRedisSave(Request $request)
+    {
+        $redisCommand = $request->input('redisCommand');
+        $originRedis = $request->input('origin_redis');
+        $type = $request->input('type');
+
+        if($type == 'origin_redis') {
+            //更新原生sql
+            $r = DB::table('origin_sql')->where('content_type', '=', 'redis')->update(['content' => $originRedis]);
+        } else {
+            $b = explode(' ', $redisCommand);
+            $r = Redis::executeRaw($b);
+        }
+
+        return json::ok(['res'=>$r]);
+
     }
 }
