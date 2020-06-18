@@ -4,7 +4,8 @@
             状态：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='状态'  v-model="listQuery.status"></el-input>
             <br/>
             服务器：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='服务器'  v-model="listQuery.serverName"></el-input>
-            欧泊：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='欧泊'  v-model="listQuery.oubo"></el-input>
+            欧泊：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='欧泊1'  v-model="listQuery.oubo1"></el-input>-
+            <el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='欧泊2'  v-model="listQuery.oubo2"></el-input>
             <br/>
             签到天数：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='签到天数'  v-model="listQuery.signDay"></el-input>
             提取数量：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='提取数量'  v-model="listQuery.getNumber"></el-input>
@@ -61,7 +62,8 @@
                     getNumber:10,
                     email:'',
                     status:2,
-                    oubo:'',
+                    oubo1:'',
+                    oubo2:'',
                     signDay:15
                 },
                 temp: { id: undefined, name: '', description: '', coins: '', extra_coins: '', price: '' },
@@ -110,7 +112,7 @@
                         this.textarea = result.data.rows.content;
                     })
                     this.listLoading = false;
-                    this.dialogTitle = '服务器:' + this.listQuery.serverName + '----欧泊:' + this.listQuery.oubo + '----提取数量:' + this.listQuery.getNumber;
+                    this.dialogTitle = '服务器:' + this.listQuery.serverName + '----欧泊:' + this.listQuery.oubo1 + '-' + this.listQuery.oubo1 + '----提取数量:' + this.listQuery.getNumber;
                 })
             },
             handleSizeChange (val) {

@@ -71,10 +71,11 @@ class AccountController extends Controller
         $status = trim($request->input('status'));
         $serverName = trim($request->input('serverName'));
         $getNumber = floor(($request->input('getNumber')));
-        $oubo = floor(($request->input('oubo')));
+        $oubo1 = floor(($request->input('oubo1')));
+        $oubo2 = floor(($request->input('oubo2')));
         $signDay = floor(($request->input('signDay')));
 
-        if($getNumber > 50 || $getNumber <=0 || $oubo <=0 || $serverName == '' || $status != 2 || $signDay != 15) {
+        if($getNumber > 50 || $getNumber <=0 || $oubo1 <=0 || $serverName == '' || $status != 2 || $signDay != 15) {
             return JSON::error(JSON::E_INTERNAL, '参数不符合标准');
         }
 
@@ -91,7 +92,7 @@ class AccountController extends Controller
         }
 
         $insertData = [
-            'title' => date('Y-m-d H:i:s', time()) . ',服务器:' . $serverName . ',欧泊:' . $oubo,
+            'title' => date('Y-m-d H:i:s', time()) . ',服务器:' . $serverName . ',欧泊:' . $oubo1 . '-'. $oubo2,
             'content' => $accountStr,
             'create_time' => time(),
             'account_number' => count($rows)

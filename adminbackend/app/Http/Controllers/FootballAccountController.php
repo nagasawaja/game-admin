@@ -75,8 +75,10 @@ class FootballAccountController extends Controller
         $gold2 = floor(($request->input('gold_2')));
         $blackPlayer1 = floor(($request->input('black_player_1')));
         $blackPlayer2 = floor(($request->input('black_player_2')));
+        $money1 = floor(($request->input('money1')));
+        $money2 = floor(($request->input('money2')));
 
-        if($getNumber > 50 || $getNumber <=0 || $gold1 <=0 || $blackPlayer1 <=0 || $serverName == '' || $status != 2) {
+        if($getNumber > 50 || $getNumber <=0 || $gold1 <=0 || $money1 <= 0 || $blackPlayer1 <=0 || $serverName == '' || $status != 2) {
             return JSON::error(JSON::E_INTERNAL, '参数不符合标准');
         }
 
@@ -85,7 +87,8 @@ class FootballAccountController extends Controller
             ['a.status', '=', $status],
             ['a.server_name', '=', $serverName],
             ['football.black_player', '>=', $blackPlayer1],
-            ['football.gold', '>=', $gold1]
+            ['football.gold', '>=', $gold1],
+            ['football.money', '>=', $money1]
         ];
         $query = DB::table('account as a')
             ->leftJoin('football_account_detail as football', function($join) {$join->on('a.id', '=', 'football.account_id');})
@@ -95,6 +98,9 @@ class FootballAccountController extends Controller
             })
             ->when($blackPlayer2, function($query) use($blackPlayer2) {
                 $query->where('football.black_player', '<=', $blackPlayer2);
+            })
+            ->when($money2, function($query) use($money2) {
+                $query->where('football.money', '<=', $money2);
             })
             ->take($getNumber);
         $rows = $query->selectRaw('a.id, a.email, a.passwd')->get();
