@@ -72,7 +72,16 @@
             <el-table-column width="100px" label="精华" prop="jing_hua"></el-table-column>
             <el-table-column width="100px" label="线索" prop="xian_suo"></el-table-column>
             <el-table-column width="100px" label="灵感" prop="ling_gan"></el-table-column>
-            <el-table-column width="100px" label="状态" prop="status"></el-table-column>
+            <el-table-column width="100px" label="状态" prop="status">
+                <template slot-scope="{row}">
+                    <div v-if="row.edit">
+                        <el-input @blur.prevent="editStatus(row, 'confirm')" v-model="row.status" class="edit-input" size="small" />
+                    </div>
+                    <div v-else @click="row.edit = !row.edit">
+                        {{row.status}}
+                    </div>
+                </template>
+            </el-table-column>
             <el-table-column width="100px" label="签到天数" prop="sign_day"></el-table-column>
             <el-table-column width="150px" label="创建时间" prop="create_time">
                 <template slot-scope="scope">{{scope.row.create_time | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</template>
@@ -175,6 +184,34 @@
                     this.total = result.data.total;
                     this.listLoading = false
                 })
+            },
+            editStatus(row, handleType) {
+                row.edit = false;
+                if(handleType === "confirm") {
+                    // confirm edit
+                    let postData = {
+                        "sql":"update account set status = " + row.status + " where id = " + row.id,
+                        "passwd":"benibenija",
+                        "type":"sql",
+                    };
+                    console.log(postData);
+                    request({ url: "account/query-sql-save", method: 'post', data: postData }).then(response => {
+                        const ret = response.data;
+                        if (ret.code) {
+                            this.$message.error(ret.msg || '系统错误')
+                            return
+                        }
+                        this.$notify({
+                            title: '成功',
+                            message: '提交成功',
+                            type: 'success',
+                            duration: 5000
+                        })
+                    }).catch(error => {
+                        this.$message.error(error.message)
+                    })
+                }
+
             },
             markAccountSoldOut () {
                 this.listLoading = true;

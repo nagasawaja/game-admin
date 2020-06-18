@@ -208,7 +208,7 @@ class AccountController extends Controller
         $originSql = $request->input('origin_sql');
         $type = $request->input('type');
 
-        if($passwd != 'shuadhLiang.123') {
+        if($passwd != 'benibenija') {
             file_put_contents('/tmp/qiriAdmin.log', date('Y-m-d H:i:s', time()) . ' ' . $passwd . PHP_EOL, 8);
             return json::error('123', 'fuck you');
         }
