@@ -121,7 +121,6 @@
     export default {
         name: 'admin-lists',
         data () {
-
             return {
                 constant: require('@/utils/constant'),
                 tableKey: 0,
@@ -175,7 +174,7 @@
                 })
             },
             editStatus(row, handleType) {
-                row.edit = false;
+                row.edit = !row.edit;
                 if(handleType === "confirm") {
                     // confirm edit
                     let postData = {
