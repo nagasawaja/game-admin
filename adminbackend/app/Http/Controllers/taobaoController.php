@@ -166,7 +166,7 @@ class taobaoController extends Controller
             ->where('email', '=', $email)
             ->first();
         if($a==null) {
-            return JSON::error(JSON::E_INVALID_PARAM, 'nullEmail');
+            return JSON::error(JSON::E_INVALID_PARAM, 'email不存在，或许是订单还没收集！建议联系帅哥');
         }
         if($a->status == 4) {
             return JSON::error(JSON::E_INVALID_PARAM, 'email已经是待换号名单中，不用再添加');
