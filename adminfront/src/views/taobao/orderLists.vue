@@ -1,8 +1,8 @@
 <template>
     <div class="app-container calendar-list-container">
         <div class="filter-container">
-            orderId：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='帐号Id'  v-model="listQuery.orderId"></el-input>
-            email：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='帐号Id'  v-model="listQuery.email"></el-input>
+            orderId：<el-input @keyup.enter.native="handleFilter" style="width: 200px;" clearable  placeholder='orderId'  v-model="listQuery.orderId"></el-input>
+            email：<el-input @keyup.enter.native="handleFilter" style="width: 200px;" clearable  placeholder='email'  v-model="listQuery.email"></el-input>
             <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
         </div>
 

@@ -15,14 +15,14 @@ class taobaoController extends Controller
         $orderId = trim($request->input('orderId'));
         $email = trim($request->input('email'));
         $a = DB::table('taobao_order as o')
-            ->when($orderId || $email, function($query) use($orderId, $email) {
+            ->when($email, function($query) use($email) {
                 $query->join('taobao_order_detail as od', 'o.order_id', '=', 'od.order_id');
                 if($email != '') {
                     $query->where('od.email', '=', $email);
                 }
-                if($orderId != '') {
-                    $query->where('o.order_id', '=', $orderId);
-                }
+            })
+            ->when($orderId, function ($query) use($orderId) {
+                $query->where('o.order_id', '=', $orderId);
             })
             ->get();
 

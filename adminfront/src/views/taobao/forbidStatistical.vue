@@ -2,12 +2,12 @@
     <div class="app-container calendar-list-container">
         <div class="filter-container">
             <span>
-                email：<el-input style="width: 200px;"  placeholder='email'  v-model="listQuery.email"></el-input>
+                email：<el-input style="width: 200px;" clearable  placeholder='email'  v-model="listQuery.email"></el-input>
                 <el-button class="filter-item" type="primary" icon="el-icon-download" @click="CreateForbidEmail">封号新增</el-button>
             </span>
             <br/>
             <span>
-                orderId：<el-input style="width: 200px;"  placeholder='orderId'  v-model="listQuery.orderId"></el-input>
+                orderId：<el-input style="width: 200px;" clearable  placeholder='orderId'  v-model="listQuery.orderId"></el-input>
                 <el-button class="filter-item" type="primary" icon="el-icon-download" @click="markAccountSoldOut">导出</el-button>
                 <el-button class="filter-item" type="primary" icon="el-icon-search" @click="getList">刷新</el-button>
             </span>

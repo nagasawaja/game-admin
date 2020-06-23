@@ -75,7 +75,8 @@
                         this.$message.error(result.msg || '系统错误')
                         this.listLoading = false;
                         return
-                    }
+                    };
+                    this.$message.info('新增成功');
                     this.listLoading = false
                 })
             },
