@@ -2,7 +2,7 @@
     <div class="app-container calendar-list-container">
         <div class="filter-container">
             <span>
-                email：<el-input style="width: 200px;" clearable  placeholder='email'  v-model="listQuery.email"></el-input>
+                email：<el-input style="width: 300px;" clearable  placeholder='email能识别前后空格'  v-model="listQuery.email"></el-input>
                 <el-button class="filter-item" type="primary" icon="el-icon-download" @click="CreateForbidEmail">封号新增</el-button>
             </span>
             <br/>

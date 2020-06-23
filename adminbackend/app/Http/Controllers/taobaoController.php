@@ -164,12 +164,19 @@ class taobaoController extends Controller
         //
         $a = DB::table('taobao_order_detail')
             ->where('email', '=', $email)
-            ->where('status', '=', 3)
             ->first();
         if($a==null) {
             return JSON::error(JSON::E_INVALID_PARAM, 'nullEmail');
         }
-
+        if($a->status == 4) {
+            return JSON::error(JSON::E_INVALID_PARAM, 'email已经是待换号名单中，不用再添加');
+        }
+        if($a->status == 10) {
+            return JSON::error(JSON::E_INVALID_PARAM, 'email已经更换成功，不用再添加');
+        }
+        if($a->status != 3) {
+            return JSON::error(JSON::E_INVALID_PARAM, 'errrrr!!!!');
+        }
         //
         DB::table('taobao_order_detail')
             ->where('email', '=', $email)
