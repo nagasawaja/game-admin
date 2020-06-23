@@ -21,7 +21,6 @@ return [
             ['title' => 'dream已卖出帐号', 'path' => 'dreamAccount/soldOut']
         ],
     ],
-
     ['title' => '交易猫', 'icon' => 'document', 'children' =>
         [
             ['title' => '单个商品销量变化', 'path' => 'mao/goodsChangeHistory', 'home' => true],
@@ -31,6 +30,14 @@ return [
             ['title' => '执行原生redis', 'path' => 'account/queryRedis'],
             ['title' => '工具箱', 'path' => 'mao/tools'],
             ['title' => '脚本数据', 'path' => 'mao/scriptRecord']
+        ]
+    ],
+    ['title' => '淘宝买号', 'icon' => 'document', 'children' =>
+        [
+            ['title' => '新增订单', 'path' => 'taobao/createOrder'],
+            ['title' => '订单列表', 'path' => 'taobao/orderLists'],
+            ['title' => '封号统计', 'path' => 'taobao/forbidStatistical'],
+            ['title' => '封号已回收列表', 'path' => 'taobao/soldOut'],
         ]
     ],
     ['title' => '管理员设置', 'icon' => 'menu', 'children' => [

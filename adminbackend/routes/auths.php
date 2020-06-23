@@ -67,6 +67,15 @@ return [
     'mao/getIdCard' => [ 'method' => 'post', 'ctrl' => 'MaoController@getIdCard', 'title' => '获取一个idcard'],
     'mao/redisEveryDayLen' => [ 'method' => 'post', 'ctrl' => 'MaoController@redisEveryDayLen', 'title' => 'redisEveryDayLen'],
 
+    // taobao
+    'taobao/orderLists' => [ 'method' => 'post', 'ctrl' => 'taobaoController@orderLists', 'title' => '淘宝订单列表'],
+    'taobao/createOrder' => [ 'method' => 'post', 'ctrl' => 'taobaoController@createOrder', 'title' => '新建淘宝订单'],
+    'taobao/forbidStatistical' => [ 'method' => 'post', 'ctrl' => 'taobaoController@forbidStatistical', 'title' => '封号统计'],
+    'taobao/mark-account-sold-out' => [ 'method' => 'post', 'ctrl' => 'taobaoController@markAccountSoldOut', 'title' => '淘宝帐号设置成退回状态'],
+    'taobao/sold-out-account-detail' => [ 'method' => 'post', 'ctrl' => 'taobaoController@soldOutAccountDetail', 'title' => '淘宝帐号退回的列表'],
+    'taobao/createForbidEmail' => [ 'method' => 'post', 'ctrl' => 'taobaoController@createForbidEmail', 'title' => '封号统计'],
+    'taobao/soldOut' => [ 'method' => 'post', 'ctrl' => 'taobaoController@soldOut', 'title' => '封号已回收列表'],
+
     //通用设置
     'systemConfig/sys-config-menu' => [ 'method' => 'get', 'ctrl' => 'SystemConfigController@sysConfigMenu', 'title' => '系统基础信息'],
     'systemConfig/sys-config-save' => [ 'method' => 'post', 'ctrl' => 'SystemConfigController@sysConfigSave', 'title' => '系统基础信息保存'],
