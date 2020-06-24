@@ -17,6 +17,9 @@
         <el-table :key='tableKey' height="550px" :data="list" v-loading="listLoading" element-loading-text="给我一点时间"
                   border fit highlight-current-row style="display:inline-block;width:auto;margin-top:15px">
             <el-table-column width="200px" label="orderId" prop="orderId"></el-table-column>
+            <el-table-column width="150px" label="create_time" prop="create_time">
+                <template slot-scope="scope">{{scope.row.create_time | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</template>
+            </el-table-column>
             <el-table-column width="300px" label="description" prop="description"></el-table-column>
             <el-table-column width="100px" label="forbidCount" prop="forbidCount"></el-table-column>
         </el-table>

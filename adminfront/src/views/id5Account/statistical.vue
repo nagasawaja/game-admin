@@ -2,6 +2,14 @@
     <div class="app-container calendar-list-container">
         <div class="filter-container">
             服务器：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='服务器'  v-model="listQuery.serverName"></el-input>
+            最后的更新时间：<el-date-picker
+                v-model="listQuery.last_update_time"
+                type="datetime"
+                value-format="yyyy-MM-dd HH:00:00"
+                placeholder="选择日期时间"
+                :default-value="listQuery.last_update_time"
+            >
+            </el-date-picker>
             <br/>
             精华：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='精华1'  v-model="listQuery.jing_hua1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='精华2'  v-model="listQuery.jing_hua2"></el-input>
             线索：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='线索1'  v-model="listQuery.xian_suo_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='线索2'  v-model="listQuery.xian_suo_2"></el-input>
@@ -10,6 +18,8 @@
             提取数量：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"   placeholder='提取数量'  v-model="listQuery.getNumber"></el-input>
             <el-button class="filter-item" type="primary" icon="el-icon-search" @click="getList">刷新</el-button>
             <el-button class="filter-item" type="primary" icon="el-icon-download" @click="markAccountSoldOut">导出</el-button>
+            <br/>
+
         </div>
 
 
@@ -46,9 +56,26 @@
     import request from '@/utils/request'
     import * as filterOption from '@/utils/filter_option'
 
+    Date.prototype.format = function (fmt) {
+        var o = {
+            "M+": this.getMonth() + 1, //月份
+            "d+": this.getDate(), //日
+            "h+": this.getHours(), //小时
+            "m+": this.getMinutes(), //分
+            "s+": this.getSeconds(), //秒
+            "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+            "S": this.getMilliseconds() //毫秒
+        };
+        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+    }
+
     export default {
         name: 'admin-lists',
         data () {
+            var stcCreate_datetime = new Date();
             return {
                 tableKey: 0,
                 list: null,
@@ -65,6 +92,7 @@
                     jing_hua2:'',
                     xian_suo_1:'',
                     xian_suo_2:'',
+                    last_update_time: stcCreate_datetime.format("yyyy-MM-dd 00:00:00"),
                 },
                 temp: { id: undefined, name: '', description: '', coins: '', extra_coins: '', price: '' },
                 dialogFormVisible: false,

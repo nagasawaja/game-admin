@@ -24,6 +24,7 @@ class taobaoController extends Controller
             ->when($orderId, function ($query) use($orderId) {
                 $query->where('o.order_id', '=', $orderId);
             })
+            ->orderByDesc('o.id')
             ->get();
 
 
@@ -75,7 +76,7 @@ class taobaoController extends Controller
             ->join('taobao_order_detail as od', 'o.order_id', '=', 'od.order_id')
             ->where('od.status', '=', 4)
             ->groupBy('o.order_id')
-            ->selectRaw('count(*) as forbidCount, o.order_id as orderId, description')
+            ->selectRaw('count(*) as forbidCount, o.order_id as orderId, description,o.create_time')
             ->get();
         //返回数据
         return JSON::ok([

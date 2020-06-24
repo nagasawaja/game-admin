@@ -44,6 +44,7 @@ class Id5AccountController extends Controller
     public function statistical(Request $request)
     {
         $serverNameRows = trim($request->input('serverNameRows'));
+        $lastUpdateTime = trim($request->input('last_update_time'));
         $accountSelectRaw = 'a.server_name, count(*) as count, ';
         $qiriAccountDetailRaw = 'id5A.xian_suo, id5A.sign_day, id5A.ling_gan,id5A.jing_hua,id5A.error_times';
         $rows = DB::table('account as a')
@@ -52,6 +53,7 @@ class Id5AccountController extends Controller
             ->where('server_name', '=', '163master')
             ->where('remark', '!=', '777')
             ->when($serverNameRows, function($query) use($serverNameRows) {$query->whereIn('a.server_name', $serverNameRows);})
+            ->when($lastUpdateTime, function($query) use($lastUpdateTime) {$query->where('id5A.update_time', '>=', strtotime($lastUpdateTime));})
             ->groupBy(['jing_hua', 'xian_suo', 'ling_gan', 'sign_day'])
             ->orderBy('id5A.jing_hua', 'desc')
             ->orderBy('id5A.xian_suo', 'desc')
@@ -97,6 +99,7 @@ class Id5AccountController extends Controller
         $jingHua2 = floor(($request->input('jing_hua2')));
         $xianSuo1 = floor(($request->input('xian_suo_1')));
         $xianSuo2 = floor(($request->input('xian_suo_2')));
+        $lastUpdateTime = trim($request->input('last_update_time'));
 
         if($getNumber > 50 || $getNumber <=0 || $jingHua1 <=0 || $xianSuo1 <=0 || $serverName == '' || $status != 2) {
             return JSON::error(JSON::E_INTERNAL, '参数不符合标准');
@@ -123,6 +126,9 @@ class Id5AccountController extends Controller
             })
             ->when($jingHua2, function($query) use($jingHua2) {
                 $query->where('iad.jing_hua', '<=', $jingHua2);
+            })
+            ->when($lastUpdateTime, function($query) use($lastUpdateTime) {
+                $query->where('iad.update_time', '>=', strtotime($lastUpdateTime));
             })
             ->take($getNumber);
         $rows = $query->selectRaw('a.id, a.email, a.passwd')->get();
