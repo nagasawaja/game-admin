@@ -18,8 +18,8 @@
             资金：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='资金1'  v-model="listQuery.money_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='资金2'  v-model="listQuery.money_2"></el-input>
             <br/>
             黑球：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='黑球1'  v-model="listQuery.black_player_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='黑球2'  v-model="listQuery.black_player_2"></el-input>
-            金球：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='金球1'  v-model="listQuery.gold_player_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='金球2'  v-model="listQuery.gold_player_2"></el-input>
-            银球：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='银球1'  v-model="listQuery.silver_player_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='银球2'  v-model="listQuery.silver_player_2"></el-input>
+<!--            金球：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='金球1'  v-model="listQuery.gold_player_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='金球2'  v-model="listQuery.gold_player_2"></el-input>-->
+<!--            银球：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='银球1'  v-model="listQuery.silver_player_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='银球2'  v-model="listQuery.silver_player_2"></el-input>-->
             <br/>
             签到天数：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='签到天数1'  v-model="listQuery.sign_day_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='签到天数2'  v-model="listQuery.sign_day_2"></el-input>
             错误次数：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='错误次数1'  v-model="listQuery.error_times_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='错误次数2'  v-model="listQuery.error_times_2"></el-input>
@@ -78,26 +78,26 @@
             <el-table-column width="100px" label="金币" prop="gold"></el-table-column>
             <el-table-column width="100px" label="资金" prop="money"></el-table-column>
             <el-table-column width="100px" label="黑球" prop="black_player"></el-table-column>
-            <el-table-column width="100px" label="金球" prop="gold_player"></el-table-column>
-            <el-table-column width="100px" label="银球" prop="silver_player"></el-table-column>
+<!--            <el-table-column width="100px" label="金球" prop="gold_player"></el-table-column>-->
+<!--            <el-table-column width="100px" label="银球" prop="silver_player"></el-table-column>-->
 
             <el-table-column width="100px" label="签到天数" prop="sign_day"></el-table-column>
             <el-table-column width="150px" label="create_time" prop="create_time">
-                <template slot-scope="scope">{{scope.row.update_time | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</template>
+                <template slot-scope="scope">{{scope.row.create_time | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</template>
             </el-table-column>
             <el-table-column width="150px" label="update_time" prop="update_time">
                 <template slot-scope="scope">{{scope.row.update_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
             </el-table-column>
             <el-table-column width="100px" label="错误次数" prop="error_times"></el-table-column>
-            <el-table-column width="150px" label="登陆时间" prop="update_time">
-                <template slot-scope="scope">{{scope.row.update_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
-            </el-table-column>
-            <el-table-column width="150px" label="邮件时间" prop="email_time">
-                <template slot-scope="scope">{{scope.row.email_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
-            </el-table-column>
-            <el-table-column width="150px" label="创建时间" prop="create_time">
-                <template slot-scope="scope">{{scope.row.create_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
-            </el-table-column>
+<!--            <el-table-column width="150px" label="登陆时间" prop="update_time">-->
+<!--                <template slot-scope="scope">{{scope.row.update_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>-->
+<!--            </el-table-column>-->
+<!--            <el-table-column width="150px" label="邮件时间" prop="email_time">-->
+<!--                <template slot-scope="scope">{{scope.row.email_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>-->
+<!--            </el-table-column>-->
+<!--            <el-table-column width="150px" label="创建时间" prop="create_time">-->
+<!--                <template slot-scope="scope">{{scope.row.create_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>-->
+<!--            </el-table-column>-->
             <el-table-column width="150px" label="服务器" prop="server_name"></el-table-column>
             <el-table-column width="150px" label="三无帐号" prop="is_clean">
                 <template slot-scope="scope">
