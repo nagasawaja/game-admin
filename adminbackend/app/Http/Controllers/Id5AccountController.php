@@ -43,16 +43,15 @@ class Id5AccountController extends Controller
     //帐号统计
     public function statistical(Request $request)
     {
-        $serverNameRows = trim($request->input('serverNameRows'));
+        $serverName = trim($request->input('serverName'));
         $lastUpdateTime = trim($request->input('last_update_time'));
         $accountSelectRaw = 'a.server_name, count(*) as count, ';
         $qiriAccountDetailRaw = 'id5A.xian_suo, id5A.sign_day, id5A.ling_gan,id5A.jing_hua,id5A.error_times';
         $rows = DB::table('account as a')
             ->leftJoin('id5_account_detail as id5A', 'a.id', '=', 'id5A.account_id')
             ->whereIn('a.status', [1,2])
-            ->where('server_name', '=', '163master')
             ->where('remark', '!=', '777')
-            ->when($serverNameRows, function($query) use($serverNameRows) {$query->whereIn('a.server_name', $serverNameRows);})
+            ->when($serverName, function($query) use($serverName) {$query->where('a.server_name', '=', $serverName);})
             ->when($lastUpdateTime, function($query) use($lastUpdateTime) {$query->where('id5A.update_time', '>=', strtotime($lastUpdateTime));})
             ->groupBy(['jing_hua', 'xian_suo', 'ling_gan', 'sign_day'])
             ->orderBy('id5A.jing_hua', 'desc')

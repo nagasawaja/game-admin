@@ -15,7 +15,7 @@
 
         <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;margin-top:15px;">
             <el-table-column width="100px" label="record_date" prop="record_date"></el-table-column>
-            <el-table-column width="100px" label="game_id" prop="game_id">
+            <el-table-column width="150px" label="game_id" prop="game_id">
                 <template slot-scope="scope">
                     <el-tag>{{listQuery.gameIdMap[scope.row.game_id]}}</el-tag>{{scope.row.game_id}}
                 </template>

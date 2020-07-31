@@ -101,7 +101,7 @@ class Account extends Model
             ->when($stcCreateDatetimeStart != '', function($query) use($stcCreateDatetimeStart) {$query->where('iad.create_time', '>=', strtotime($stcCreateDatetimeStart));})
             ->when($stcCreateDatetimeEnd != '', function($query) use($stcCreateDatetimeEnd) {$query->where('iad.create_time', '<=', strtotime($stcCreateDatetimeEnd));})
             ->when(count($statusList) != 0, function($query) use($statusList) {$query->whereIn('a.status', $statusList);})
-            ->where('a.game_id', '=', 6587)
+            ->whereIn('a.game_id', [6587,6586])
             ->when($orderBy != '', function($query) use($orderBy) {$query->orderByRaw("iad.".$orderBy);});
 
 
