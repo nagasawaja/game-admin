@@ -85,9 +85,7 @@ class FootballAccountController extends Controller
         $tmpWhere = [
             ['a.status', '=', $status],
             ['a.server_name', '=', $serverName],
-            ['football.black_player', '>=', $blackPlayer1],
             ['football.gold', '>=', $gold1],
-            ['football.money', '>=', $money1]
         ];
         $query = DB::table('account as a')
             ->leftJoin('football_account_detail as football', function($join) {$join->on('a.id', '=', 'football.account_id');})
