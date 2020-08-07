@@ -73,12 +73,12 @@ class FootballAccountController extends Controller
         $getNumber = floor(($request->input('getNumber')));
         $gold1 = floor(($request->input('gold_1')));
         $gold2 = floor(($request->input('gold_2')));
-        $blackPlayer1 = floor(($request->input('black_player_1')));
+        $blackPlayer1 = floor(($request->input('black_player_1', 0)));
         $blackPlayer2 = floor(($request->input('black_player_2')));
-        $money1 = floor(($request->input('money_1')));
+        $money1 = floor(($request->input('money_1', 0)));
         $money2 = floor(($request->input('money_2')));
 
-        if($getNumber > 50 || $getNumber <=0 || $gold1 <=0 || $money1 <= 0 || $blackPlayer1 <=0 || $serverName == '' || $status != 2) {
+        if($getNumber > 50 || $getNumber <=0 || $gold1 <=0 ||  $serverName == '' || $status != 2) {
             return JSON::error(JSON::E_INTERNAL, '参数不符合标准');
         }
 
