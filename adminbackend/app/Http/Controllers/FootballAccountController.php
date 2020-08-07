@@ -73,15 +73,14 @@ class FootballAccountController extends Controller
         $getNumber = floor(($request->input('getNumber')));
         $gold1 = floor(($request->input('gold_1')));
         $gold2 = floor(($request->input('gold_2')));
-        $blackPlayer1 = floor(($request->input('black_player_1', -1)));
+        $blackPlayer1 = floor(($request->input('black_player_1')));
         $blackPlayer2 = floor(($request->input('black_player_2')));
-        $money1 = floor(($request->input('money_1', -1)));
+        $money1 = floor(($request->input('money_1')));
         $money2 = floor(($request->input('money_2')));
 
         if($getNumber > 50 || $getNumber <=0 || $gold1 <=0 ||  $serverName == '' || $status != 2) {
             return JSON::error(JSON::E_INTERNAL, '参数不符合标准');
         }
-
         //帐号数据
         $tmpWhere = [
             ['a.status', '=', $status],
@@ -96,8 +95,14 @@ class FootballAccountController extends Controller
             ->when($gold2, function($query) use($gold2) {
                 $query->where('football.gold', '<=', $gold2);
             })
+            ->when($blackPlayer1, function($query) use($blackPlayer1) {
+                $query->where('football.black_player', '>=', $blackPlayer1);
+            })
             ->when($blackPlayer2, function($query) use($blackPlayer2) {
                 $query->where('football.black_player', '<=', $blackPlayer2);
+            })
+            ->when($money1, function($query) use($money1) {
+                $query->where('football.money', '>=', $money1);
             })
             ->when($money2, function($query) use($money2) {
                 $query->where('football.money', '<=', $money2);
