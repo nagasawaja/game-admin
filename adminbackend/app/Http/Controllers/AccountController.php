@@ -74,8 +74,7 @@ class AccountController extends Controller
         $oubo1 = floor(($request->input('oubo1')));
         $oubo2 = floor(($request->input('oubo2')));
         $signDay = floor(($request->input('signDay')));
-
-        if($getNumber > 50 || $getNumber <=0 || $oubo1 <=0 || $serverName == '' || $status != 2 || $signDay >= 14) {
+        if($getNumber > 50 || $getNumber <=0 || $oubo1 <=0 || $serverName == '' || $status != 2 || $signDay < 14) {
             return JSON::error(JSON::E_INTERNAL, '参数不符合标准');
         }
 
