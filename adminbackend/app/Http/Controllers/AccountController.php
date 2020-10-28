@@ -27,7 +27,7 @@ class AccountController extends Controller
         $query = Account::singleton()->getAccountQuery($request);
 
         $accountSelectRaw = 'a.id, a.server_name, a.status, a.email, a.passwd, a.is_clean, ';
-        $qiriAccountDetailSelectRaw = 'qad.oubo, qad.sign_day, qad.error_times, qad.email_time, qad.oubo_update_time, qad.update_time,qad.create_time';
+        $qiriAccountDetailSelectRaw = 'qad.oubo, qad.sign_day, qad.error_times, qad.email_time, qad.oubo_update_time, qad.game_update_time,qad.create_time';
         $take = trim($request->input('limit'));
         $skip = (trim($request->input('page')) - 1) * $take;
 
@@ -48,7 +48,7 @@ class AccountController extends Controller
         $accountSelectRaw = 'a.server_name, count(*) as count, ';
         $qiriAccountDetailRaw = 'qad.oubo, qad.sign_day';
         $rows = DB::table('account as a')
-            ->leftJoin('qiri_account_detail as qad', 'a.id', '=', 'qad.account_id')
+            ->leftJoin('game_f7_account_detail as qad', 'a.id', '=', 'qad.account_id')
             ->whereIn('a.status', [1,2])
             ->where('a.game_id', '=', 6378)
             ->when($serverName, function($query) use($serverName) {$query->where('a.server_name', '=', $serverName);})
@@ -96,7 +96,7 @@ class AccountController extends Controller
             'create_time' => time(),
             'account_number' => count($rows)
         ];
-        $id = DB::table('sold_out_account')->insertGetId($insertData);
+        $id = DB::table('game_f7_sold_out_account')->insertGetId($insertData);
 
         DB::table('account')->whereIn('id', $idRows)->update(['status' => 3]);
 
@@ -121,7 +121,7 @@ class AccountController extends Controller
         $take = trim($request->input('limit'));
         $skip = (trim($request->input('page')) - 1) * $take;
 
-        $query = DB::table('sold_out_account')
+        $query = DB::table('game_f7_sold_out_account')
             ->selectRaw('id, title, create_time, account_number');
         $total = $query->count();
         $rows = $query->take($take)->skip($skip)->orderBy('id', 'desc')->get();
@@ -135,7 +135,7 @@ class AccountController extends Controller
     public function soldOutAccountDetail(Request $request)
     {
         $id = $request->input('id');
-        $rows = DB::table('sold_out_account')->where('id', '=', $id)->first();
+        $rows = DB::table('game_f7_sold_out_account')->where('id', '=', $id)->first();
         return JSON::ok([
             'rows' => $rows
         ]);
@@ -146,11 +146,11 @@ class AccountController extends Controller
     {
         $updateTime = $request->input('updateTime');
         $todayTimeStamp = strtotime($updateTime);
-        $rows = DB::table('qiri_account_detail')
-            ->leftJoin('account', 'qiri_account_detail.account_id', '=', 'account.id')
-            ->selectRaw('account.server_name,qiri_account_detail.sign_day,qiri_account_detail.oubo,account.status,count(account.id) as count')
-            ->where('qiri_account_detail.update_time', '>=', $todayTimeStamp)
-            ->where('qiri_account_detail.update_time', '<', $todayTimeStamp + 86400)
+        $rows = DB::table('game_f7_account_detail')
+            ->leftJoin('account', 'game_f7_account_detail.account_id', '=', 'account.id')
+            ->selectRaw('account.server_name,game_f7_account_detail.sign_day,game_f7_account_detail.oubo,account.status,count(account.id) as count')
+            ->where('game_f7_account_detail.game_update_time', '>=', $todayTimeStamp)
+            ->where('game_f7_account_detail.game_update_time', '<', $todayTimeStamp + 86400)
             ->groupBy(['server_name', 'sign_day', 'oubo', 'account.status'])
             ->get();
 
@@ -174,7 +174,7 @@ class AccountController extends Controller
             $updateWhere[] = explode(',', $accountStr)[0];
         }
         $r = DB::table('account')->whereIn('email', $updateWhere)->update(['status' => 2]);
-        $r2 = DB::table('qiri_account_detail')->leftJoin('account', 'qiri_account_detail.account_id', '=', 'account.id')->whereIn('email', $updateWhere)->update(['account.status' => 2, 'qiri_account_detail.sign_day' => 14]);
+        $r2 = DB::table('game_f7_account_detail')->leftJoin('account', 'game_f7_account_detail.account_id', '=', 'account.id')->whereIn('email', $updateWhere)->update(['account.status' => 2, 'game_f7_account_detail.sign_day' => 14]);
 
         return JSON::ok();
     }
@@ -183,14 +183,14 @@ class AccountController extends Controller
     public function backTo14(Request $request)
     {
         $where = [
-            ['qiri_account_detail.sign_day', '=', 15],
+            ['game_f7_account_detail.sign_day', '=', 15],
             ['account.status', '=', 2]
         ];
         $updateData = [
             'sign_day' => 14
         ];
-        $effectRowCount = DB::table('qiri_account_detail')
-            ->leftJoin('account', 'qiri_account_detail.account_id', '=', 'account.id')
+        $effectRowCount = DB::table('game_f7_account_detail')
+            ->leftJoin('account', 'game_f7_account_detail.account_id', '=', 'account.id')
             ->where($where)
             ->update($updateData);
 

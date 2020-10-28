@@ -106,8 +106,11 @@ class MaoController extends Controller
         $stcCreateDatetime = $request->input('stc_create_datetime');
         $rows = DB::table('script_record')->where('record_date','=', $stcCreateDatetime)->orderBy("game_id")->orderBy("status")->get();
 
+        $rowss = DB::table('run_log_statistics')->where('record_date','=', $stcCreateDatetime)->orderBy("game_id")->orderBy("run_log")->get();
+
         return JSON::ok([
             'items' => $rows,
+            'detailItems' => $rowss
         ]);
     }
 
@@ -129,7 +132,7 @@ class MaoController extends Controller
 
     public function clearRedisAccountCache(Request $request) {
         $gameName = $request->input('gameName');
-        $keys = Redis::keys($gameName."*");
+        $keys = Redis::keys("accountList:".$gameName."*");
         foreach($keys as $k=>$v) {
             Redis::del($v);
         }
@@ -144,27 +147,35 @@ class MaoController extends Controller
         $affectRow = 0;
         switch($gameName) {
             case 'id5':
-                $affectRow = DB::table('account as a')->join('id5_account_detail as id5', 'a.id', '=', 'id5.account_id')
+                $affectRow = DB::table('account as a')->join('game_id5_account_detail as id5', 'a.id', '=', 'id5.account_id')
                     ->whereIn('a.status', [6,8])
-                    ->where('id5.update_time', '<', strtotime($yesterday))
+                    ->where('id5.game_update_time', '<', strtotime($yesterday))
+                    ->where('a.game_id', '=', 6587)
                     ->update($updateMap);
                 break;
             case 'f7':
-                $affectRow = DB::table('account as a')->join('qiri_account_detail as f7', 'a.id', '=', 'f7.account_id')
+                $affectRow = DB::table('account as a')->join('game_f7_account_detail as f7', 'a.id', '=', 'f7.account_id')
                     ->whereIn('a.status', [6,8])
-                    ->where('f7.update_time', '<', strtotime($yesterday))
+                    ->where('f7.game_update_time', '<', strtotime($yesterday))
                     ->update($updateMap);
                 break;
-            case 'football':
-                $affectRow = DB::table('account as a')->join('football_account_detail as football', 'a.id', '=', 'football.account_id')
+            case 'pes':
+                $affectRow = DB::table('account as a')->join('game_pes_account_detail as football', 'a.id', '=', 'football.account_id')
                     ->whereIn('a.status', [6,8])
-                    ->where('football.update_time', '<', strtotime($yesterday))
+                    ->where('football.game_update_time', '<', strtotime($yesterday))
                     ->update($updateMap);
                 break;
-            case 'dream':
-                $affectRow = DB::table('account as a')->join('dream_account_detail as dream', 'a.id', '=', 'dream.account_id')
+            case 'mz':
+                $affectRow = DB::table('account as a')->join('game_mz_account_detail as dream', 'a.id', '=', 'dream.account_id')
                     ->whereIn('a.status', [6,8])
-                    ->where('dream.update_time', '<', strtotime($yesterday))
+                    ->where('dream.game_update_time', '<', strtotime($yesterday))
+                    ->update($updateMap);
+                break;
+            case 'id5Android':
+                $affectRow = DB::table('account as a')->join('game_id5_account_detail as id5', 'a.id', '=', 'id5.account_id')
+                    ->whereIn('a.status', [6,8])
+                    ->where('id5.game_update_time', '<', strtotime($yesterday))
+                    ->where('a.game_id', '=', 6586)
                     ->update($updateMap);
                 break;
         }
@@ -178,5 +189,14 @@ class MaoController extends Controller
         return JSON::ok(['idcard'=> $row]);
     }
 
+    // 修改游戏的redis配置
+    public function setGameConfig(Request $request) {
+
+    }
+
+    // 获取游戏的redis配置
+    public function getGameConfig(Request $request) {
+
+    }
 
 }

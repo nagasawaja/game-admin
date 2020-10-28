@@ -25,7 +25,7 @@ class FootballAccountController extends Controller
         $query = Account::singleton()->getFootballAccountQuery($request);
         $accountSelectRaw = 'a.id, a.server_name, a.status, a.email, a.passwd, a.is_clean, ';
         $footballAccountDetailSelectRaw = 'fad.sign_day, fad.error_times, fad.money, fad.gold, fad.black_player, 
-        fad.gold_player, fad.silver_player, fad.email_time, fad.update_time, fad.create_time';
+        fad.gold_player, fad.silver_player, fad.email_time, fad.game_update_time, fad.create_time';
         $take = trim($request->input('limit'));
         $skip = (trim($request->input('page')) - 1) * $take;
 
@@ -46,7 +46,7 @@ class FootballAccountController extends Controller
         $accountSelectRaw = 'a.server_name, count(*) as count, ';
         $qiriAccountDetailRaw = 'fad.gold, fad.money, fad.black_player,fad.gold_player,fad.silver_player,fad.sign_day';
         $rows = DB::table('account as a')
-            ->leftJoin('football_account_detail as fad', 'a.id', '=', 'fad.account_id')
+            ->leftJoin('game_pes_account_detail as fad', 'a.id', '=', 'fad.account_id')
             ->whereIn('a.status', [1,2])
             ->where('server_name', '=', 'football_master')
             ->when($serverNameRows, function($query) use($serverNameRows) {$query->whereIn('a.server_name', $serverNameRows);})
@@ -88,7 +88,7 @@ class FootballAccountController extends Controller
             ['football.gold', '>=', $gold1],
         ];
         $query = DB::table('account as a')
-            ->leftJoin('football_account_detail as football', function($join) {$join->on('a.id', '=', 'football.account_id');})
+            ->leftJoin('game_pes_account_detail as football', function($join) {$join->on('a.id', '=', 'football.account_id');})
             ->where($tmpWhere)
             ->when($gold2, function($query) use($gold2) {
                 $query->where('football.gold', '<=', $gold2);
@@ -125,7 +125,7 @@ class FootballAccountController extends Controller
             'create_time' => time(),
             'account_number' => count($rows)
         ];
-        $id = DB::table('football_sold_out_account')->insertGetId($insertData);
+        $id = DB::table('game_pes_sold_out_account')->insertGetId($insertData);
 
         DB::table('account')->whereIn('id', $idRows)->update(['status' => 3]);
 
@@ -138,7 +138,7 @@ class FootballAccountController extends Controller
     public function soldOutAccountDetail(Request $request)
     {
         $id = $request->input('id');
-        $rows = DB::table('football_sold_out_account')->where('id', '=', $id)->first();
+        $rows = DB::table('game_pes_sold_out_account')->where('id', '=', $id)->first();
         return JSON::ok([
             'rows' => $rows
         ]);
@@ -160,7 +160,7 @@ class FootballAccountController extends Controller
         $take = trim($request->input('limit'));
         $skip = (trim($request->input('page')) - 1) * $take;
 
-        $query = DB::table('football_sold_out_account')
+        $query = DB::table('game_pes_sold_out_account')
             ->selectRaw('id, title, create_time, account_number');
         $total = $query->count();
         $rows = $query->take($take)->skip($skip)->orderBy('id', 'desc')->get();
@@ -179,7 +179,7 @@ class FootballAccountController extends Controller
         $updateData = [
             'email_time' => 1
         ];
-        DB::table('football_account_detail')->update($updateData);
+        DB::table('game_pes_account_detail')->update($updateData);
         return JSON::ok([]);
     }
 }

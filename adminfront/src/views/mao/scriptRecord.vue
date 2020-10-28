@@ -13,35 +13,34 @@
             <el-button class="filter-item" type="primary" icon="el-icon-download" @click="markAccountSoldOut"></el-button>
         </div>
 
-        <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;margin-top:15px;">
+        <el-table :key='detailTableKey' :data="detailList" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 521px;margin-top:15px;">
             <el-table-column width="100px" label="record_date" prop="record_date"></el-table-column>
             <el-table-column width="150px" label="game_id" prop="game_id">
                 <template slot-scope="scope">
                     <el-tag>{{listQuery.gameIdMap[scope.row.game_id]}}</el-tag>{{scope.row.game_id}}
                 </template>
             </el-table-column>
-            <el-table-column width="85px" label="status" prop="status"></el-table-column>
+            <el-table-column width="200px" label="run_log" prop="run_log"></el-table-column>
             <el-table-column width="70px" label="count" prop="count"></el-table-column>
         </el-table>
 
-        <div class="pagination-container">
-            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="[10,20,30, 500]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
-            </el-pagination>
-        </div>
+<br/>
+        ---------------------------------------------------------------------分割线-------------------------------------------------------------------------------
 
-        <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" width="35%">
-            <el-input
-                    type="textarea"
-                    :rows="100"
-                    placeholder="请输入内容"
-                    v-model="textarea">
-            </el-input>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">关闭</el-button>
-            </div>
-        </el-dialog>
+        <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 521px;margin-top:15px;">
+            <el-table-column width="100px" label="record_date" prop="record_date"></el-table-column>
+            <el-table-column width="150px" label="game_id" prop="game_id">
+                <template slot-scope="scope">
+                    <el-tag>{{listQuery.gameIdMap[scope.row.game_id]}}</el-tag>{{scope.row.game_id}}
+                </template>
+            </el-table-column>
+            <el-table-column width="200px" label="status" prop="status"></el-table-column>
+            <el-table-column width="70px" label="count" prop="count"></el-table-column>
+        </el-table>
 
     </div>
+
+
 </template>
 
 <script>
@@ -72,7 +71,9 @@
             var stcCreate_datetime = new Date();
             return {
                 tableKey: 0,
+                detailTableKey:0,
                 list: null,
+                detailList: null,
                 total: 0,
                 listLoading: true,
                 textarea: '',
@@ -110,7 +111,7 @@
                     }
 
                     this.list = result.data.items;
-                    this.total = result.data.total;
+                    this.detailList = result.data.detailItems;
                     this.listLoading = false
                 })
             },

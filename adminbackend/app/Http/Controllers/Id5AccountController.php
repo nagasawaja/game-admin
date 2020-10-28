@@ -26,7 +26,7 @@ class Id5AccountController extends Controller
         $query = Account::singleton()->getId5AccountQuery($request);
 
         $accountSelectRaw = 'a.id, a.server_name, a.status, a.email, a.passwd, a.is_clean, ';
-        $id5AccountDetailSelectRaw = 'iad.sign_day, iad.error_times, iad.jing_hua, iad.xian_suo, iad.ling_gan, iad.jing_hua_update_time, iad.email_time, iad.update_time, iad.create_time';
+        $id5AccountDetailSelectRaw = 'iad.sign_day, iad.error_times, iad.jing_hua, iad.xian_suo, iad.ling_gan, iad.jing_hua_update_time, iad.email_time, iad.game_update_time, iad.create_time';
         $take = trim($request->input('limit'));
         $skip = (trim($request->input('page')) - 1) * $take;
 
@@ -48,11 +48,11 @@ class Id5AccountController extends Controller
         $accountSelectRaw = 'a.server_name, count(*) as count, ';
         $qiriAccountDetailRaw = 'id5A.xian_suo, id5A.sign_day, id5A.ling_gan,id5A.jing_hua,id5A.error_times';
         $rows = DB::table('account as a')
-            ->leftJoin('id5_account_detail as id5A', 'a.id', '=', 'id5A.account_id')
+            ->leftJoin('game_id5_account_detail as id5A', 'a.id', '=', 'id5A.account_id')
             ->whereIn('a.status', [1,2])
             ->where('remark', '!=', '777')
             ->when($serverName, function($query) use($serverName) {$query->where('a.server_name', '=', $serverName);})
-            ->when($lastUpdateTime, function($query) use($lastUpdateTime) {$query->where('id5A.update_time', '>=', strtotime($lastUpdateTime));})
+            ->when($lastUpdateTime, function($query) use($lastUpdateTime) {$query->where('id5A.game_update_time', '>=', strtotime($lastUpdateTime));})
             ->groupBy(['jing_hua', 'xian_suo', 'ling_gan', 'sign_day'])
             ->orderBy('id5A.jing_hua', 'desc')
             ->orderBy('id5A.xian_suo', 'desc')
@@ -71,11 +71,11 @@ class Id5AccountController extends Controller
     {
         $updateTime = $request->input('updateTime');
         $todayTimeStamp = strtotime($updateTime);
-        $rows = DB::table('id5_account_detail as id5A')
+        $rows = DB::table('game_id5_account_detail as id5A')
             ->leftJoin('account', 'id5A.account_id', '=', 'account.id')
             ->selectRaw('id5A.xian_suo, id5A.sign_day, id5A.ling_gan,id5A.jing_hua,id5A.error_times,account.status,count(account.id) as count')
-            ->where('id5A.update_time', '>=', $todayTimeStamp)
-            ->where('id5A.update_time', '<', $todayTimeStamp + 86400)
+            ->where('id5A.game_update_time', '>=', $todayTimeStamp)
+            ->where('id5A.game_update_time', '<', $todayTimeStamp + 86400)
             ->groupBy(['jing_hua', 'xian_suo', 'ling_gan', 'sign_day'])
             ->orderBy('id5A.jing_hua', 'desc')
             ->orderBy('id5A.xian_suo', 'desc')
@@ -118,7 +118,7 @@ class Id5AccountController extends Controller
             ['a.remark', '!=', '777']
         ];
         $query = DB::table('account as a')
-            ->leftJoin('id5_account_detail as iad', function($join) {$join->on('a.id', '=', 'iad.account_id');})
+            ->leftJoin('game_id5_account_detail as iad', function($join) {$join->on('a.id', '=', 'iad.account_id');})
             ->where($tmpWhere)
             ->when($xianSuo2, function($query) use($xianSuo2) {
                 $query->where('iad.xian_suo', '<=', $xianSuo2);
@@ -127,7 +127,7 @@ class Id5AccountController extends Controller
                 $query->where('iad.jing_hua', '<=', $jingHua2);
             })
             ->when($lastUpdateTime, function($query) use($lastUpdateTime) {
-                $query->where('iad.update_time', '>=', strtotime($lastUpdateTime));
+                $query->where('iad.game_update_time', '>=', strtotime($lastUpdateTime));
             })
             ->take($getNumber);
         $rows = $query->selectRaw('a.id, a.email, a.passwd')->get();
@@ -147,7 +147,7 @@ class Id5AccountController extends Controller
             'create_time' => time(),
             'account_number' => count($rows)
         ];
-        $id = DB::table('id5_sold_out_account')->insertGetId($insertData);
+        $id = DB::table('game_id5_sold_out_account')->insertGetId($insertData);
 
         DB::table('account')->whereIn('id', $idRows)->update(['status' => 3]);
 
@@ -160,7 +160,7 @@ class Id5AccountController extends Controller
     public function soldOutAccountDetail(Request $request)
     {
         $id = $request->input('id');
-        $rows = DB::table('id5_sold_out_account')->where('id', '=', $id)->first();
+        $rows = DB::table('game_id5_sold_out_account')->where('id', '=', $id)->first();
         return JSON::ok([
             'rows' => $rows
         ]);
@@ -182,7 +182,7 @@ class Id5AccountController extends Controller
         $take = trim($request->input('limit'));
         $skip = (trim($request->input('page')) - 1) * $take;
 
-        $query = DB::table('id5_sold_out_account')
+        $query = DB::table('game_id5_sold_out_account')
             ->selectRaw('id, title, create_time, account_number');
         $total = $query->count();
         $rows = $query->take($take)->skip($skip)->orderBy('id', 'desc')->get();

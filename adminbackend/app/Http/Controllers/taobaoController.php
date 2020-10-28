@@ -146,7 +146,7 @@ class taobaoController extends Controller
         $take = trim($request->input('limit'));
         $skip = (trim($request->input('page')) - 1) * $take;
 
-        $query = DB::table('football_sold_out_account')
+        $query = DB::table('game_pes_sold_out_account')
             ->selectRaw('id, title, create_time, account_number');
         $total = $query->count();
         $rows = $query->take($take)->skip($skip)->orderBy('id', 'desc')->get();

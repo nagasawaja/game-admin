@@ -34,7 +34,7 @@ class Account extends Model
         //帐号数据
 
         $query = DB::table('account as a')
-            ->leftJoin('qiri_account_detail as qad', function($join) {$join->on('a.id', '=', 'qad.account_id');})
+            ->leftJoin('game_f7_account_detail as qad', function($join) {$join->on('a.id', '=', 'qad.account_id');})
             ->when($email, function($query) use($email) {$query->where('email', 'like', $email . '%');})
             ->when($oubo1 != '', function($query) use($oubo1) {$query->where('oubo', '>=', $oubo1);})
             ->when($oubo2 != '', function($query) use($oubo2) {$query->where('oubo', '<=', $oubo2);})
@@ -48,8 +48,8 @@ class Account extends Model
             ->when($signDay, function($query) use($signDay) {$query->where('sign_day', '=', $signDay);})
             ->when($errorTimes1 != '', function($query) use($errorTimes1) {$query->where('error_times', '>=', $errorTimes1);})
             ->when($errorTimes2 != '', function($query) use($errorTimes2) {$query->where('error_times', '<=', $errorTimes2);})
-            ->when($goodsDetailUpdateDate1 != '', function($query) use($goodsDetailUpdateDate1) {$query->where('qad.update_time', '>=', strtotime($goodsDetailUpdateDate1));})
-            ->when($goodsDetailUpdateDate2 != '', function($query) use($goodsDetailUpdateDate2) {$query->where('qad.update_time', '<', strtotime($goodsDetailUpdateDate2)+86400);})
+            ->when($goodsDetailUpdateDate1 != '', function($query) use($goodsDetailUpdateDate1) {$query->where('qad.game_update_time', '>=', strtotime($goodsDetailUpdateDate1));})
+            ->when($goodsDetailUpdateDate2 != '', function($query) use($goodsDetailUpdateDate2) {$query->where('qad.game_update_time', '<', strtotime($goodsDetailUpdateDate2)+86400);})
             ->when($stcCreateDatetimeStart != '', function($query) use($stcCreateDatetimeStart) {$query->where('qad.create_time', '>=', strtotime($stcCreateDatetimeStart));})
             ->when($stcCreateDatetimeEnd != '', function($query) use($stcCreateDatetimeEnd) {$query->where('qad.create_time', '<=', strtotime($stcCreateDatetimeEnd));})
             ->when(count($statusList) != 0, function($query) use($statusList) {$query->whereIn('a.status', $statusList);})
@@ -83,7 +83,7 @@ class Account extends Model
         //帐号数据
 
         $query = DB::table('account as a')
-            ->leftJoin('id5_account_detail as iad', function($join) {$join->on('a.id', '=', 'iad.account_id');})
+            ->leftJoin('game_id5_account_detail as iad', function($join) {$join->on('a.id', '=', 'iad.account_id');})
             ->when($email, function($query) use($email) {$query->where('email', 'like', $email . '%');})
             ->when($signDay1 != '', function($query) use($signDay1) {$query->where('sign_day', '>=', $signDay1);})
             ->when($signDay2 != '', function($query) use($signDay2) {$query->where('sign_day', '<=', $signDay2);})
@@ -96,8 +96,8 @@ class Account extends Model
             ->when($xianSuo2 != '', function($query) use($xianSuo2) {$query->where('xian_suo', '<=', $xianSuo2);})
             ->when($jingHua1 != '', function($query) use($jingHua1) {$query->where('jing_hua', '>=', $jingHua1);})
             ->when($jingHua2 != '', function($query) use($jingHua2) {$query->where('jing_hua', '<=', $jingHua2);})
-            ->when($goodsDetailUpdateDate1 != '', function($query) use($goodsDetailUpdateDate1) {$query->where('iad.update_time', '>=', strtotime($goodsDetailUpdateDate1));})
-            ->when($goodsDetailUpdateDate2 != '', function($query) use($goodsDetailUpdateDate2) {$query->where('iad.update_time', '<=', strtotime($goodsDetailUpdateDate2));})
+            ->when($goodsDetailUpdateDate1 != '', function($query) use($goodsDetailUpdateDate1) {$query->where('iad.game_update_time', '>=', strtotime($goodsDetailUpdateDate1));})
+            ->when($goodsDetailUpdateDate2 != '', function($query) use($goodsDetailUpdateDate2) {$query->where('iad.game_update_time', '<=', strtotime($goodsDetailUpdateDate2));})
             ->when($stcCreateDatetimeStart != '', function($query) use($stcCreateDatetimeStart) {$query->where('iad.create_time', '>=', strtotime($stcCreateDatetimeStart));})
             ->when($stcCreateDatetimeEnd != '', function($query) use($stcCreateDatetimeEnd) {$query->where('iad.create_time', '<=', strtotime($stcCreateDatetimeEnd));})
             ->when(count($statusList) != 0, function($query) use($statusList) {$query->whereIn('a.status', $statusList);})
@@ -138,7 +138,7 @@ class Account extends Model
         //帐号数据
 
         $query = DB::table('account as a')
-            ->leftJoin('football_account_detail as fad', function($join) {$join->on('a.id', '=', 'fad.account_id');})
+            ->leftJoin('game_pes_account_detail as fad', function($join) {$join->on('a.id', '=', 'fad.account_id');})
             ->when($email, function($query) use($email) {$query->where('email', 'like', $email . '%');})
             ->when($signDay1 != '', function($query) use($signDay1) {$query->where('sign_day', '>=', $signDay1);})
             ->when($signDay2 != '', function($query) use($signDay2) {$query->where('sign_day', '<=', $signDay2);})
@@ -157,8 +157,8 @@ class Account extends Model
             ->when($goldPlayer2 != '', function($query) use($goldPlayer2) {$query->where('gold_player', '<=', $goldPlayer2);})
             ->when($silverPlayer1 != '', function($query) use($silverPlayer1) {$query->where('silver_player', '>=', $silverPlayer1);})
             ->when($silverPlayer2 != '', function($query) use($silverPlayer2) {$query->where('silver_player', '<=', $silverPlayer2);})
-            ->when($goodsDetailUpdateDate1 != '', function($query) use($goodsDetailUpdateDate1) {$query->where('fad.update_time', '>=', strtotime($goodsDetailUpdateDate1));})
-            ->when($goodsDetailUpdateDate2 != '', function($query) use($goodsDetailUpdateDate2) {$query->where('fad.update_time', '<', strtotime($goodsDetailUpdateDate2)+86400);})
+            ->when($goodsDetailUpdateDate1 != '', function($query) use($goodsDetailUpdateDate1) {$query->where('fad.game_update_time', '>=', strtotime($goodsDetailUpdateDate1));})
+            ->when($goodsDetailUpdateDate2 != '', function($query) use($goodsDetailUpdateDate2) {$query->where('fad.game_update_time', '<', strtotime($goodsDetailUpdateDate2)+86400);})
             ->when($stcCreateDatetimeStart != '', function($query) use($stcCreateDatetimeStart) {$query->where('fad.create_time', '>=', strtotime($stcCreateDatetimeStart));})
             ->when($stcCreateDatetimeEnd != '', function($query) use($stcCreateDatetimeEnd) {$query->where('fad.create_time', '<=', strtotime($stcCreateDatetimeEnd));})
             ->when(count($statusList) != 0, function($query) use($statusList) {$query->whereIn('a.status', $statusList);})
@@ -192,7 +192,7 @@ class Account extends Model
         //帐号数据
 
         $query = DB::table('account as a')
-            ->leftJoin('dream_account_detail as d', function($join) {$join->on('a.id', '=', 'd.account_id');})
+            ->leftJoin('game_mz_account_detail as d', function($join) {$join->on('a.id', '=', 'd.account_id');})
             ->when($email, function($query) use($email) {$query->where('email', 'like', $email . '%');})
             ->when($signDay1 != '', function($query) use($signDay1) {$query->where('sign_day', '>=', $signDay1);})
             ->when($signDay2 != '', function($query) use($signDay2) {$query->where('sign_day', '<=', $signDay2);})
@@ -205,8 +205,8 @@ class Account extends Model
             ->when($moJing2 != '', function($query) use($moJing2) {$query->where('mo_jing', '<=', $moJing2);})
             ->when($shengMoQuan1 != '', function($query) use($shengMoQuan1) {$query->where('sheng_mo_quan', '>=', $shengMoQuan1);})
             ->when($shengMoQuan2 != '', function($query) use($shengMoQuan2) {$query->where('sheng_mo_quan', '<=', $shengMoQuan2);})
-            ->when($goodsDetailUpdateDate1 != '', function($query) use($goodsDetailUpdateDate1) {$query->where('d.update_time', '>=', strtotime($goodsDetailUpdateDate1));})
-            ->when($goodsDetailUpdateDate2 != '', function($query) use($goodsDetailUpdateDate2) {$query->where('d.update_time', '<', strtotime($goodsDetailUpdateDate2)+86400);})
+            ->when($goodsDetailUpdateDate1 != '', function($query) use($goodsDetailUpdateDate1) {$query->where('d.game_update_time', '>=', strtotime($goodsDetailUpdateDate1));})
+            ->when($goodsDetailUpdateDate2 != '', function($query) use($goodsDetailUpdateDate2) {$query->where('d.game_update_time', '<', strtotime($goodsDetailUpdateDate2)+86400);})
             ->when($stcCreateDatetimeStart != '', function($query) use($stcCreateDatetimeStart) {$query->where('d.create_time', '>=', strtotime($stcCreateDatetimeStart));})
             ->when($stcCreateDatetimeEnd != '', function($query) use($stcCreateDatetimeEnd) {$query->where('d.create_time', '<=', strtotime($stcCreateDatetimeEnd));})
             ->when(count($statusList) != 0, function($query) use($statusList) {$query->whereIn('a.status', $statusList);})
@@ -216,29 +216,29 @@ class Account extends Model
     }
     public function recoverAccount999()
     {
-        //update qiri_account_detail as a left join account as b on a.account_id = b.id set sign_day = 7,oubo_update_time = 1522274400
+        //update game_f7_account_detail as a left join account as b on a.account_id = b.id set sign_day = 7,oubo_update_time = 1522274400
         //where sign_day = 999  and b.`status` = 2;
         $where = [
-            ['qiri_account_detail.sign_day', '=', 999],
+            ['game_f7_account_detail.sign_day', '=', 999],
             ['account.status', '=', 2]
         ];
         $updateData = [
             'sign_day' => 10,
             'oubo_update_time' => strtotime(date('Y-m-d 00:00:00', time())) + 27000
         ];
-        DB::table('qiri_account_detail')->leftJoin('account', 'qiri_account_detail.account_id', '=', 'account.id')->where($where)->update($updateData);
+        DB::table('game_f7_account_detail')->leftJoin('account', 'game_f7_account_detail.account_id', '=', 'account.id')->where($where)->update($updateData);
     }
 
     public function recoverOuBo16()
     {
-        //update qiri_account_detail as a left join account as b on a.account_id = b.id set sign_day = 7,oubo_update_time = 1522274400
+        //update game_f7_account_detail as a left join account as b on a.account_id = b.id set sign_day = 7,oubo_update_time = 1522274400
         //where sign_day = 999  and b.`status` = 2;
         $where = [
-            ['qiri_account_detail.sign_day', '=', 15],
+            ['game_f7_account_detail.sign_day', '=', 15],
             ['account.status', '=', 2],
-            ['qiri_account_detail.oubo', '=', 16]
+            ['game_f7_account_detail.oubo', '=', 16]
         ];
-        $rows = DB::table('qiri_account_detail')->leftJoin('account', 'qiri_account_detail.account_id', '=', 'account.id')->selectRaw('qiri_account_detail.account_id, qiri_account_detail.sign_day, qiri_account_detail.oubo, account.email, account.passwd, account.server_name')->where($where)->get();
+        $rows = DB::table('game_f7_account_detail')->leftJoin('account', 'game_f7_account_detail.account_id', '=', 'account.id')->selectRaw('game_f7_account_detail.account_id, game_f7_account_detail.sign_day, game_f7_account_detail.oubo, account.email, account.passwd, account.server_name')->where($where)->get();
         foreach($rows as $row) {
             file_put_contents('/tmp/crontab.log', date('Y-m-d H:i:s', time()) . ' ' . json_encode($row) . PHP_EOL, 8);
         }
@@ -247,7 +247,7 @@ class Account extends Model
             'oubo_update_time' => strtotime(date('Y-m-d 00:00:00', time())) + 27000,
             'oubo' => 100
         ];
-        DB::table('qiri_account_detail')->leftJoin('account', 'qiri_account_detail.account_id', '=', 'account.id')->where($where)->update($updateData);
+        DB::table('game_f7_account_detail')->leftJoin('account', 'game_f7_account_detail.account_id', '=', 'account.id')->where($where)->update($updateData);
     }
 
     public static function singleton()

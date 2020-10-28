@@ -23,7 +23,7 @@ class DreamAccountController extends Controller
 
         $query = Account::singleton()->getDreamAccountQuery($request);
         $accountSelectRaw = 'a.id, a.server_name, a.status, a.email, a.passwd, a.is_clean, ';
-        $dreamAccountDetailSelectRaw = 'd.sign_day, d.error_times, d.mo_jing, d.sheng_mo_quan, a.device_name as idcard_name, a.idcard as idcard_num, d.update_time';
+        $dreamAccountDetailSelectRaw = 'd.sign_day, d.error_times, d.mo_jing, d.sheng_mo_quan, a.device_name as idcard_name, a.idcard as idcard_num, d.game_update_time';
         $take = trim($request->input('limit'));
         $skip = (trim($request->input('page')) - 1) * $take;
 
@@ -44,7 +44,7 @@ class DreamAccountController extends Controller
         $accountSelectRaw = 'a.server_name, count(*) as count, ';
         $qiriAccountDetailRaw = 'd.sign_day, d.sheng_mo_quan, d.mo_jing';
         $rows = DB::table('account as a')
-            ->leftJoin('dream_account_detail as d', 'a.id', '=', 'd.account_id')
+            ->leftJoin('game_mz_account_detail as d', 'a.id', '=', 'd.account_id')
             ->whereIn('a.status', [1,2])
             ->where('server_name', '=', 'dream_master')
             ->when($serverNameRows, function($query) use($serverNameRows) {$query->whereIn('a.server_name', $serverNameRows);})
@@ -90,7 +90,7 @@ class DreamAccountController extends Controller
             ['d.mo_jing', '>=', $moJing1]
         ];
         $query = DB::table('account as a')
-            ->leftJoin('dream_account_detail as d', function($join) {$join->on('a.id', '=', 'd.account_id');})
+            ->leftJoin('game_mz_account_detail as d', function($join) {$join->on('a.id', '=', 'd.account_id');})
             ->where($tmpWhere)
             ->when($shengMoQuan2, function($query) use($shengMoQuan2) {
                 $query->where('d.sheng_mo_quan', '<=', $shengMoQuan2);
@@ -118,7 +118,7 @@ class DreamAccountController extends Controller
             'create_time' => time(),
             'account_number' => count($rows)
         ];
-        $id = DB::table('dream_sold_out_account')->insertGetId($insertData);
+        $id = DB::table('game_mz_sold_out_account')->insertGetId($insertData);
 
         DB::table('account')->whereIn('id', $idRows)->update(['status' => 3]);
 
@@ -131,7 +131,7 @@ class DreamAccountController extends Controller
     public function soldOutAccountDetail(Request $request)
     {
         $id = $request->input('id');
-        $rows = DB::table('dream_sold_out_account')->where('id', '=', $id)->first();
+        $rows = DB::table('game_mz_sold_out_account')->where('id', '=', $id)->first();
         return JSON::ok([
             'rows' => $rows
         ]);
@@ -153,7 +153,7 @@ class DreamAccountController extends Controller
         $take = trim($request->input('limit'));
         $skip = (trim($request->input('page')) - 1) * $take;
 
-        $query = DB::table('dream_sold_out_account')
+        $query = DB::table('game_mz_sold_out_account')
             ->selectRaw('id, title, create_time, account_number');
         $total = $query->count();
         $rows = $query->take($take)->skip($skip)->orderBy('id', 'desc')->get();
