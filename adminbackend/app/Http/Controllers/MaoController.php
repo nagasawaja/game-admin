@@ -106,7 +106,10 @@ class MaoController extends Controller
         $stcCreateDatetime = $request->input('stc_create_datetime');
         $rows = DB::table('script_record')->where('record_date','=', $stcCreateDatetime)->orderBy("game_id")->orderBy("status")->get();
 
-        $rowss = DB::table('run_log_statistics')->where('record_date','=', $stcCreateDatetime)->orderBy("game_id")->orderBy("count")->get();
+        $rowss = DB::table('run_log_statistics')
+            ->where('record_date','=', $stcCreateDatetime)
+            ->orderBy("game_id")
+            ->orderByDesc("count")->get();
 
         return JSON::ok([
             'items' => $rows,
