@@ -14,8 +14,8 @@
             <el-table-column width="50px" label="金币" prop="coins"></el-table-column>
             <el-table-column width="50px" label="赠送" prop="extra_coins"></el-table-column>
             <el-table-column width="150px" label="价格" prop="price"></el-table-column>
-            <el-table-column width="150px" label="修改时间" prop="update_time">
-                <template slot-scope="scope">{{scope.row.update_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
+            <el-table-column width="150px" label="修改时间" prop="game_update_time">
+                <template slot-scope="scope">{{scope.row.game_update_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
             </el-table-column>
             <el-table-column label="操作" width="230" class-name="small-padding fixed-width" align="center">
                 <template slot-scope="scope">

@@ -63,28 +63,20 @@
             <el-table-column width="75px" label="密码" prop="passwd"></el-table-column>
             <el-table-column width="100px" label="魔晶" prop="mo_jing"></el-table-column>
             <el-table-column width="100px" label="圣魔券" prop="sheng_mo_quan"></el-table-column>
-            <el-table-column width="100px" label="身份证名字" prop="idcard_name"></el-table-column>
-            <el-table-column width="100px" label="身份证号" prop="idcard_num"></el-table-column>
+
             <el-table-column width="100px" label="状态" prop="status"></el-table-column>
             <el-table-column width="100px" label="签到天数" prop="sign_day"></el-table-column>
             <el-table-column width="150px" label="create_time" prop="create_time">
-                <template slot-scope="scope">{{scope.row.update_time | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</template>
+                <template slot-scope="scope">{{scope.row.game_update_time | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</template>
             </el-table-column>
-            <el-table-column width="150px" label="update_time" prop="update_time">
-                <template slot-scope="scope">{{scope.row.update_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
+            <el-table-column width="150px" label="game_update_time" prop="game_update_time">
+                <template slot-scope="scope">{{scope.row.game_update_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
             </el-table-column>
             <el-table-column width="100px" label="错误次数" prop="error_times"></el-table-column>
-            <el-table-column width="150px" label="登陆时间" prop="update_time">
-                <template slot-scope="scope">{{scope.row.update_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
-            </el-table-column>
-            <el-table-column width="150px" label="邮件时间" prop="email_time">
-                <template slot-scope="scope">{{scope.row.email_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
-            </el-table-column>
-            <el-table-column width="150px" label="创建时间" prop="create_time">
-                <template slot-scope="scope">{{scope.row.create_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
-            </el-table-column>
+            <el-table-column width="100px" label="身份证名字" prop="idcard_name"></el-table-column>
+            <el-table-column width="100px" label="身份证号" prop="idcard_num"></el-table-column>
             <el-table-column width="150px" label="服务器" prop="server_name"></el-table-column>
-            <el-table-column width="150px" label="三无帐号" prop="is_clean">
+            <el-table-column width="80px" label="三无帐号" prop="is_clean">
                 <template slot-scope="scope">
                     <el-tag>{{scope.row.is_clean==1?'是':'否'}}</el-tag>
                 </template>

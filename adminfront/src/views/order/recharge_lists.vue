@@ -20,10 +20,10 @@
                 </template>
             </el-table-column>
             <el-table-column width="150px" label="create_time" prop="create_time">
-                <template slot-scope="scope">{{scope.row.update_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
+                <template slot-scope="scope">{{scope.row.game_update_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
             </el-table-column>
-            <el-table-column width="150px" label="update_time" prop="update_time">
-                <template slot-scope="scope">{{scope.row.update_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
+            <el-table-column width="150px" label="game_update_time" prop="game_update_time">
+                <template slot-scope="scope">{{scope.row.game_update_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
             </el-table-column>
             <!--<el-table-column label="操作" width="230" class-name="small-padding fixed-width" align="center">-->
             <!--<template slot-scope="scope">-->

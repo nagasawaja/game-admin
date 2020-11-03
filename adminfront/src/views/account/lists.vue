@@ -72,22 +72,16 @@
             </el-table-column>
             <el-table-column width="90px" label="欧泊" prop="oubo"></el-table-column>
             <el-table-column width="90px" label="签到天数" prop="sign_day"></el-table-column>
+            <el-table-column width="90px" label="登录天数" prop="sign_times"></el-table-column>
             <el-table-column width="150px" label="create_time" prop="create_time">
                 <template slot-scope="scope">{{scope.row.create_time | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</template>
             </el-table-column>
-            <el-table-column width="150px" label="update_time" prop="update_time">
-                <template slot-scope="scope">{{scope.row.update_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
+            <el-table-column width="150px" label="game_update_time" prop="game_update_time">
+                <template slot-scope="scope">{{scope.row.game_update_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
             </el-table-column>
-            <el-table-column width="150px" label="下次拿欧泊" prop="oubo_update_time">
-                <template slot-scope="scope">{{scope.row.oubo_update_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
-            </el-table-column>
-            <el-table-column width="150px" label="错误次数" prop="error_times"></el-table-column>
-            <el-table-column width="150px" label="下次邮件时间" prop="email_time">
-                <template slot-scope="scope">{{scope.row.email_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
-            </el-table-column>
-
-            <el-table-column width="150px" label="服务器" prop="server_name"></el-table-column>
-            <el-table-column width="150px" label="三无帐号" prop="is_clean">
+            <el-table-column width="80px" label="错误次数" prop="error_times"></el-table-column>
+            <el-table-column width="80px" label="服务器" prop="server_name"></el-table-column>
+            <el-table-column width="80px" label="三无帐号" prop="is_clean">
                 <template slot-scope="scope">
                     <el-tag>{{scope.row.is_clean==1?'是':'否'}}</el-tag>
                 </template>
