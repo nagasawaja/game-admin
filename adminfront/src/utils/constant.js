@@ -16,3 +16,14 @@ export const statusAccount = [
 export const orderByOption = [{value:"game_update_time", label:"game_update_time"}, {value:"update_time desc", label:"update_time desc"}];
 
 
+export const yesOrNoCssType = {
+    1: 'success',
+    0: 'danger'
+};
+
+export const yesOrNoShowText = {
+    0: "否",
+    1: "是",
+};
+
+export const tradeStatusShowText = {0: '待支付', 1: '交易中', 2: '已成功', 3: '已失败', 4: '已取消'};
