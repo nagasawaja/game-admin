@@ -2,6 +2,14 @@
     <div class="app-container calendar-list-container">
         <div class="filter-container">
             状态：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='状态'  v-model="listQuery.status"></el-input>
+            最后的更新时间：<el-date-picker
+                v-model="listQuery.last_update_time"
+                type="datetime"
+                value-format="yyyy-MM-dd HH:00:00"
+                placeholder="选择日期时间"
+                :default-value="listQuery.last_update_time"
+        >
+        </el-date-picker>
             <br/>
             服务器：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='服务器'  v-model="listQuery.serverName"></el-input>
             欧泊：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='欧泊1'  v-model="listQuery.oubo1"></el-input>-
@@ -18,6 +26,8 @@
             <el-table-column width="65px"  label="服务器" prop="server_name"></el-table-column>
             <el-table-column width="100px" label="欧泊" prop="oubo"></el-table-column>
             <el-table-column width="100px" label="签到天数" prop="sign_day"></el-table-column>
+            <el-table-column width="100px" label="登录天数" prop="sign_times"></el-table-column>
+            <el-table-column width="100px" label="错误次数" prop="error_times"></el-table-column>
             <el-table-column width="100px" label="数量" prop="count"></el-table-column>
         </el-table>
 
@@ -50,6 +60,7 @@
     export default {
         name: 'admin-lists',
         data () {
+            var stcCreate_datetime = new Date();
             return {
                 tableKey: 0,
                 list: null,
@@ -64,7 +75,8 @@
                     status:2,
                     oubo1:'',
                     oubo2:'',
-                    signDay:15
+                    signDay:15,
+                    last_update_time: stcCreate_datetime.format("yyyy-MM-dd 00:00:00"),
                 },
                 temp: { id: undefined, name: '', description: '', coins: '', extra_coins: '', price: '' },
                 dialogFormVisible: false,

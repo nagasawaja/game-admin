@@ -184,6 +184,7 @@
                     this.total = result.data.total;
                     this.listLoading = false
                 })
+                console.log(this.list[0].email)
             },
             editStatus(row, handleType) {
                 row.edit = false;

@@ -28,7 +28,8 @@
             <el-table-column width="100px" label="精华" prop="jing_hua"></el-table-column>
             <el-table-column width="100px" label="线索" prop="xian_suo"></el-table-column>
             <el-table-column width="100px" label="灵感" prop="ling_gan"></el-table-column>
-            <el-table-column width="100px" label="签到天数" prop="sign_day"></el-table-column>
+            <el-table-column width="100px" label="签到天数" prop="sign_times"></el-table-column>
+            <el-table-column width="100px" label="错误次数" prop="error_times"></el-table-column>
             <el-table-column width="100px" label="数量" prop="count"></el-table-column>
         </el-table>
         <div class="pagination-container">

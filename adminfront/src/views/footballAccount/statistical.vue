@@ -2,6 +2,14 @@
     <div class="app-container calendar-list-container">
         <div class="filter-container">
             服务器：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='服务器'  v-model="listQuery.serverName"></el-input>
+            最后的更新时间：<el-date-picker
+                v-model="listQuery.last_update_time"
+                type="datetime"
+                value-format="yyyy-MM-dd HH:00:00"
+                placeholder="选择日期时间"
+                :default-value="listQuery.last_update_time"
+        >
+        </el-date-picker>
             <br/>
             黑球：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='黑球1'  v-model="listQuery.black_player_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='黑球2'  v-model="listQuery.black_player_2"></el-input>
             <br/>
@@ -22,7 +30,8 @@
             <el-table-column width="100px" label="金币" prop="gold"></el-table-column>
             <el-table-column width="100px" label="资金" prop="money"></el-table-column>
             <el-table-column width="100px" label="银球" prop="silver_player"></el-table-column>
-            <el-table-column width="100px" label="签到天数" prop="sign_day"></el-table-column>
+            <el-table-column width="100px" label="签到天数" prop="sign_times"></el-table-column>
+            <el-table-column width="100px" label="错误次数" prop="error_times"></el-table-column>
             <el-table-column width="100px" label="数量" prop="count"></el-table-column>
         </el-table>
         <div class="pagination-container">
@@ -53,6 +62,7 @@
     export default {
         name: 'admin-lists',
         data () {
+            var stcCreate_datetime = new Date();
             return {
                 tableKey: 0,
                 list: null,
@@ -73,6 +83,7 @@
                     gold_2:'',
                     money_1:'',
                     money_2:'',
+                    last_update_time: stcCreate_datetime.format("yyyy-MM-dd 00:00:00"),
                 },
                 temp: { id: undefined, name: '', description: '', coins: '', extra_coins: '', price: '' },
                 dialogFormVisible: false,

@@ -42,7 +42,7 @@ class DreamAccountController extends Controller
     {
         $serverNameRows = trim($request->input('serverNameRows'));
         $accountSelectRaw = 'a.server_name, count(*) as count, ';
-        $qiriAccountDetailRaw = 'd.sign_day, d.sheng_mo_quan, d.mo_jing';
+        $qiriAccountDetailRaw = 'd.sign_times, d.sheng_mo_quan, d.mo_jing';
         $rows = DB::table('account as a')
             ->leftJoin('game_mz_account_detail as d', 'a.id', '=', 'd.account_id')
             ->whereIn('a.status', [1,2])

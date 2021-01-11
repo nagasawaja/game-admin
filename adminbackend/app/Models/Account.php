@@ -29,6 +29,7 @@ class Account extends Model
         $stcCreateDatetimeStart = ($request->input('stc_create_datetime_start'));
         $stcCreateDatetimeEnd = ($request->input('stc_create_datetime_end'));
         $statusList = $request->input('statusList');
+        $lastUpdateTime = trim($request->input('last_update_time'));
 
 
         //帐号数据
@@ -45,6 +46,9 @@ class Account extends Model
             ->when($getNumber, function($query) use($getNumber) {$query->take($getNumber);})
             ->when($signDay1 != '', function($query) use($signDay1) {$query->where('sign_day', '>=', $signDay1);})
             ->when($signDay2 != '', function($query) use($signDay2) {$query->where('sign_day', '<=', $signDay2);})
+            ->when($lastUpdateTime, function($query) use($lastUpdateTime) {
+                $query->where('qad.game_update_time', '>=', strtotime($lastUpdateTime));
+            })
             ->when($signDay, function($query) use($signDay) {$query->where('sign_day', '=', $signDay);})
             ->when($errorTimes1 != '', function($query) use($errorTimes1) {$query->where('error_times', '>=', $errorTimes1);})
             ->when($errorTimes2 != '', function($query) use($errorTimes2) {$query->where('error_times', '<=', $errorTimes2);})

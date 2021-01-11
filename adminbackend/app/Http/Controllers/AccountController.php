@@ -45,13 +45,15 @@ class AccountController extends Controller
     public function statistical(Request $request)
     {
         $serverName = trim($request->input('serverName'));
+        $lastUpdateTime = trim($request->input('last_update_time'));
         $accountSelectRaw = 'a.server_name, count(*) as count, ';
-        $qiriAccountDetailRaw = 'qad.oubo, qad.sign_day';
+        $qiriAccountDetailRaw = 'qad.oubo, qad.sign_day, qad.sign_times,qad.error_times';
         $rows = DB::table('account as a')
             ->leftJoin('game_f7_account_detail as qad', 'a.id', '=', 'qad.account_id')
             ->whereIn('a.status', [1,2])
             ->where('a.game_id', '=', 6378)
             ->when($serverName, function($query) use($serverName) {$query->where('a.server_name', '=', $serverName);})
+            ->when($lastUpdateTime, function($query) use($lastUpdateTime) {$query->where('qad.game_update_time', '>=', strtotime($lastUpdateTime));})
             ->groupBy(['server_name', 'sign_day', 'oubo'])
             ->orderBy('a.server_name', 'desc')
             ->orderBy('qad.sign_day', 'asc')

@@ -46,7 +46,7 @@ class Id5AccountController extends Controller
         $serverName = trim($request->input('serverName'));
         $lastUpdateTime = trim($request->input('last_update_time'));
         $accountSelectRaw = 'a.server_name, count(*) as count, ';
-        $qiriAccountDetailRaw = 'id5A.xian_suo, id5A.sign_day, id5A.ling_gan,id5A.jing_hua,id5A.error_times';
+        $qiriAccountDetailRaw = 'id5A.xian_suo, id5A.sign_times, id5A.ling_gan,id5A.jing_hua,id5A.error_times';
         $rows = DB::table('account as a')
             ->leftJoin('game_id5_account_detail as id5A', 'a.id', '=', 'id5A.account_id')
             ->whereIn('a.status', [1,2])

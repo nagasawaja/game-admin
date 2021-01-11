@@ -17,7 +17,7 @@
                   border fit highlight-current-row style="display:inline-block;width:auto;margin-top:15px">
             <el-table-column width="100px" label="圣魔券" prop="sheng_mo_quan"></el-table-column>
             <el-table-column width="100px" label="魔晶" prop="mo_jing"></el-table-column>
-            <el-table-column width="100px" label="签到天数" prop="sign_day"></el-table-column>
+            <el-table-column width="100px" label="签到天数" prop="sign_times"></el-table-column>
             <el-table-column width="100px" label="数量" prop="count"></el-table-column>
         </el-table>
         <div class="pagination-container">

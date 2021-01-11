@@ -42,14 +42,16 @@ class FootballAccountController extends Controller
     //帐号统计
     public function statistical(Request $request)
     {
+        $lastUpdateTime = trim($request->input('last_update_time'));
         $serverNameRows = trim($request->input('serverNameRows'));
         $accountSelectRaw = 'a.server_name, count(*) as count, ';
-        $qiriAccountDetailRaw = 'fad.gold, fad.money, fad.black_player,fad.gold_player,fad.silver_player,fad.sign_day';
+        $qiriAccountDetailRaw = 'fad.gold, fad.money, fad.black_player,fad.gold_player,fad.silver_player,fad.sign_times,fad.error_times';
         $rows = DB::table('account as a')
             ->leftJoin('game_pes_account_detail as fad', 'a.id', '=', 'fad.account_id')
             ->whereIn('a.status', [1,2])
             ->where('server_name', '=', 'football_master')
             ->when($serverNameRows, function($query) use($serverNameRows) {$query->whereIn('a.server_name', $serverNameRows);})
+            ->when($lastUpdateTime, function($query) use($lastUpdateTime) {$query->where('fad.game_update_time', '>=', strtotime($lastUpdateTime));})
             ->groupBy(['black_player', 'gold_player', 'gold', 'money', "sign_day"])
             ->orderBy('fad.black_player', 'desc')
             ->orderBy('fad.gold_player', 'desc')
@@ -77,6 +79,7 @@ class FootballAccountController extends Controller
         $blackPlayer2 = floor(($request->input('black_player_2')));
         $money1 = floor(($request->input('money_1')));
         $money2 = floor(($request->input('money_2')));
+        $lastUpdateTime = trim($request->input('last_update_time'));
 
         if($getNumber > 50 || $getNumber <=0 || $gold1 <=0 ||  $serverName == '' || $status != 2) {
             return JSON::error(JSON::E_INTERNAL, '参数不符合标准');
@@ -104,6 +107,9 @@ class FootballAccountController extends Controller
             })
             ->when($money2, function($query) use($money2) {
                 $query->where('football.money', '<=', $money2);
+            })
+            ->when($lastUpdateTime, function($query) use($lastUpdateTime) {
+                $query->where('football.game_update_time', '>=', strtotime($lastUpdateTime));
             })
             ->take($getNumber);
         $rows = $query->selectRaw('a.id, a.email, a.passwd')->get();
