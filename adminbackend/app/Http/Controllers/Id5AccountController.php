@@ -100,7 +100,7 @@ class Id5AccountController extends Controller
         $xianSuo2 = floor(($request->input('xian_suo_2')));
         $lastUpdateTime = trim($request->input('last_update_time'));
 
-        if($getNumber > 50 || $getNumber <=0 || $jingHua1 <=0 || $xianSuo1 <=0 || $serverName == '' || $status != 2) {
+        if($getNumber > 500 || $getNumber <=0 || $jingHua1 <=0 || $xianSuo1 <=0 || $serverName == '' || $status != 2) {
             return JSON::error(JSON::E_INTERNAL, '参数不符合标准');
         }
 
