@@ -100,7 +100,7 @@ class Id5AccountController extends Controller
         $jingHua2 = floor(($request->input('jing_hua2')));
         $xianSuo1 = floor(($request->input('xian_suo_1')));
         $xianSuo2 = floor(($request->input('xian_suo_2')));
-        $extraField = floor(($request->input('extra_field')));
+        $extraField = trim(($request->input('extra_field')));
         $lastUpdateTime = trim($request->input('last_update_time'));
 
         if($getNumber > 500 || $getNumber <=0 || $jingHua1 <=0 || $xianSuo1 <=0 || $serverName == '' || $status != 2) {
