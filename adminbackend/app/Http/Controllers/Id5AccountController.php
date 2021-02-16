@@ -26,7 +26,7 @@ class Id5AccountController extends Controller
         $query = Account::singleton()->getId5AccountQuery($request);
 
         $accountSelectRaw = 'a.id, a.server_name, a.status, a.email, a.passwd, a.is_clean, ';
-        $id5AccountDetailSelectRaw = 'iad.sign_day, iad.error_times, iad.jing_hua, iad.xian_suo, iad.ling_gan, iad.jing_hua_update_time, iad.email_time, iad.game_update_time, iad.create_time';
+        $id5AccountDetailSelectRaw = 'iad.sign_times, iad.error_times, iad.jing_hua, iad.xian_suo, iad.ling_gan, iad.jing_hua_update_time, iad.email_time, iad.game_update_time, iad.create_time';
         $take = trim($request->input('limit'));
         $skip = (trim($request->input('page')) - 1) * $take;
 
@@ -45,14 +45,16 @@ class Id5AccountController extends Controller
     {
         $serverName = trim($request->input('serverName'));
         $lastUpdateTime = trim($request->input('last_update_time'));
+        $extraField = trim($request->input('extra_field'));
         $accountSelectRaw = 'a.server_name, count(*) as count, ';
-        $qiriAccountDetailRaw = 'id5A.xian_suo, id5A.sign_times, id5A.ling_gan,id5A.jing_hua,id5A.error_times';
+        $qiriAccountDetailRaw = 'id5A.extra_field, id5A.xian_suo, id5A.sign_times, id5A.ling_gan,id5A.jing_hua,id5A.error_times';
         $rows = DB::table('account as a')
             ->leftJoin('game_id5_account_detail as id5A', 'a.id', '=', 'id5A.account_id')
             ->whereIn('a.status', [1,2])
             ->where('remark', '!=', '777')
             ->when($serverName, function($query) use($serverName) {$query->where('a.server_name', '=', $serverName);})
             ->when($lastUpdateTime, function($query) use($lastUpdateTime) {$query->where('id5A.game_update_time', '>=', strtotime($lastUpdateTime));})
+            ->when($extraField, function($query) use($extraField) {$query->where('id5A.extra_field', 'like', $extraField . '%');})
             ->groupBy(['jing_hua', 'xian_suo', 'ling_gan', 'sign_day'])
             ->orderBy('id5A.jing_hua', 'desc')
             ->orderBy('id5A.xian_suo', 'desc')
@@ -98,6 +100,7 @@ class Id5AccountController extends Controller
         $jingHua2 = floor(($request->input('jing_hua2')));
         $xianSuo1 = floor(($request->input('xian_suo_1')));
         $xianSuo2 = floor(($request->input('xian_suo_2')));
+        $extraField = floor(($request->input('extra_field')));
         $lastUpdateTime = trim($request->input('last_update_time'));
 
         if($getNumber > 500 || $getNumber <=0 || $jingHua1 <=0 || $xianSuo1 <=0 || $serverName == '' || $status != 2) {
@@ -115,6 +118,7 @@ class Id5AccountController extends Controller
             ['a.server_name', '=', $serverName],
             ['iad.jing_hua', '>=', $jingHua1],
             ['iad.xian_suo', '>=', $xianSuo1],
+            ['iad.extra_field', 'like', $extraField . '%'],
             ['a.remark', '!=', '777']
         ];
         $query = DB::table('account as a')

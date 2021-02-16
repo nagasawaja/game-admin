@@ -18,8 +18,8 @@ class Account extends Model
         $oubo1 = floor(($request->input('oubo1')));
         $oubo2 = floor(($request->input('oubo2')));
         $oubo = floor(($request->input('oubo')));
-        $signDay1 = floor(($request->input('sign_day_1')));
-        $signDay2 = floor(($request->input('sign_day_2')));
+        $signTimes1 = floor(($request->input('sign_times_1')));
+        $signTimes2 = floor(($request->input('sign_times_2')));
         $signDay = floor(($request->input('signDay')));
         $errorTimes1 = floor(($request->input('error_times_1')));
         $errorTimes2 = floor(($request->input('error_times_2')));
@@ -44,8 +44,8 @@ class Account extends Model
             ->when($serverName, function($query) use($serverName) {$query->where('server_name', '=', $serverName);})
             ->when($accountId, function($query) use($accountId) {$query->where('a.id', '=', $accountId);})
             ->when($getNumber, function($query) use($getNumber) {$query->take($getNumber);})
-            ->when($signDay1 != '', function($query) use($signDay1) {$query->where('sign_day', '>=', $signDay1);})
-            ->when($signDay2 != '', function($query) use($signDay2) {$query->where('sign_day', '<=', $signDay2);})
+            ->when($signTimes1 != '', function($query) use($signTimes1) {$query->where('sign_times', '>=', $signTimes1);})
+            ->when($signTimes2 != '', function($query) use($signTimes2) {$query->where('sign_times', '<=', $signTimes2);})
             ->when($lastUpdateTime, function($query) use($lastUpdateTime) {
                 $query->where('qad.game_update_time', '>=', strtotime($lastUpdateTime));
             })

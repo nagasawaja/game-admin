@@ -10,6 +10,7 @@
                 :default-value="listQuery.last_update_time"
             >
             </el-date-picker>
+            extra_field：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='extraField'  v-model="listQuery.extra_field"></el-input>
             <br/>
             精华：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='精华1'  v-model="listQuery.jing_hua1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='精华2'  v-model="listQuery.jing_hua2"></el-input>
             线索：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='线索1'  v-model="listQuery.xian_suo_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='线索2'  v-model="listQuery.xian_suo_2"></el-input>
@@ -30,6 +31,7 @@
             <el-table-column width="100px" label="灵感" prop="ling_gan"></el-table-column>
             <el-table-column width="100px" label="签到天数" prop="sign_times"></el-table-column>
             <el-table-column width="100px" label="错误次数" prop="error_times"></el-table-column>
+            <el-table-column width="100px" label="extra_field" prop="extra_field"></el-table-column>
             <el-table-column width="100px" label="数量" prop="count"></el-table-column>
         </el-table>
         <div class="pagination-container">
@@ -87,6 +89,7 @@
                     page: 1,
                     limit: 20,
                     serverName:'163master',
+                    extra_field:'',
                     getNumber:10,
                     status:2,
                     jing_hua1:'',
