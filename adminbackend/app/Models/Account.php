@@ -68,8 +68,8 @@ class Account extends Model
         $email = trim($request->input('email'));
         $status = trim($request->input('status'));
         $serverName = trim($request->input('serverName'));
-        $signDay1 = floor(($request->input('sign_day_1')));
-        $signDay2 = floor(($request->input('sign_day_2')));
+        $signTimes1 = floor(($request->input('sign_times_1')));
+        $signTimes2 = floor(($request->input('sign_times_2')));
         $errorTimes1 = floor(($request->input('error_times_1')));
         $errorTimes2 = floor(($request->input('error_times_2')));
         $xianSuo1 = floor(($request->input('xian_suo_1')));
@@ -89,8 +89,8 @@ class Account extends Model
         $query = DB::table('account as a')
             ->leftJoin('game_id5_account_detail as iad', function($join) {$join->on('a.id', '=', 'iad.account_id');})
             ->when($email, function($query) use($email) {$query->where('email', 'like', $email . '%');})
-            ->when($signDay1 != '', function($query) use($signDay1) {$query->where('sign_day', '>=', $signDay1);})
-            ->when($signDay2 != '', function($query) use($signDay2) {$query->where('sign_day', '<=', $signDay2);})
+            ->when($signTimes1 != '', function($query) use($signTimes1) {$query->where('sign_times', '>=', $signTimes1);})
+            ->when($signTimes2 != '', function($query) use($signTimes2) {$query->where('sign_times', '<=', $signTimes2);})
             ->when($errorTimes1 != '', function($query) use($errorTimes1) {$query->where('error_times', '>=', $errorTimes1);})
             ->when($errorTimes2 != '', function($query) use($errorTimes2) {$query->where('error_times', '<=', $errorTimes2);})
             ->when($status, function($query) use($status) {$query->where('status', '=', $status);})
