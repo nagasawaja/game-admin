@@ -13,12 +13,29 @@
             </el-option>
         </el-select>
             <br/>
-            服务器：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='服务器'  v-model="listQuery.serverName"></el-input>
+            服务器：
+            <el-select style="width: 180px;" v-model="listQuery.serverName" clearable placeholder="服务器">
+                <el-option
+                        v-for="item in constant.id5ServerList"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                </el-option>
+            </el-select>
             线索：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='线索1'  v-model="listQuery.xian_suo_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='线索2'  v-model="listQuery.xian_suo_2"></el-input>
             精华：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='精华1'  v-model="listQuery.jing_hua_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='精华2'  v-model="listQuery.jing_hua_2"></el-input>
             <br/>
             登录天数：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='签到天数1'  v-model="listQuery.sign_times_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='签到天数2'  v-model="listQuery.sign_times_2"></el-input>
             错误次数：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='错误次数1'  v-model="listQuery.error_times_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='错误次数2'  v-model="listQuery.error_times_2"></el-input>
+            extra_field：
+            <el-autocomplete
+                    class="inline-input"
+                    v-model="listQuery.extra_field"
+                    :fetch-suggestions="querySearch"
+                    placeholder="请输入内容"
+                    @select="handleFilter"
+            ></el-autocomplete>
+<!--            <el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='extra_field'  v-model="listQuery.extra_field"></el-input>-->
             <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
             <br/>
             最后更新时间：<el-date-picker
@@ -70,8 +87,9 @@
             <el-table-column width="200px" label="邮箱" prop="email"></el-table-column>
             <el-table-column width="125px" label="密码" prop="passwd"></el-table-column>
             <el-table-column width="100px" label="精华" prop="jing_hua"></el-table-column>
-            <el-table-column width="100px" label="线索" prop="xian_suo"></el-table-column>
-            <el-table-column width="100px" label="灵感" prop="ling_gan"></el-table-column>
+            <el-table-column width="90px" label="线索" prop="xian_suo"></el-table-column>
+            <el-table-column width="100px" label="extra_field" prop="extra_field"></el-table-column>
+            <el-table-column width="150px" label="服务器" prop="server_name"></el-table-column>
             <el-table-column width="100px" label="状态" prop="status">
                 <template slot-scope="{row}">
                     <div v-if="row.edit">
@@ -83,20 +101,22 @@
                 </template>
             </el-table-column>
             <el-table-column width="100px" label="登录天数" prop="sign_times"></el-table-column>
+            <el-table-column width="100px" label="错误次数" prop="error_times"></el-table-column>
+            <el-table-column width="100px" label="灵感" prop="ling_gan"></el-table-column>
             <el-table-column width="150px" label="create_time" prop="create_time">
                 <template slot-scope="scope">{{scope.row.create_time | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</template>
             </el-table-column>
             <el-table-column width="150px" label="game_update_time" prop="game_update_time">
                 <template slot-scope="scope">{{scope.row.game_update_time | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</template>
             </el-table-column>
-            <el-table-column width="100px" label="错误次数" prop="error_times"></el-table-column>
+
 <!--            <el-table-column width="150px" label="登陆时间" prop="game_update_time">-->
 <!--                <template slot-scope="scope">{{scope.row.game_update_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>-->
 <!--            </el-table-column>-->
 <!--            <el-table-column width="150px" label="邮件时间" prop="email_time">-->
 <!--                <template slot-scope="scope">{{scope.row.email_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>-->
 <!--            </el-table-column>-->
-            <el-table-column width="150px" label="服务器" prop="server_name"></el-table-column>
+
             <el-table-column width="150px" label="三无帐号" prop="is_clean">
                 <template slot-scope="scope">
                     <el-tag>{{scope.row.is_clean==1?'是':'否'}}</el-tag>
@@ -138,6 +158,7 @@
                 total: 0,
                 listLoading: true,
                 textarea: '',
+
                 listQuery: {
                     page: 1,
                     limit: 20,
@@ -159,6 +180,7 @@
                     stc_create_datetime_start: '',
                     stc_create_datetime_end: '',
                     order_by_option:"",
+                    extra_field:"",
                 },
                 temp: { id: undefined, name: '', description: '', coins: '', extra_coins: '', price: '' },
                 dialogFormVisible: false,
@@ -170,6 +192,11 @@
             this.getList()
         },
         methods: {
+            querySearch(queryString, cb) {
+                var restaurants = this.constant.id5ExtraFieldList;
+                // 调用 callback 返回建议列表的数据
+                cb(restaurants);
+            },
             getList () {
                 this.listLoading = true;
                 request({ url: 'id5Account/lists', method: 'post', params: this.listQuery }).then(response => {

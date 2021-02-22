@@ -24,7 +24,7 @@ class FootballAccountController extends Controller
 
         $query = Account::singleton()->getFootballAccountQuery($request);
         $accountSelectRaw = 'a.id, a.server_name, a.status, a.email, a.passwd, a.is_clean, ';
-        $footballAccountDetailSelectRaw = 'fad.sign_day, fad.error_times, fad.money, fad.gold, fad.black_player, 
+        $footballAccountDetailSelectRaw = 'fad.sign_times, fad.error_times, fad.money, fad.gold, fad.black_player, 
         fad.gold_player, fad.silver_player, fad.email_time, fad.game_update_time, fad.create_time';
         $take = trim($request->input('limit'));
         $skip = (trim($request->input('page')) - 1) * $take;

@@ -1,7 +1,15 @@
 <template>
     <div class="app-container calendar-list-container">
         <div class="filter-container">
-            服务器：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='服务器'  v-model="listQuery.serverName"></el-input>
+            服务器：
+            <el-select style="width: 180px;" v-model="listQuery.serverName" clearable placeholder="服务器">
+                <el-option
+                        v-for="item in constant.id5ServerList"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                </el-option>
+            </el-select>
             最后的更新时间：<el-date-picker
                 v-model="listQuery.last_update_time"
                 type="datetime"
@@ -10,7 +18,15 @@
                 :default-value="listQuery.last_update_time"
             >
             </el-date-picker>
-            extra_field：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='extraField'  v-model="listQuery.extra_field"></el-input>
+            extra_field：
+            <el-autocomplete
+                    class="inline-input"
+                    v-model="listQuery.extra_field"
+                    :fetch-suggestions="querySearch"
+                    placeholder="请输入内容"
+                    @select="handleFilter"
+            ></el-autocomplete>
+<!--            <el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='extraField'  v-model="listQuery.extra_field"></el-input>-->
             <br/>
             精华：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='精华1'  v-model="listQuery.jing_hua1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='精华2'  v-model="listQuery.jing_hua2"></el-input>
             线索：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='线索1'  v-model="listQuery.xian_suo_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='线索2'  v-model="listQuery.xian_suo_2"></el-input>
@@ -80,6 +96,7 @@
         data () {
             var stcCreate_datetime = new Date();
             return {
+                constant: require('@/utils/constant'),
                 tableKey: 0,
                 list: null,
                 total: 0,
@@ -108,6 +125,11 @@
             this.getList()
         },
         methods: {
+            querySearch(queryString, cb) {
+                var restaurants = this.constant.id5ExtraFieldList;
+                // 调用 callback 返回建议列表的数据
+                cb(restaurants);
+            },
             getList () {
                 this.listLoading = true
                 request({ url: 'id5Account/statistical', method: 'post', params: this.listQuery }).then(response => {

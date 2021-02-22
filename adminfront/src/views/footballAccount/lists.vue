@@ -21,7 +21,7 @@
 <!--            金球：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='金球1'  v-model="listQuery.gold_player_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='金球2'  v-model="listQuery.gold_player_2"></el-input>-->
 <!--            银球：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='银球1'  v-model="listQuery.silver_player_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='银球2'  v-model="listQuery.silver_player_2"></el-input>-->
             <br/>
-            签到天数：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='签到天数1'  v-model="listQuery.sign_day_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='签到天数2'  v-model="listQuery.sign_day_2"></el-input>
+            登录天数：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='登录天数1'  v-model="listQuery.sign_times_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='登录天数2'  v-model="listQuery.sign_times_2"></el-input>
             错误次数：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='错误次数1'  v-model="listQuery.error_times_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='错误次数2'  v-model="listQuery.error_times_2"></el-input>
             <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
             <br/>
@@ -81,7 +81,7 @@
 <!--            <el-table-column width="100px" label="金球" prop="gold_player"></el-table-column>-->
 <!--            <el-table-column width="100px" label="银球" prop="silver_player"></el-table-column>-->
 
-            <el-table-column width="100px" label="签到天数" prop="sign_day"></el-table-column>
+            <el-table-column width="100px" label="登录天数" prop="sign_times"></el-table-column>
             <el-table-column width="150px" label="create_time" prop="create_time">
                 <template slot-scope="scope">{{scope.row.create_time | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</template>
             </el-table-column>
@@ -158,8 +158,8 @@
                     silver_player_2: '',
                     error_times_1: '',
                     error_times_2: '',
-                    sign_day_1: '',
-                    sign_day_2: '',
+                    sign_times_1: '',
+                    sign_times_2: '',
                     accountId:'',
                     email_time:'',
                     goods_detail_update_date1:'',
