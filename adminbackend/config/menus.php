@@ -23,13 +23,13 @@ return [
     ],
     ['title' => '交易猫', 'icon' => 'document', 'children' =>
         [
-            ['title' => '单个商品销量变化', 'path' => 'mao/goodsChangeHistory', 'home' => true],
+            ['title' => '工具箱', 'path' => 'mao/tools'],
+            ['title' => '脚本数据', 'path' => 'mao/scriptRecord' , 'home' => true],
+            ['title' => '单个商品销量变化', 'path' => 'mao/goodsChangeHistory'],
             ['title' => '商品总数量与销量比例', 'path' => 'mao/goodsScale'],
             ['title' => '数据报表', 'path' => 'mao/dataReport'],
             ['title' => '执行原生sql', 'path' => 'account/querySql'],
             ['title' => '执行原生redis', 'path' => 'account/queryRedis'],
-            ['title' => '工具箱', 'path' => 'mao/tools'],
-            ['title' => '脚本数据', 'path' => 'mao/scriptRecord']
         ]
     ],
     ['title' => '淘宝买号', 'icon' => 'document', 'children' =>

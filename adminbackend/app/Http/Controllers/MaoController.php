@@ -104,16 +104,29 @@ class MaoController extends Controller
     // 脚本数据
     public function scriptRecord(Request $request) {
         $stcCreateDatetime = $request->input('stc_create_datetime');
+        $minShow = $request->input('min_show');
         $rows = DB::table('script_record')->where('record_date','=', $stcCreateDatetime)->orderBy("game_id")->orderBy("status")->get();
 
-        $rowss = DB::table('run_log_statistics')
+        $rowssInit = DB::table('run_log_statistics')
             ->where('record_date','=', $stcCreateDatetime)
             ->orderBy("game_id")
-            ->orderByDesc("count")->get();
-
+            ->orderByDesc("count")
+            ->get();
+        $rowss = [];
+        $minShowGameIdArr = [];
+        foreach($rowssInit as $k=>$v) {
+            if(!isset($minShowGameIdArr[$v->game_id])) {
+                $minShowGameIdArr[($v->game_id)] = 0;
+            }
+            $minShowGameIdArr[$v->game_id] += 1;
+            if($minShowGameIdArr[$v->game_id] > $minShow) {
+                continue;
+            }
+            $rowss[] = $v;
+        }
         return JSON::ok([
             'items' => $rows,
-            'detailItems' => $rowss
+            'detailItems' => $rowss,
         ]);
     }
 

@@ -9,8 +9,8 @@
                     placeholder="选择开始日期"
                     :default-value="listQuery.stc_create_datetime">
             </el-date-picker>
+            min_show：<el-input @keyup.enter.native="getList()" style="width: 200px;"   placeholder='min_show' v-model="listQuery.min_show"></el-input>
             <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter"></el-button>
-            <el-button class="filter-item" type="primary" icon="el-icon-download" @click="markAccountSoldOut"></el-button>
         </div>
 
         <el-table :key='detailTableKey' :data="detailList" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 521px;margin-top:15px;">
@@ -87,6 +87,7 @@
                     oubo:'',
                     signDay:'',
                     stc_create_datetime:stcCreate_datetime.format("yyyy-MM-dd"),
+                    min_show:5,
                     game_id:0,
                     gameIdMap: constant.gameIdMap,
                 },
@@ -97,46 +98,26 @@
             }
         },
         created () {
-            this.getList()
+            this.getList(true);
         },
         methods: {
-            getList () {
+            getList (createdFlag) {
                 this.listLoading = true;
                 request({ url: 'mao/scriptRecord', method: 'post', params: this.listQuery }).then(response => {
                     const result = response.data;
                     if (result.code) {
-                        this.$message.error(result.msg || '系统错误')
-                        this.listLoading = false
+                        this.$message.error(this.result.msg || '系统错误');
+                        this.listLoading = false;
                         return
                     }
-
+                    if(createdFlag === true) {
+                        this.listQuery.min_count = result.data.min_count;
+                    }
                     this.list = result.data.items;
                     this.detailList = result.data.detailItems;
-                    this.listLoading = false
-                })
-            },
-            markAccountSoldOut () {
-                this.listLoading = true;
-                request({ url: 'account/mark-account-sold-out', method: 'post', params: this.listQuery }).then(response => {
-                    const result = response.data;
-                    if (result.code) {
-                        this.$message.error(result.msg || '系统错误')
-                        this.listLoading = false
-                        return
-                    }
-
-                    request({ url: 'account/sold-out-account-detail', method: 'post', params: {id: result.data.id} }).then(response => {
-                        const result = response.data;
-                        if(result.code) {
-                            this.$message.error(result.msg || '系统错误')
-                            this.listLoading = false
-                            return
-                        }
-                        this.dialogFormVisible = true;
-                        this.textarea = result.data.rows.content;
-                    })
-                    this.listLoading = false
-                })
+                    this.listLoading = false;
+                });
+                console.log(this.result);
             },
             handleSizeChange (val) {
                 if (this.listQuery.limit === val) {
