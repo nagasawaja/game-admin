@@ -105,7 +105,14 @@ class Account extends Model
             ->when($goodsDetailUpdateDate2 != '', function($query) use($goodsDetailUpdateDate2) {$query->where('iad.game_update_time', '<=', strtotime($goodsDetailUpdateDate2));})
             ->when($stcCreateDatetimeStart != '', function($query) use($stcCreateDatetimeStart) {$query->where('iad.create_time', '>=', strtotime($stcCreateDatetimeStart));})
             ->when($stcCreateDatetimeEnd != '', function($query) use($stcCreateDatetimeEnd) {$query->where('iad.create_time', '<=', strtotime($stcCreateDatetimeEnd));})
-            ->when($extraField != '', function($query) use($extraField) {$query->where('iad.extra_field', 'like', $extraField . '%');})
+            ->when($extraField != '', function($query) use($extraField) {
+                if($extraField == '123') {
+                    $query->whereIn('iad.extra_field', ['nil', '']);
+                } else {
+                    $query->where('iad.extra_field', 'like', $extraField . '%');
+                }
+
+            })
             ->when(count($statusList) != 0, function($query) use($statusList) {$query->whereIn('a.status', $statusList);})
             ->whereIn('a.game_id', [6587,6586])
             ->when($orderBy != '', function($query) use($orderBy) {$query->orderByRaw("iad.".$orderBy);});

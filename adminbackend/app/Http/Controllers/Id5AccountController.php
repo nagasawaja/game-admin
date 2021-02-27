@@ -54,8 +54,14 @@ class Id5AccountController extends Controller
             ->where('remark', '!=', '777')
             ->when($serverName, function($query) use($serverName) {$query->where('a.server_name', '=', $serverName);})
             ->when($lastUpdateTime, function($query) use($lastUpdateTime) {$query->where('id5A.game_update_time', '>=', strtotime($lastUpdateTime));})
-            ->when($extraField, function($query) use($extraField) {$query->where('id5A.extra_field', 'like', $extraField . '%');})
-            ->groupBy(['jing_hua', 'xian_suo', 'ling_gan', 'sign_day'])
+            ->when($extraField != '', function($query) use($extraField) {
+                if($extraField == '123') {
+                    $query->whereIn('iad.extra_field', ['nil', '']);
+                } else {
+                    $query->where('iad.extra_field', 'like', $extraField . '%');
+                }
+
+            })            ->groupBy(['jing_hua', 'xian_suo', 'ling_gan', 'sign_day'])
             ->orderBy('id5A.jing_hua', 'desc')
             ->orderBy('id5A.xian_suo', 'desc')
             ->orderBy('id5A.ling_gan', 'desc')
