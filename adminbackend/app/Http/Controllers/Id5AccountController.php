@@ -56,9 +56,9 @@ class Id5AccountController extends Controller
             ->when($lastUpdateTime, function($query) use($lastUpdateTime) {$query->where('id5A.game_update_time', '>=', strtotime($lastUpdateTime));})
             ->when($extraField != '', function($query) use($extraField) {
                 if($extraField == '123') {
-                    $query->whereIn('iad.extra_field', ['nil', '']);
+                    $query->whereIn('id5A.extra_field', ['nil', '']);
                 } else {
-                    $query->where('iad.extra_field', 'like', $extraField . '%');
+                    $query->where('id5A.extra_field', 'like', $extraField . '%');
                 }
 
             })            ->groupBy(['jing_hua', 'xian_suo', 'ling_gan', 'sign_day'])
