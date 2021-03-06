@@ -82,7 +82,7 @@
         </el-select>
         </div>
 
-        <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;margin-top:15px;">
+        <el-table :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;margin-top:15px;">
             <el-table-column width="65px"  label="帐号id" prop="id"></el-table-column>
             <el-table-column width="200px" label="邮箱" prop="email"></el-table-column>
             <el-table-column width="125px" label="密码" prop="passwd"></el-table-column>
@@ -153,7 +153,6 @@
         data () {
             return {
                 constant: require('@/utils/constant'),
-                tableKey: 0,
                 list: null,
                 total: 0,
                 listLoading: true,
@@ -202,16 +201,15 @@
                 request({ url: 'id5Account/lists', method: 'post', params: this.listQuery }).then(response => {
                     const result = response.data;
                     if (result.code) {
-                        this.$message.error(result.msg || '系统错误')
-                        this.listLoading = false
+                        this.$message.error(result.msg || '系统错误');
+                        this.listLoading = false;
                         return
                     }
 
                     this.list = result.data.rows;
                     this.total = result.data.total;
                     this.listLoading = false
-                })
-                console.log(this.list[0].email)
+                });
             },
             editStatus(row, handleType) {
                 row.edit = false;

@@ -43,7 +43,7 @@
                     type="textarea"
                     :rows="100"
                     placeholder="请输入内容"
-                    v-model="textarea">
+                    v-model="textareaaa">
             </el-input>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">关闭</el-button>
@@ -66,6 +66,7 @@
                 list: null,
                 total: 0,
                 listLoading: true,
+                textareaaa:'',
                 listQuery: {
                     page: 1,
                     limit: 20,
@@ -121,8 +122,8 @@
                             return
                         }
                         this.dialogFormVisible = true;
-                        this.textarea = result.data.rows.content;
-                    })
+                        this.textareaaa = result.data.rows.content;
+                    });
                     this.listLoading = false;
                     this.dialogTitle = '服务器:' + this.listQuery.serverName + '----欧泊:' + this.listQuery.oubo1 + '-' + this.listQuery.oubo1 + '----提取数量:' + this.listQuery.getNumber;
                 })

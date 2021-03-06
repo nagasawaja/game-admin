@@ -26,7 +26,7 @@
                     type="textarea"
                     :rows="10"
                     placeholder="请输入内容"
-                    v-model="textarea">
+                    v-model="textareaaa">
             </el-input>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">关闭</el-button>
@@ -48,6 +48,7 @@
                 list: null,
                 total: 0,
                 listLoading: true,
+                textareaaa:'',
                 listQuery: {
                     page: 1,
                     limit: 20,
@@ -71,7 +72,7 @@
                     const result = response.data;
                     if (result.code) {
                         this.$message.error(result.msg || '系统错误')
-                        this.listLoading = false
+                        this.listLoading = false;
                         return
                     }
                     this.list = result.data.rows;
@@ -89,7 +90,7 @@
                     }
                     this.dialogFormVisible = true;
                     this.dialogTitle = row.title;
-                    this.textarea = result.data.rows.content;
+                    this.textareaaa = result.data.rows.content;
                 })
             },
             handleSizeChange (val) {

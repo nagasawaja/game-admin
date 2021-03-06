@@ -109,7 +109,7 @@ class Id5AccountController extends Controller
         $extraField = trim(($request->input('extra_field')));
         $lastUpdateTime = trim($request->input('last_update_time'));
 
-        if($getNumber > 500 || $getNumber <=0 || $jingHua1 <=0 || $xianSuo1 <=0 || $serverName == '' || $status != 2) {
+        if($getNumber > 500 || $getNumber <=0 || $jingHua1 <=0 || $xianSuo1 <=0 || $serverName == '' || $status != 2 || $extraField == '') {
             return JSON::error(JSON::E_INTERNAL, '参数不符合标准');
         }
 
@@ -123,9 +123,7 @@ class Id5AccountController extends Controller
             ['a.status', '=', $status],
             ['a.server_name', '=', $serverName],
             ['iad.jing_hua', '>=', $jingHua1],
-            ['iad.xian_suo', '>=', $xianSuo1],
-            ['iad.extra_field', 'like', $extraField . '%'],
-            ['a.remark', '!=', '777']
+            ['iad.xian_suo', '>=', $xianSuo1]
         ];
         $query = DB::table('account as a')
             ->leftJoin('game_id5_account_detail as iad', function($join) {$join->on('a.id', '=', 'iad.account_id');})
@@ -138,6 +136,14 @@ class Id5AccountController extends Controller
             })
             ->when($lastUpdateTime, function($query) use($lastUpdateTime) {
                 $query->where('iad.game_update_time', '>=', strtotime($lastUpdateTime));
+            })
+            ->when($extraField != '', function($query) use($extraField) {
+                if($extraField == '123') {
+                    $query->whereIn('iad.extra_field', ['nil', '']);
+                } else {
+                    $query->where('iad.extra_field', 'like', $extraField . '%');
+                }
+
             })
             ->take($getNumber);
         $rows = $query->selectRaw('a.id, a.email, a.passwd')->get();
@@ -152,7 +158,7 @@ class Id5AccountController extends Controller
         }
 
         $insertData = [
-            'title' => date('Y-m-d H:i:s', time()) . ',服务器:' . $serverName . ',精华1:' . $jingHua1 . '-' . $jingHua2 . ',线索:' . $xianSuo1 .'-'. $xianSuo2,
+            'title' => date('Y-m-d H:i:s', time()) . ',服务器:' . $serverName . ',精华:' . $jingHua1 . '-' . $jingHua2 . ',线索:' . $xianSuo1 .'-'. $xianSuo2 . ',extraField:' . $extraField,
             'content' => $accountStr,
             'create_time' => time(),
             'account_number' => count($rows)
