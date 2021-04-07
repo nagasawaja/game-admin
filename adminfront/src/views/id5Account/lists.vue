@@ -83,7 +83,7 @@
         </div>
 
         <el-table :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;margin-top:15px;">
-            <el-table-column width="65px"  label="帐号id" prop="id"></el-table-column>
+            <el-table-column width="75px"  label="帐号id" prop="id"></el-table-column>
             <el-table-column width="200px" label="邮箱" prop="email"></el-table-column>
             <el-table-column width="125px" label="密码" prop="passwd"></el-table-column>
             <el-table-column width="100px" label="精华" prop="jing_hua"></el-table-column>

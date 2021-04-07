@@ -17,6 +17,7 @@
             欧泊：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='欧泊1'  v-model="listQuery.oubo1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='欧泊2'  v-model="listQuery.oubo2"></el-input>
             <br/>
             登录天数：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='登录天数1'  v-model="listQuery.sign_times_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='登录天数2'  v-model="listQuery.sign_times_2"></el-input>
+            签到天数：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='签到天数1'  v-model="listQuery.sign_day_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='签到天数2'  v-model="listQuery.sign_day_2"></el-input>
             错误次数：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='错误次数1'  v-model="listQuery.error_times_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='错误次数2'  v-model="listQuery.error_times_2"></el-input>
             <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
             <br/>
@@ -57,7 +58,7 @@
         </div>
 
         <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;margin-top:15px;">
-            <el-table-column width="65px"  label="帐号id" prop="id"></el-table-column>
+            <el-table-column width="75px"  label="帐号id" prop="id"></el-table-column>
             <el-table-column width="200px" label="邮箱" prop="email"></el-table-column>
             <el-table-column width="100px" label="密码" prop="passwd"></el-table-column>
             <el-table-column width="100px" label="状态" prop="status">
@@ -136,6 +137,8 @@
                     error_times_2: '',
                     sign_times_1: '',
                     sign_times_2: '',
+                    sign_day_1: '',
+                    sign_day_1: '',
                     accountId:'',
                     goods_detail_update_date1: '',
                     goods_detail_update_date2: '',

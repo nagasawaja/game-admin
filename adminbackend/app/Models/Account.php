@@ -20,6 +20,8 @@ class Account extends Model
         $oubo = floor(($request->input('oubo')));
         $signTimes1 = floor(($request->input('sign_times_1')));
         $signTimes2 = floor(($request->input('sign_times_2')));
+        $signDay1 = floor(($request->input('sign_day_1')));
+        $signDay2 = floor(($request->input('sign_day_2')));
         $signDay = floor(($request->input('signDay')));
         $errorTimes1 = floor(($request->input('error_times_1')));
         $errorTimes2 = floor(($request->input('error_times_2')));
@@ -28,7 +30,7 @@ class Account extends Model
         $goodsDetailUpdateDate2 = ($request->input('goods_detail_update_date2'));
         $stcCreateDatetimeStart = ($request->input('stc_create_datetime_start'));
         $stcCreateDatetimeEnd = ($request->input('stc_create_datetime_end'));
-        $statusList = $request->input('statusList');
+        $statusList = $request->input('statusList', []);
         $lastUpdateTime = trim($request->input('last_update_time'));
 
 
@@ -46,6 +48,8 @@ class Account extends Model
             ->when($getNumber, function($query) use($getNumber) {$query->take($getNumber);})
             ->when($signTimes1 != '', function($query) use($signTimes1) {$query->where('sign_times', '>=', $signTimes1);})
             ->when($signTimes2 != '', function($query) use($signTimes2) {$query->where('sign_times', '<=', $signTimes2);})
+            ->when($signDay1 != '', function($query) use($signDay1) {$query->where('sign_day', '>=', $signDay1);})
+            ->when($signDay2 != '', function($query) use($signDay2) {$query->where('sign_day', '<=', $signDay2);})
             ->when($lastUpdateTime, function($query) use($lastUpdateTime) {
                 $query->where('qad.game_update_time', '>=', strtotime($lastUpdateTime));
             })
@@ -82,7 +86,7 @@ class Account extends Model
         $stcCreateDatetimeStart = ($request->input('stc_create_datetime_start'));
         $stcCreateDatetimeEnd = ($request->input('stc_create_datetime_end'));
         $orderBy = ($request->input('order_by_option'));
-        $statusList = $request->input('statusList');
+        $statusList = $request->input('statusList', []);
         $extraField = $request->input('extra_field');
 
         //帐号数据
