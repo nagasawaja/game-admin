@@ -47,11 +47,11 @@ class Id5AccountController extends Controller
         $lastUpdateTime = trim($request->input('last_update_time'));
         $extraField = trim($request->input('extra_field'));
         $accountSelectRaw = 'a.server_name, count(*) as count, ';
-        $qiriAccountDetailRaw = 'id5A.extra_field, id5A.xian_suo, id5A.sign_times, id5A.ling_gan,id5A.jing_hua,id5A.error_times';
+        $qiriAccountDetailRaw = 'id5A.extra_field, id5A.xian_suo, id5A.sign_times,0 as ling_gan,id5A.jing_hua,id5A.error_times';
         $rows = DB::table('account as a')
-            ->leftJoin('game_id5_account_detail as id5A', 'a.id', '=', 'id5A.account_id')
-            ->whereIn('a.status', [1,2])
-            ->where('remark', '!=', '777')
+            ->join('game_id5_account_detail as id5A', 'a.id', '=', 'id5A.account_id', 'inner')
+            ->where('a.status', '=', 2)
+            ->where('id5A.jing_hua', '>=', 10)
             ->when($serverName, function($query) use($serverName) {$query->where('a.server_name', '=', $serverName);})
             ->when($lastUpdateTime, function($query) use($lastUpdateTime) {$query->where('id5A.game_update_time', '>=', strtotime($lastUpdateTime));})
             ->when($extraField != '', function($query) use($extraField) {
@@ -61,10 +61,9 @@ class Id5AccountController extends Controller
                     $query->where('id5A.extra_field', 'like', $extraField . '%');
                 }
 
-            })            ->groupBy(['jing_hua', 'xian_suo', 'ling_gan', 'sign_day'])
+            })            ->groupBy(['jing_hua', 'xian_suo'])
             ->orderBy('id5A.jing_hua', 'desc')
             ->orderBy('id5A.xian_suo', 'desc')
-            ->orderBy('id5A.ling_gan', 'desc')
             ->selectRaw($accountSelectRaw . $qiriAccountDetailRaw)
             ->get();
 
