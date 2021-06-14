@@ -118,7 +118,7 @@ class Account extends Model
 
             })
             ->when(count($statusList) != 0, function($query) use($statusList) {$query->whereIn('a.status', $statusList);})
-            ->whereIn('a.game_id', [6587,6586])
+            ->whereIn('a.server_name', ['163masterAndroid','163master'])
             ->when($orderBy != '', function($query) use($orderBy) {$query->orderByRaw("iad.".$orderBy);});
 
 
