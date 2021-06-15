@@ -6,7 +6,7 @@ import store from '@/store'
 const service = axios.create({
   baseURL: process.env.BASE_API, // api的base_url
   withCredentials: true, // 允许携带cookie
-  timeout: 15000 // request timeout
+  timeout: 30000 // request timeout
 })
 
 // request interceptor
