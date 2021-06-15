@@ -25,7 +25,7 @@ class Id5AccountController extends Controller
 
         $query = Account::singleton()->getId5AccountQuery($request);
 
-        $accountSelectRaw = 'a.id, a.server_name, a.status, a.email, a.passwd, a.is_clean, ';
+        $accountSelectRaw = 'a.id, a.server_name, a.status, a.email, a.passwd, a.is_clean, a.remark, ';
         $id5AccountDetailSelectRaw = 'iad.extra_field, iad.sign_times, iad.error_times, iad.jing_hua, iad.xian_suo, iad.ling_gan, iad.jing_hua_update_time, iad.email_time, iad.game_update_time, iad.create_time';
         $take = trim($request->input('limit'));
         $skip = (trim($request->input('page')) - 1) * $take;

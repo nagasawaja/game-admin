@@ -201,8 +201,8 @@
                 })
             },
             handleFilter() {
-                this.listQuery.page = 1
-                this.getList()
+                // this.listQuery.page = 1
+                // this.getList()
             },
             handleUpdate (idx, row) {
                 this.dialogTitle = '编辑充值套餐'

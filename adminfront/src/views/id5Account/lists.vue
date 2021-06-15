@@ -102,14 +102,14 @@
             </el-table-column>
             <el-table-column width="100px" label="登录天数" prop="sign_times"></el-table-column>
             <el-table-column width="100px" label="错误次数" prop="error_times"></el-table-column>
-            <el-table-column width="100px" label="灵感" prop="ling_gan"></el-table-column>
+            <el-table-column width="150px" label="remark" prop="remark"></el-table-column>
             <el-table-column width="150px" label="create_time" prop="create_time">
                 <template slot-scope="scope">{{scope.row.create_time | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</template>
             </el-table-column>
             <el-table-column width="150px" label="game_update_time" prop="game_update_time">
                 <template slot-scope="scope">{{scope.row.game_update_time | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</template>
             </el-table-column>
-
+            <el-table-column width="100px" label="灵感" prop="ling_gan"></el-table-column>
 <!--            <el-table-column width="150px" label="登陆时间" prop="game_update_time">-->
 <!--                <template slot-scope="scope">{{scope.row.game_update_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>-->
 <!--            </el-table-column>-->

@@ -15,7 +15,7 @@ export const statusAccount = [
 
 export const orderByOption = [{value:"game_update_time", label:"game_update_time"}, {value:"update_time desc", label:"update_time desc"}];
 export const id5ServerList = [{value:"163master", label:"163master"}, {value:"163masterAndroid", label:"163masterAndroid"}];
-export const id5ExtraFieldList = [{ "value": "jiusaiji"}];
+export const id5ExtraFieldList = [{ "value": "jiusaiji"}, {"value" : "123"}];
 
 export const yesOrNoCssType = {
     1: 'success',
