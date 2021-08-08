@@ -11,10 +11,7 @@
         >
         </el-date-picker>
             <br/>
-            黑球：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='黑球1'  v-model="listQuery.black_player_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='黑球2'  v-model="listQuery.black_player_2"></el-input>
-            <br/>
             金币：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='金币1'  v-model="listQuery.gold_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='金币2'  v-model="listQuery.gold_2"></el-input>
-            资金：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='资金1'  v-model="listQuery.money_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='资金2'  v-model="listQuery.money_2"></el-input>
             <br/>
             状态：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='状态'  v-model="listQuery.status"></el-input>
             提取数量：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"   placeholder='提取数量'  v-model="listQuery.getNumber"></el-input>
@@ -25,11 +22,8 @@
 
         <el-table :key='tableKey' height="550px" :data="list" v-loading="listLoading" element-loading-text="给我一点时间"
                   border fit highlight-current-row style="display:inline-block;width:auto;margin-top:15px">
-            <el-table-column width="100px" label="黑球" prop="black_player"></el-table-column>
-            <el-table-column width="100px" label="金球" prop="gold_player"></el-table-column>
             <el-table-column width="100px" label="金币" prop="gold"></el-table-column>
             <el-table-column width="100px" label="资金" prop="money"></el-table-column>
-            <el-table-column width="100px" label="银球" prop="silver_player"></el-table-column>
             <el-table-column width="100px" label="签到天数" prop="sign_times"></el-table-column>
             <el-table-column width="100px" label="错误次数" prop="error_times"></el-table-column>
             <el-table-column width="100px" label="数量" prop="count"></el-table-column>

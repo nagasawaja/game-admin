@@ -188,7 +188,7 @@
             }
         },
         created () {
-            this.getList()
+            // this.getList()
         },
         methods: {
             querySearch(queryString, cb) {
