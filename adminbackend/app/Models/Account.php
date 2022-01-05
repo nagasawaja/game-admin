@@ -92,14 +92,20 @@ class Account extends Model
         //帐号数据
 
         $query = DB::table('account as a')
-            ->leftJoin('game_id5_account_detail as iad', function($join) {$join->on('a.id', '=', 'iad.account_id');})
             ->when($email, function($query) use($email) {$query->where('email', 'like', $email . '%');})
-            ->when($signTimes1 != '', function($query) use($signTimes1) {$query->where('sign_times', '>=', $signTimes1);})
+            ->when($signTimes1 != '', function($query) use($signTimes1) {$query->where('iad.sign_times', '>=', $signTimes1);})
             ->when($signTimes2 != '', function($query) use($signTimes2) {$query->where('sign_times', '<=', $signTimes2);})
             ->when($errorTimes1 != '', function($query) use($errorTimes1) {$query->where('error_times', '>=', $errorTimes1);})
             ->when($errorTimes2 != '', function($query) use($errorTimes2) {$query->where('error_times', '<=', $errorTimes2);})
             ->when($status, function($query) use($status) {$query->where('status', '=', $status);})
-            ->when($serverName, function($query) use($serverName) {$query->where('server_name', '=', $serverName);})
+            ->when($serverName, function($query) use($serverName) {
+                if($serverName=='id5_ios') {
+                    $query->leftJoin('game_id5_account_detail as iad', function($join) {$join->on('a.id', '=', 'iad.account_id');});
+                } else if ($serverName == 'id5_android') {
+                    $query->leftJoin('game_id5_android_account_detail as iad', function($join) {$join->on('a.id', '=', 'iad.account_id');});
+                }
+                $query->where('server_name', '=', $serverName);
+            })
             ->when($accountId, function($query) use($accountId) {$query->where('a.id', '=', $accountId);})
             ->when($xianSuo1 != '', function($query) use($xianSuo1) {$query->where('xian_suo', '>=', $xianSuo1);})
             ->when($xianSuo2 != '', function($query) use($xianSuo2) {$query->where('xian_suo', '<=', $xianSuo2);})
@@ -125,7 +131,7 @@ class Account extends Model
         return $query;
     }
 
-    public function getFootballAccountQuery(Request $request)
+    public function getPesAccountQuery(Request $request)
     {
         //接收处理参数
         $email = trim($request->input('email'));
@@ -150,19 +156,24 @@ class Account extends Model
         $goodsDetailUpdateDate2 = ($request->input('goods_detail_update_date2'));
         $stcCreateDatetimeStart = ($request->input('stc_create_datetime_start'));
         $stcCreateDatetimeEnd = ($request->input('stc_create_datetime_end'));
-        $statusList = $request->input('statusList');
-
+        $statusList = $request->input('statusList', []);
         //帐号数据
 
         $query = DB::table('account as a')
-            ->leftJoin('game_pes_account_detail as fad', function($join) {$join->on('a.id', '=', 'fad.account_id');})
             ->when($email, function($query) use($email) {$query->where('email', 'like', $email . '%');})
             ->when($signTimes1 != '', function($query) use($signTimes1) {$query->where('sign_times', '>=', $signTimes1);})
             ->when($signTimes2 != '', function($query) use($signTimes2) {$query->where('sign_times', '<=', $signTimes2);})
             ->when($errorTimes1 != '', function($query) use($errorTimes1) {$query->where('error_times', '>=', $errorTimes1);})
             ->when($errorTimes2 != '', function($query) use($errorTimes2) {$query->where('error_times', '<=', $errorTimes2);})
             ->when($status, function($query) use($status) {$query->where('status', '=', $status);})
-            ->when($serverName, function($query) use($serverName) {$query->where('server_name', '=', $serverName);})
+            ->when($serverName, function($query) use($serverName) {
+                if($serverName=='pes_ios') {
+                    $query->leftJoin('game_pes_account_detail as fad', function($join) {$join->on('a.id', '=', 'fad.account_id');});
+                } else if ($serverName == 'pes_android') {
+                    $query->leftJoin('game_pes_android_account_detail as fad', function($join) {$join->on('a.id', '=', 'fad.account_id');});
+                }
+                $query->where('server_name', '=', $serverName);
+            })
             ->when($accountId, function($query) use($accountId) {$query->where('a.id', '=', $accountId);})
             ->when($gold1 != '', function($query) use($gold1) {$query->where('gold', '>=', $gold1);})
             ->when($gold2 != '', function($query) use($gold2) {$query->where('gold', '<=', $gold2);})

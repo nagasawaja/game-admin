@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use App\Models\Account;
 
-class FootballAccountController extends Controller
+class PesAccountController extends Controller
 {
     //帐号列表
     public function lists(Request $request)
@@ -22,7 +22,7 @@ class FootballAccountController extends Controller
             return $r;
         }
 
-        $query = Account::singleton()->getFootballAccountQuery($request);
+        $query = Account::singleton()->getPesAccountQuery($request);
         $accountSelectRaw = 'a.id, a.server_name, a.status, a.email, a.passwd, a.is_clean, ';
         $footballAccountDetailSelectRaw = 'fad.sign_times, fad.error_times, fad.money, fad.gold, fad.black_player, 
         fad.gold_player, fad.silver_player, fad.email_time, fad.game_update_time, fad.create_time';
@@ -43,14 +43,19 @@ class FootballAccountController extends Controller
     public function statistical(Request $request)
     {
         $lastUpdateTime = trim($request->input('last_update_time'));
-        $serverNameRows = trim($request->input('serverNameRows'));
+        $serverName = trim($request->input('serverName'));
         $accountSelectRaw = 'a.server_name, count(*) as count, ';
         $qiriAccountDetailRaw = 'fad.gold, fad.money, fad.sign_times,fad.error_times';
         $rows = DB::table('account as a')
-            ->leftJoin('game_pes_account_detail as fad', 'a.id', '=', 'fad.account_id')
             ->where('a.status', '=', 2)
-            ->where('server_name', '=', 'football_master')
-            ->when($serverNameRows, function($query) use($serverNameRows) {$query->whereIn('a.server_name', $serverNameRows);})
+            ->when($serverName, function($query) use($serverName) {
+                if($serverName == 'pes_ios') {
+                    $query->join('game_pes_account_detail as fad', 'a.id', '=', 'fad.account_id', 'inner');
+                } else if($serverName == 'pes_android') {
+                    $query->join('game_pes_android_account_detail as fad', 'a.id', '=', 'fad.account_id', 'inner');
+                }
+                $query->where('a.server_name', '=', $serverName);
+            })
             ->when($lastUpdateTime, function($query) use($lastUpdateTime) {$query->where('fad.game_update_time', '>=', strtotime($lastUpdateTime));})
             ->groupBy(['gold', "sign_day"])
             ->orderBy('fad.gold', 'desc')
@@ -86,28 +91,34 @@ class FootballAccountController extends Controller
         $tmpWhere = [
             ['a.status', '=', $status],
             ['a.server_name', '=', $serverName],
-            ['football.gold', '>=', $gold1],
+            ['fad.gold', '>=', $gold1],
         ];
         $query = DB::table('account as a')
-            ->leftJoin('game_pes_account_detail as football', function($join) {$join->on('a.id', '=', 'football.account_id');})
             ->where($tmpWhere)
+            ->when($serverName, function($query) use($serverName) {
+                if($serverName == 'pes_ios') {
+                    $query->join('game_pes_account_detail as fad', 'a.id', '=', 'fad.account_id', 'inner');
+                } else if($serverName == 'pes_android') {
+                    $query->join('game_pes_android_account_detail as fad', 'a.id', '=', 'fad.account_id', 'inner');
+                }
+            })
             ->when($gold2, function($query) use($gold2) {
-                $query->where('football.gold', '<=', $gold2);
+                $query->where('fad.gold', '<=', $gold2);
             })
             ->when($blackPlayer1, function($query) use($blackPlayer1) {
-                $query->where('football.black_player', '>=', $blackPlayer1);
+                $query->where('fad.black_player', '>=', $blackPlayer1);
             })
             ->when($blackPlayer2, function($query) use($blackPlayer2) {
-                $query->where('football.black_player', '<=', $blackPlayer2);
+                $query->where('fad.black_player', '<=', $blackPlayer2);
             })
             ->when($money1, function($query) use($money1) {
-                $query->where('football.money', '>=', $money1);
+                $query->where('fad.money', '>=', $money1);
             })
             ->when($money2, function($query) use($money2) {
-                $query->where('football.money', '<=', $money2);
+                $query->where('fad.money', '<=', $money2);
             })
             ->when($lastUpdateTime, function($query) use($lastUpdateTime) {
-                $query->where('football.game_update_time', '>=', strtotime($lastUpdateTime));
+                $query->where('fad.game_update_time', '>=', strtotime($lastUpdateTime));
             })
             ->take($getNumber);
         $rows = $query->selectRaw('a.id, a.email, a.passwd')->get();

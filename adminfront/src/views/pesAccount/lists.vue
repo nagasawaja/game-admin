@@ -13,8 +13,15 @@
             </el-option>
         </el-select>
             <br/>
-            服务器：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='服务器'  v-model="listQuery.serverName"></el-input>
-            金币：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='金币1'  v-model="listQuery.gold_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='金币2'  v-model="listQuery.gold_2"></el-input>
+          服务器：
+          <el-select style="width: 180px;" v-model="listQuery.serverName" clearable placeholder="服务器">
+            <el-option
+              v-for="item in constant.pesServerList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>            金币：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='金币1'  v-model="listQuery.gold_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='金币2'  v-model="listQuery.gold_2"></el-input>
             资金：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='资金1'  v-model="listQuery.money_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='资金2'  v-model="listQuery.money_2"></el-input>
             <br/>
             黑球：<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='黑球1'  v-model="listQuery.black_player_1"></el-input>-<el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='黑球2'  v-model="listQuery.black_player_2"></el-input>
@@ -143,7 +150,7 @@
                 listQuery: {
                     page: 1,
                     limit: 20,
-                    serverName:'',
+                    serverName:'pes_android',
                     email:'',
                     status:'',
                     gold_1: '',
@@ -180,7 +187,7 @@
         methods: {
             getList () {
                 this.listLoading = true;
-                request({ url: 'footballAccount/lists', method: 'post', params: this.listQuery }).then(response => {
+                request({ url: 'pesAccount/lists', method: 'post', params: this.listQuery }).then(response => {
                     const result = response.data;
                     if (result.code) {
                         this.$message.error(result.msg || '系统错误')

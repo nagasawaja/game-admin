@@ -49,10 +49,16 @@ class Id5AccountController extends Controller
         $accountSelectRaw = 'a.server_name, count(*) as count, ';
         $qiriAccountDetailRaw = 'id5A.extra_field, id5A.xian_suo, id5A.sign_times,0 as ling_gan,id5A.jing_hua,id5A.error_times';
         $rows = DB::table('account as a')
-            ->join('game_id5_account_detail as id5A', 'a.id', '=', 'id5A.account_id', 'inner')
             ->where('a.status', '=', 2)
             ->where('id5A.jing_hua', '>=', 10)
-            ->when($serverName, function($query) use($serverName) {$query->where('a.server_name', '=', $serverName);})
+            ->when($serverName, function($query) use($serverName) {
+                if($serverName == 'id5_ios') {
+                    $query->join('game_id5_account_detail as id5A', 'a.id', '=', 'id5A.account_id', 'inner');
+                } else if($serverName == 'id5_android') {
+                    $query->join('game_id5_android_account_detail as id5A', 'a.id', '=', 'id5A.account_id', 'inner');
+                }
+                $query->where('a.server_name', '=', $serverName);
+            })
             ->when($lastUpdateTime, function($query) use($lastUpdateTime) {$query->where('id5A.game_update_time', '>=', strtotime($lastUpdateTime));})
             ->when($extraField != '', function($query) use($extraField) {
                 if($extraField == '123') {
@@ -70,27 +76,6 @@ class Id5AccountController extends Controller
         //返回数据
         return JSON::ok([
             'rows' => $rows,
-        ]);
-    }
-
-    //今日帐号统计
-    public function todayStatistics(Request $request)
-    {
-        $updateTime = $request->input('updateTime');
-        $todayTimeStamp = strtotime($updateTime);
-        $rows = DB::table('game_id5_account_detail as id5A')
-            ->leftJoin('account', 'id5A.account_id', '=', 'account.id')
-            ->selectRaw('id5A.xian_suo, id5A.sign_day, id5A.ling_gan,id5A.jing_hua,id5A.error_times,account.status,count(account.id) as count')
-            ->where('id5A.game_update_time', '>=', $todayTimeStamp)
-            ->where('id5A.game_update_time', '<', $todayTimeStamp + 86400)
-            ->groupBy(['jing_hua', 'xian_suo', 'ling_gan', 'sign_day'])
-            ->orderBy('id5A.jing_hua', 'desc')
-            ->orderBy('id5A.xian_suo', 'desc')
-            ->orderBy('id5A.ling_gan', 'desc')
-            ->get();
-
-        return JSON::ok([
-            'rows' => $rows
         ]);
     }
 
@@ -125,8 +110,14 @@ class Id5AccountController extends Controller
             ['iad.xian_suo', '>=', $xianSuo1]
         ];
         $query = DB::table('account as a')
-            ->leftJoin('game_id5_account_detail as iad', function($join) {$join->on('a.id', '=', 'iad.account_id');})
             ->where($tmpWhere)
+            ->when($serverName, function($query) use($serverName) {
+                if($serverName == 'id5_ios') {
+                    $query->join('game_id5_account_detail as iad', 'a.id', '=', 'iad.account_id', 'inner');
+                } else if($serverName == 'id5_android') {
+                    $query->join('game_id5_android_account_detail as iad', 'a.id', '=', 'iad.account_id', 'inner');
+                }
+            })
             ->when($xianSuo2, function($query) use($xianSuo2) {
                 $query->where('iad.xian_suo', '<=', $xianSuo2);
             })

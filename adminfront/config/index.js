@@ -10,10 +10,11 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/backend': {
-        target: 'http://192.168.77.3:8081',
-        pathRewrite: {'^/backend' : ''},
-        secure: false
+      '/api': {
+        target: 'http://www.game-admin-api.com',
+        changeOrigin:true,
+        pathRewrite: {'^/api' : ''},
+        // secure: false
       }
     },
 

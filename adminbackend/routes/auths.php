@@ -27,12 +27,12 @@ return [
 
 
     //football
-    'footballAccount/lists' => [ 'method' => 'post', 'ctrl' => 'FootballAccountController@lists', 'title' => 'football帐号列表'],
-    'footballAccount/statistical' => [ 'method' => 'post', 'ctrl' => 'FootballAccountController@statistical', 'title' => 'football帐号统计'],
-    'footballAccount/mark-account-sold-out' => [ 'method' => 'post', 'ctrl' => 'FootballAccountController@markAccountSoldOut', 'title' => 'football将未卖出的帐号置成已卖出'],
-    'footballAccount/sold-out-account-detail' => [ 'method' => 'post', 'ctrl' => 'FootballAccountController@soldOutAccountDetail', 'title' => 'football已卖出帐号详细'],
-    'footballAccount/soldOut' => [ 'method' => 'post', 'ctrl' => 'FootballAccountController@soldOutAccountList', 'title' => 'football已卖出帐号列表'],
-    'footballAccount/resetEmail' => [ 'method' => 'post', 'ctrl' => 'FootballAccountController@resetEmail', 'title' => 'football重置邮件'],
+    'pesAccount/lists' => [ 'method' => 'post', 'ctrl' => 'PesAccountController@lists', 'title' => 'pes帐号列表'],
+    'pesAccount/statistical' => [ 'method' => 'post', 'ctrl' => 'PesAccountController@statistical', 'title' => 'pes帐号统计'],
+    'pesAccount/mark-account-sold-out' => [ 'method' => 'post', 'ctrl' => 'PesAccountController@markAccountSoldOut', 'title' => 'pes将未卖出的帐号置成已卖出'],
+    'pesAccount/sold-out-account-detail' => [ 'method' => 'post', 'ctrl' => 'PesAccountController@soldOutAccountDetail', 'title' => 'pes已卖出帐号详细'],
+    'pesAccount/soldOut' => [ 'method' => 'post', 'ctrl' => 'PesAccountController@soldOutAccountList', 'title' => 'pes已卖出帐号列表'],
+    'pesAccount/resetEmail' => [ 'method' => 'post', 'ctrl' => 'PesAccountController@resetEmail', 'title' => 'pes重置邮件'],
 
     //dream
     'dreamAccount/lists' => [ 'method' => 'post', 'ctrl' => 'DreamAccountController@lists', 'title' => 'dream帐号列表'],

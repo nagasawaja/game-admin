@@ -13,9 +13,9 @@ return [
             ['title' => 'id5帐号统计', 'path' => 'id5Account/statistical'],
             // ['title' => 'id5今日统计', 'path' => 'id5Account/todayStatistics'],
             ['title' => 'id5已卖出帐号', 'path' => 'id5Account/soldOut'],
-            ['title' => 'pes帐号列表', 'path' => 'footballAccount/lists'],
-            ['title' => 'pes帐号统计', 'path' => 'footballAccount/statistical'],
-            ['title' => 'pes已卖出帐号', 'path' => 'footballAccount/soldOut'],
+            ['title' => 'pes帐号列表', 'path' => 'pesAccount/lists'],
+            ['title' => 'pes帐号统计', 'path' => 'pesAccount/statistical'],
+            ['title' => 'pes已卖出帐号', 'path' => 'pesAccount/soldOut'],
             ['title' => 'mz帐号列表', 'path' => 'dreamAccount/lists'],
             ['title' => 'mz帐号统计', 'path' => 'dreamAccount/statistical'],
             ['title' => 'mz已卖出帐号', 'path' => 'dreamAccount/soldOut']

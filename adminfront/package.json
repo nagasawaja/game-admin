@@ -2,7 +2,7 @@
   "name": "WxbsiAdmin",
   "version": "1.0.0",
   "description": "微讯助手后台管理",
-  "author": "江宇涛 <jiangyutao@laka-inc.com>",
+  "author": "benija",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
