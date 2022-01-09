@@ -189,8 +189,7 @@ class Account extends Model
             ->when($goodsDetailUpdateDate2 != '', function($query) use($goodsDetailUpdateDate2) {$query->where('fad.game_update_time', '<', strtotime($goodsDetailUpdateDate2)+86400);})
             ->when($stcCreateDatetimeStart != '', function($query) use($stcCreateDatetimeStart) {$query->where('fad.create_time', '>=', strtotime($stcCreateDatetimeStart));})
             ->when($stcCreateDatetimeEnd != '', function($query) use($stcCreateDatetimeEnd) {$query->where('fad.create_time', '<=', strtotime($stcCreateDatetimeEnd));})
-            ->when(count($statusList) != 0, function($query) use($statusList) {$query->whereIn('a.status', $statusList);})
-            ->where('a.game_id', '=', 7744);
+            ->when(count($statusList) != 0, function($query) use($statusList) {$query->whereIn('a.status', $statusList);});
 
         return $query;
     }
