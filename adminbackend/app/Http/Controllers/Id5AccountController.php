@@ -157,6 +157,12 @@ class Id5AccountController extends Controller
 
         DB::table('account')->whereIn('id', $idRows)->update(['status' => 3]);
 
+        if($serverName == 'id5_ios') {
+            DB::table('game_id5_account_detail as iad')->whereIn('account_id', $idRows)->update(['game_status' => 3]);
+        } else if($serverName == 'id5_android') {
+            DB::table('game_id5_android_account_detail')->whereIn('account_id', $idRows)->update(['game_status' => 3]);
+        }
+
         return JSON::ok([
             'id' => $id
         ]);
