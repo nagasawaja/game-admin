@@ -16,9 +16,9 @@ return [
             ['title' => 'pes帐号列表', 'path' => 'pesAccount/lists'],
             ['title' => 'pes帐号统计', 'path' => 'pesAccount/statistical'],
             ['title' => 'pes已卖出帐号', 'path' => 'pesAccount/soldOut'],
-            ['title' => 'mz帐号列表', 'path' => 'dreamAccount/lists'],
-            ['title' => 'mz帐号统计', 'path' => 'dreamAccount/statistical'],
-            ['title' => 'mz已卖出帐号', 'path' => 'dreamAccount/soldOut']
+//            ['title' => 'mz帐号列表', 'path' => 'dreamAccount/lists'],
+//            ['title' => 'mz帐号统计', 'path' => 'dreamAccount/statistical'],
+//            ['title' => 'mz已卖出帐号', 'path' => 'dreamAccount/soldOut']
         ],
     ],
     ['title' => '交易猫', 'icon' => 'document', 'children' =>

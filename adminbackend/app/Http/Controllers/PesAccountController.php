@@ -144,6 +144,12 @@ class PesAccountController extends Controller
 
         DB::table('account')->whereIn('id', $idRows)->update(['status' => 3]);
 
+        if($serverName == 'pes_ios') {
+            DB::table('game_pes_account_detail as fad')->whereIn('account_id', $idRows)->update(['game_status' => 3]);
+        } else if($serverName == 'pes_android') {
+            DB::table('game_pes_android_account_detail as fad')->whereIn('account_id', $idRows)->update(['game_status' => 3]);
+        }
+
         return JSON::ok([
             'id' => $id
         ]);
