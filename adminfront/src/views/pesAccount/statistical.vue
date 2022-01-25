@@ -105,7 +105,7 @@ export default {
         page: 1,
         limit: 20,
         serverName: 'pes_android',
-        getNumber: 10,
+        getNumber: 50,
         status: 2,
         black_player_1: '',
         black_player_2: '',

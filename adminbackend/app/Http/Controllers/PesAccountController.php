@@ -57,9 +57,8 @@ class PesAccountController extends Controller
                 $query->where('a.server_name', '=', $serverName);
             })
             ->when($lastUpdateTime, function($query) use($lastUpdateTime) {$query->where('fad.game_update_time', '>=', strtotime($lastUpdateTime));})
-            ->groupBy(['gold', "sign_day"])
+            ->groupBy(['gold'])
             ->orderBy('fad.gold', 'desc')
-            ->orderBy('sign_day', 'desc')
             ->selectRaw($accountSelectRaw . $qiriAccountDetailRaw)
             ->get();
 
@@ -84,7 +83,7 @@ class PesAccountController extends Controller
         $money2 = floor(($request->input('money_2')));
         $lastUpdateTime = trim($request->input('last_update_time'));
 
-        if($getNumber > 50 || $getNumber <=0 || $gold1 <=0 ||  $serverName == '' || $status != 2) {
+        if($getNumber > 500 || $getNumber <=0 || $gold1 <=0 ||  $serverName == '' || $status != 2) {
             return JSON::error(JSON::E_INTERNAL, '参数不符合标准');
         }
         //帐号数据
