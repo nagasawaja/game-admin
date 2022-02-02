@@ -48,6 +48,7 @@ class PesAccountController extends Controller
         $qiriAccountDetailRaw = 'fad.gold, fad.money, fad.sign_times,fad.error_times';
         $rows = DB::table('account as a')
             ->where('a.status', '=', 2)
+
             ->when($serverName, function($query) use($serverName) {
                 if($serverName == 'pes_ios') {
                     $query->join('game_pes_account_detail as fad', 'a.id', '=', 'fad.account_id', 'inner');
@@ -56,6 +57,7 @@ class PesAccountController extends Controller
                 }
                 $query->where('a.server_name', '=', $serverName);
             })
+            ->where('fad.gold', '>', 1000)
             ->when($lastUpdateTime, function($query) use($lastUpdateTime) {$query->where('fad.game_update_time', '>=', strtotime($lastUpdateTime));})
             ->groupBy(['gold'])
             ->orderBy('fad.gold', 'desc')
