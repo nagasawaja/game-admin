@@ -83,34 +83,28 @@
                 </template>
             </el-table-column>
             <el-table-column width="100px" label="金币" prop="gold"></el-table-column>
-            <el-table-column width="100px" label="资金" prop="money"></el-table-column>
-            <el-table-column width="100px" label="黑球" prop="black_player"></el-table-column>
-<!--            <el-table-column width="100px" label="金球" prop="gold_player"></el-table-column>-->
-<!--            <el-table-column width="100px" label="银球" prop="silver_player"></el-table-column>-->
-
             <el-table-column width="100px" label="登录天数" prop="sign_times"></el-table-column>
-            <el-table-column width="150px" label="create_time" prop="create_time">
-                <template slot-scope="scope">{{scope.row.create_time | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</template>
-            </el-table-column>
-            <el-table-column width="150px" label="game_update_time" prop="game_update_time">
-                <template slot-scope="scope">{{scope.row.game_update_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
-            </el-table-column>
-            <el-table-column width="100px" label="错误次数" prop="error_times"></el-table-column>
-<!--            <el-table-column width="150px" label="登陆时间" prop="game_update_time">-->
-<!--                <template slot-scope="scope">{{scope.row.game_update_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>-->
-<!--            </el-table-column>-->
-<!--            <el-table-column width="150px" label="邮件时间" prop="email_time">-->
-<!--                <template slot-scope="scope">{{scope.row.email_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>-->
-<!--            </el-table-column>-->
-<!--            <el-table-column width="150px" label="创建时间" prop="create_time">-->
-<!--                <template slot-scope="scope">{{scope.row.create_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>-->
-<!--            </el-table-column>-->
-            <el-table-column width="150px" label="服务器" prop="server_name"></el-table-column>
-            <el-table-column width="150px" label="三无帐号" prop="is_clean">
-                <template slot-scope="scope">
-                    <el-tag>{{scope.row.is_clean==1?'是':'否'}}</el-tag>
-                </template>
-            </el-table-column>
+          <el-table-column width="100px" label="错误次数" prop="error_times"></el-table-column>
+          <el-table-column width="150px" label="game_update_time" prop="game_update_time">
+            <template slot-scope="scope">{{scope.row.game_update_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>
+          </el-table-column>
+          <el-table-column width="200px" label="idNumber">
+            <template slot-scope="{row}">
+              {{row.device_name}}--{{row.idcard}}
+            </template>
+          </el-table-column>
+          <el-table-column width="150px" label="create_time" prop="create_time">
+            <template slot-scope="scope">{{scope.row.create_time | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</template>
+          </el-table-column>
+          <el-table-column width="100px" label="资金" prop="money"></el-table-column>
+          <el-table-column width="100px" label="黑球" prop="black_player"></el-table-column>
+
+          <el-table-column width="150px" label="服务器" prop="server_name"></el-table-column>
+          <el-table-column width="150px" label="三无帐号" prop="is_clean">
+              <template slot-scope="scope">
+                  <el-tag>{{scope.row.is_clean==1?'是':'否'}}</el-tag>
+              </template>
+          </el-table-column>
         </el-table>
 
         <div class="pagination-container">

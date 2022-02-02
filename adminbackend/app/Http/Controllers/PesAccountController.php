@@ -23,7 +23,7 @@ class PesAccountController extends Controller
         }
 
         $query = Account::singleton()->getPesAccountQuery($request);
-        $accountSelectRaw = 'a.id, a.server_name, a.status, a.email, a.passwd, a.is_clean, ';
+        $accountSelectRaw = 'a.id, a.server_name, a.status, a.email, a.passwd, a.is_clean, a.device_name, a.idcard, ';
         $footballAccountDetailSelectRaw = 'fad.sign_times, fad.error_times, fad.money, fad.gold, fad.black_player, 
         fad.gold_player, fad.silver_player, fad.email_time, fad.game_update_time, fad.create_time';
         $take = trim($request->input('limit'));

@@ -72,14 +72,14 @@ class Account extends Model
         $email = trim($request->input('email'));
         $status = trim($request->input('status'));
         $serverName = trim($request->input('serverName'));
-        $signTimes1 = floor(($request->input('sign_times_1')));
-        $signTimes2 = floor(($request->input('sign_times_2')));
-        $errorTimes1 = floor(($request->input('error_times_1')));
-        $errorTimes2 = floor(($request->input('error_times_2')));
-        $xianSuo1 = floor(($request->input('xian_suo_1')));
-        $xianSuo2 = floor(($request->input('xian_suo_2')));
-        $jingHua1 = floor(($request->input('jing_hua_1')));
-        $jingHua2 = floor(($request->input('jing_hua_2')));
+        $signTimes1 = $request->input('sign_times_1');
+        $signTimes2 = $request->input('sign_times_2');
+        $errorTimes1 = $request->input('error_times_1');
+        $errorTimes2 = $request->input('error_times_2');
+        $xianSuo1 = $request->input('xian_suo_1');
+        $xianSuo2 = $request->input('xian_suo_2');
+        $jingHua1 = $request->input('jing_hua_1');
+        $jingHua2 = $request->input('jing_hua_2');
         $accountId = floor(($request->input('accountId')));
         $goodsDetailUpdateDate1 = ($request->input('goods_detail_update_date1'));
         $goodsDetailUpdateDate2 = ($request->input('goods_detail_update_date2'));
@@ -90,13 +90,12 @@ class Account extends Model
         $extraField = $request->input('extra_field');
 
         //帐号数据
-
         $query = DB::table('account as a')
             ->when($email, function($query) use($email) {$query->where('email', 'like', $email . '%');})
-            ->when($signTimes1 != '', function($query) use($signTimes1) {$query->where('iad.sign_times', '>=', $signTimes1);})
-            ->when($signTimes2 != '', function($query) use($signTimes2) {$query->where('sign_times', '<=', $signTimes2);})
-            ->when($errorTimes1 != '', function($query) use($errorTimes1) {$query->where('error_times', '>=', $errorTimes1);})
-            ->when($errorTimes2 != '', function($query) use($errorTimes2) {$query->where('error_times', '<=', $errorTimes2);})
+            ->when(is_numeric($signTimes1), function($query) use($signTimes1) {$query->where('iad.sign_times', '>=', $signTimes1);})
+            ->when(is_numeric($signTimes2), function($query) use($signTimes2) {$query->where('iad.sign_times', '<=', $signTimes2);})
+            ->when(is_numeric($errorTimes1), function($query) use($errorTimes1) {$query->where('iad.error_times', '>=', $errorTimes1);})
+            ->when(is_numeric($errorTimes2), function($query) use($errorTimes2) {$query->where('iad.error_times', '<=', $errorTimes2);})
             ->when($status, function($query) use($status) {$query->where('status', '=', $status);})
             ->when($serverName, function($query) use($serverName) {
                 if($serverName=='id5_ios') {
@@ -107,10 +106,10 @@ class Account extends Model
                 $query->where('server_name', '=', $serverName);
             })
             ->when($accountId, function($query) use($accountId) {$query->where('a.id', '=', $accountId);})
-            ->when($xianSuo1 != '', function($query) use($xianSuo1) {$query->where('xian_suo', '>=', $xianSuo1);})
-            ->when($xianSuo2 != '', function($query) use($xianSuo2) {$query->where('xian_suo', '<=', $xianSuo2);})
-            ->when($jingHua1 != '', function($query) use($jingHua1) {$query->where('jing_hua', '>=', $jingHua1);})
-            ->when($jingHua2 != '', function($query) use($jingHua2) {$query->where('jing_hua', '<=', $jingHua2);})
+            ->when(is_numeric($xianSuo1), function($query) use($xianSuo1) {$query->where('xian_suo', '>=', $xianSuo1);})
+            ->when(is_numeric($xianSuo2), function($query) use($xianSuo2) {$query->where('xian_suo', '<=', $xianSuo2);})
+            ->when(is_numeric($jingHua1), function($query) use($jingHua1) {$query->where('jing_hua', '>=', $jingHua1);})
+            ->when(is_numeric($jingHua2), function($query) use($jingHua2) {$query->where('jing_hua', '<=', $jingHua2);})
             ->when($goodsDetailUpdateDate1 != '', function($query) use($goodsDetailUpdateDate1) {$query->where('iad.game_update_time', '>=', strtotime($goodsDetailUpdateDate1));})
             ->when($goodsDetailUpdateDate2 != '', function($query) use($goodsDetailUpdateDate2) {$query->where('iad.game_update_time', '<=', strtotime($goodsDetailUpdateDate2));})
             ->when($stcCreateDatetimeStart != '', function($query) use($stcCreateDatetimeStart) {$query->where('iad.create_time', '>=', strtotime($stcCreateDatetimeStart));})
@@ -137,14 +136,14 @@ class Account extends Model
         $email = trim($request->input('email'));
         $status = trim($request->input('status'));
         $serverName = trim($request->input('serverName'));
-        $signTimes1 = floor(($request->input('sign_times_1')));
-        $signTimes2 = floor(($request->input('sign_times_2')));
-        $errorTimes1 = floor(($request->input('error_times_1')));
-        $errorTimes2 = floor(($request->input('error_times_2')));
-        $gold1 = floor(($request->input('gold_1')));
-        $gold2 = floor(($request->input('gold_2')));
-        $money1 = floor(($request->input('money_1')));
-        $money2 = floor(($request->input('money_2')));
+        $signTimes1 = $request->input('sign_times_1');
+        $signTimes2 = $request->input('sign_times_2');
+        $errorTimes1 = $request->input('error_times_1');
+        $errorTimes2 = $request->input('error_times_2');
+        $gold1 = $request->input('gold_1');
+        $gold2 = $request->input('gold_2');
+        $money1 = $request->input('money_1');
+        $money2 = $request->input('money_2');
         $blackPlayer1 = floor(($request->input('black_player_1')));
         $blackPlayer2 = floor(($request->input('black_player_2')));
         $goldPlayer1 = floor(($request->input('gold_player_1')));
@@ -161,10 +160,10 @@ class Account extends Model
 
         $query = DB::table('account as a')
             ->when($email, function($query) use($email) {$query->where('email', 'like', $email . '%');})
-            ->when($signTimes1 != '', function($query) use($signTimes1) {$query->where('sign_times', '>=', $signTimes1);})
-            ->when($signTimes2 != '', function($query) use($signTimes2) {$query->where('sign_times', '<=', $signTimes2);})
-            ->when($errorTimes1 != '', function($query) use($errorTimes1) {$query->where('error_times', '>=', $errorTimes1);})
-            ->when($errorTimes2 != '', function($query) use($errorTimes2) {$query->where('error_times', '<=', $errorTimes2);})
+            ->when(is_numeric($signTimes1), function($query) use($signTimes1) {$query->where('sign_times', '>=', $signTimes1);})
+            ->when(is_numeric($signTimes2), function($query) use($signTimes2) {$query->where('sign_times', '<=', $signTimes2);})
+            ->when(is_numeric($errorTimes1), function($query) use($errorTimes1) {$query->where('error_times', '>=', $errorTimes1);})
+            ->when(is_numeric($errorTimes2), function($query) use($errorTimes2) {$query->where('error_times', '<=', $errorTimes2);})
             ->when($status, function($query) use($status) {$query->where('status', '=', $status);})
             ->when($serverName, function($query) use($serverName) {
                 if($serverName=='pes_ios') {
@@ -175,10 +174,10 @@ class Account extends Model
                 $query->where('server_name', '=', $serverName);
             })
             ->when($accountId, function($query) use($accountId) {$query->where('a.id', '=', $accountId);})
-            ->when($gold1 != '', function($query) use($gold1) {$query->where('gold', '>=', $gold1);})
-            ->when($gold2 != '', function($query) use($gold2) {$query->where('gold', '<=', $gold2);})
-            ->when($money1 != '', function($query) use($money1) {$query->where('money', '>=', $money1);})
-            ->when($money2 != '', function($query) use($money2) {$query->where('money', '<=', $money2);})
+            ->when(is_numeric($gold1), function($query) use($gold1) {$query->where('gold', '>=', $gold1);})
+            ->when(is_numeric($gold2), function($query) use($gold2) {$query->where('gold', '<=', $gold2);})
+            ->when(is_numeric($money1), function($query) use($money1) {$query->where('money', '>=', $money1);})
+            ->when(is_numeric($money2), function($query) use($money2) {$query->where('money', '<=', $money2);})
             ->when($blackPlayer1 != '', function($query) use($blackPlayer1) {$query->where('black_player', '>=', $blackPlayer1);})
             ->when($blackPlayer2 != '', function($query) use($blackPlayer2) {$query->where('black_player', '<=', $blackPlayer2);})
             ->when($goldPlayer1 != '', function($query) use($goldPlayer1) {$query->where('gold_player', '>=', $goldPlayer1);})

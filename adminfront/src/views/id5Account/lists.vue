@@ -62,10 +62,9 @@
         placeholder="请输入内容"
         @select="handleFilter"
       ></el-autocomplete>
-      <!--            <el-input @keyup.enter.native="handleFilter" style="width: 200px;"  placeholder='extra_field'  v-model="listQuery.extra_field"></el-input>-->
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
       <br/>
-      最后更新时间：
+      更新时间：
       <el-date-picker
         v-model="listQuery.goods_detail_update_date1"
         align="right"
@@ -118,8 +117,7 @@
       <el-table-column width="125px" label="密码" prop="passwd"></el-table-column>
       <el-table-column width="100px" label="精华" prop="jing_hua"></el-table-column>
       <el-table-column width="90px" label="线索" prop="xian_suo"></el-table-column>
-      <el-table-column width="100px" label="extra_field" prop="extra_field"></el-table-column>
-      <el-table-column width="150px" label="服务器" prop="server_name"></el-table-column>
+      <el-table-column width="100px" label="服务器" prop="server_name"></el-table-column>
       <el-table-column width="100px" label="状态" prop="status">
         <template slot-scope="{row}">
           <div v-if="row.edit">
@@ -132,21 +130,20 @@
       </el-table-column>
       <el-table-column width="100px" label="登录天数" prop="sign_times"></el-table-column>
       <el-table-column width="100px" label="错误次数" prop="error_times"></el-table-column>
-      <el-table-column width="150px" label="remark" prop="remark"></el-table-column>
-      <el-table-column width="150px" label="create_time" prop="create_time">
-        <template slot-scope="scope">{{ scope.row.create_time | formatTime('{y}-{m}-{d} {h}:{i}:{s}') }}</template>
-      </el-table-column>
       <el-table-column width="150px" label="game_update_time" prop="game_update_time">
         <template slot-scope="scope">{{ scope.row.game_update_time | formatTime('{y}-{m}-{d} {h}:{i}:{s}') }}</template>
       </el-table-column>
+      <el-table-column width="200px" label="idNumber">
+        <template slot-scope="{row}">
+          {{row.device_name}}--{{row.idcard}}
+        </template>
+      </el-table-column>
+      <el-table-column width="150px" label="remark" prop="remark"></el-table-column>
+      <el-table-column width="100px" label="extra_field" prop="extra_field"></el-table-column>
+      <el-table-column width="150px" label="create_time" prop="create_time">
+        <template slot-scope="scope">{{ scope.row.create_time | formatTime('{y}-{m}-{d} {h}:{i}:{s}') }}</template>
+      </el-table-column>
       <el-table-column width="100px" label="灵感" prop="ling_gan"></el-table-column>
-      <!--            <el-table-column width="150px" label="登陆时间" prop="game_update_time">-->
-      <!--                <template slot-scope="scope">{{scope.row.game_update_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>-->
-      <!--            </el-table-column>-->
-      <!--            <el-table-column width="150px" label="邮件时间" prop="email_time">-->
-      <!--                <template slot-scope="scope">{{scope.row.email_time | formatTime('{y}-{m}-{d} {h}:{i}')}}</template>-->
-      <!--            </el-table-column>-->
-
       <el-table-column width="150px" label="三无帐号" prop="is_clean">
         <template slot-scope="scope">
           <el-tag>{{ scope.row.is_clean == 1 ? '是' : '否' }}</el-tag>
@@ -395,42 +392,6 @@ export default {
         }
       })
     },
-    handleDelete (idx, row) {
-      this.$confirm('此操作将永久删除该管理员, 是否继续?', '确认', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        request({url: 'recharge/del', method: 'post', data: {id: row.id}}).then(response => {
-          const ret = response.data
-          if (ret.code) {
-            this.$message.error(ret.msg || '系统错误')
-            return
-          }
-
-          this.$notify({
-            title: '成功',
-            message: '删除成功',
-            type: 'success',
-            duration: 2000
-          })
-
-          this.list.splice(idx, 1)
-        }).catch(error => {
-          this.$message.error(error.message)
-        })
-      }).catch(() => {
-      })
-    }
   },
-  filters: {
-    wxStateFilter (status) {
-      if (status == 6) {
-        return 'success'
-      } else {
-        return 'info'
-      }
-    }
-  }
 }
 </script>
