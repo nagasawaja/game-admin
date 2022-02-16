@@ -25,9 +25,10 @@ return [
         [
             ['title' => '工具箱', 'path' => 'mao/tools'],
             ['title' => '脚本数据', 'path' => 'mao/scriptRecord' , 'home' => true],
-            ['title' => '单个商品销量变化', 'path' => 'mao/goodsChangeHistory'],
-            ['title' => '商品总数量与销量比例', 'path' => 'mao/goodsScale'],
-            ['title' => '数据报表', 'path' => 'mao/dataReport'],
+//            ['title' => '单个商品销量变化', 'path' => 'mao/goodsChangeHistory'],
+//            ['title' => '商品总数量与销量比例', 'path' => 'mao/goodsScale'],
+//            ['title' => '数据报表', 'path' => 'mao/dataReport'],
+            ['title' => '设备运行状态', 'path' => 'mao/deviceRunningRecord'],
             ['title' => '执行原生sql', 'path' => 'account/querySql'],
             ['title' => '执行原生redis', 'path' => 'account/queryRedis'],
         ]

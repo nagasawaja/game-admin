@@ -215,4 +215,56 @@ class MaoController extends Controller
 
     }
 
+    // 游戏运行状态记录
+    public function DeviceRunningRecord(Request $request) {
+        $startTime = $request->input('start_time');
+        $endTime = $request->input('end_time');
+        $frequencySecond = $request->input('frequencySecond');
+
+        $rows = DB::table('device_running_record')
+            ->when($startTime != '', function($query) use($startTime) {$query->where('create_time', '>=', strtotime($startTime));})
+            ->when($endTime != '', function($query) use($endTime) {$query->where('create_time', '<=', strtotime($endTime));})
+            ->get();
+        $deviceMap = [];
+        $legend = [];
+        $xAxis = [];
+        $xAxisMap = [];
+        $imeiTotalTimesMap = [];
+
+        $nowCreateTime = 0;
+        $calcImei = false;
+        foreach($rows as $row) {
+            if(!isset($xAxisMap[$row->create_time])) {
+                if($nowCreateTime == 0 || $row->create_time - $nowCreateTime >= $frequencySecond){
+                    $calcImei = true;
+                    $nowCreateTime = $row->create_time;
+                    $xAxis[] = $row->create_time;
+                    $xAxisMap[$row->create_time] = 1;
+                }
+            }
+            if(!isset($imeiTotalTimesMap[$row->imei])) {
+                $legend[] = $row->imei;
+            }
+            if($calcImei == true) {
+                $calcImei = false;
+                foreach($imeiTotalTimesMap as $k=>$v) {
+                    $deviceMap[$k][] = $v;
+                    $imeiTotalTimesMap[$k] = 0;
+                }
+
+            }
+            if(!isset($imeiTotalTimesMap[$row->imei])) {
+                $imeiTotalTimesMap[$row->imei] = 0;
+            }
+            $imeiTotalTimesMap[$row->imei] += $row->total_times;
+        }
+
+        $xAx = [];
+        foreach($xAxis as $v) {
+            $xAx[] = date('m-d H:i', $v);
+        }
+
+        return JSON::ok(['series' => $deviceMap, 'legend' => $legend, 'xAxis' => $xAx]);
+    }
+
 }

@@ -56,6 +56,7 @@ return [
     'id5Account/soldOut' => [ 'method' => 'post', 'ctrl' => 'Id5AccountController@soldOutAccountList', 'title' => 'id5已卖出帐号列表'],
 
     //jiaoyimao
+    'mao/deviceRunningRecord' => [ 'method' => 'post', 'ctrl' => 'MaoController@deviceRunningRecord', 'title' => '设备运行状态'],
     'mao/goodsChangeHistory' => [ 'method' => 'post', 'ctrl' => 'MaoController@goodsChangeHistory', 'title' => '单个商品销量变化'],
     'mao/goodsScale' => [ 'method' => 'post', 'ctrl' => 'MaoController@goodsScale', 'title' => '商品总数量与销量比例'],
     'mao/dataReport' => [ 'method' => 'post', 'ctrl' => 'MaoController@dateReport', 'title' => '数据报表'],
