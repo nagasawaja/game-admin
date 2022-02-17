@@ -221,6 +221,7 @@ class MaoController extends Controller
         $endTime = $request->input('end_time');
         $frequencySecond = $request->input('frequencySecond');
         $gameId = $request->input('gameId');
+        $dataType = $request->input('dataType');
 
         $rows = DB::table('device_running_record')
             ->when($startTime != '', function($query) use($startTime) {$query->where('create_time', '>=', strtotime($startTime));})
@@ -258,7 +259,12 @@ class MaoController extends Controller
             if(!isset($imeiTotalTimesMap[$row->imei])) {
                 $imeiTotalTimesMap[$row->imei] = 0;
             }
-            $imeiTotalTimesMap[$row->imei] += $row->total_times;
+            if($dataType == 'total') {
+                $imeiTotalTimesMap[$row->imei] += $row->total_times;
+            } else {
+                $imeiTotalTimesMap[$row->imei] += $row->success_times;
+            }
+
         }
 
         $xAx = [];
