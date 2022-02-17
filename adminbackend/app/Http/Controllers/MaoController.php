@@ -220,10 +220,12 @@ class MaoController extends Controller
         $startTime = $request->input('start_time');
         $endTime = $request->input('end_time');
         $frequencySecond = $request->input('frequencySecond');
+        $gameId = $request->input('gameId');
 
         $rows = DB::table('device_running_record')
             ->when($startTime != '', function($query) use($startTime) {$query->where('create_time', '>=', strtotime($startTime));})
             ->when($endTime != '', function($query) use($endTime) {$query->where('create_time', '<=', strtotime($endTime));})
+            ->where('game_id', '=', $gameId)
             ->get();
         $deviceMap = [];
         $legend = [];

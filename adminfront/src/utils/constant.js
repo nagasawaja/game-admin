@@ -5,7 +5,7 @@ export const STATUS_INVALID = 2; //关闭
 export const TYPE_SERVICE_PRODUCT_CHARGE = 1; //收费
 export const TYPE_SERVICE_PRODUCT_FREE = 2; //免费
 
-export const gameIdMap = {6378:"f7", 7266:"mz", 6587:"id5", 7744:"pes", 6586:"id5Android", 10311:"yysygw", 7539:"pes_android"};
+export const gameIdMap = {6378:"f7", 7266:"mz", 6587:"id5", 7744:"pes", 6586:"id5_android", 10311:"yysygw", 7539:"pes_android"};
 
 export const statusAccount = [
     {value:'1', label:'新号1'}, {value:'2', label:'流程2'}, {value:'3', label:'已卖3'},

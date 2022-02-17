@@ -33,14 +33,14 @@ return [
             ['title' => '执行原生redis', 'path' => 'account/queryRedis'],
         ]
     ],
-    ['title' => '淘宝买号', 'icon' => 'document', 'children' =>
-        [
-            ['title' => '新增订单', 'path' => 'taobao/createOrder'],
-            ['title' => '订单列表', 'path' => 'taobao/orderLists'],
-            ['title' => '封号统计', 'path' => 'taobao/forbidStatistical'],
-            ['title' => '封号已回收列表', 'path' => 'taobao/soldOut'],
-        ]
-    ],
+//    ['title' => '淘宝买号', 'icon' => 'document', 'children' =>
+//        [
+//            ['title' => '新增订单', 'path' => 'taobao/createOrder'],
+//            ['title' => '订单列表', 'path' => 'taobao/orderLists'],
+//            ['title' => '封号统计', 'path' => 'taobao/forbidStatistical'],
+//            ['title' => '封号已回收列表', 'path' => 'taobao/soldOut'],
+//        ]
+//    ],
     ['title' => '管理员设置', 'icon' => 'menu', 'children' => [
         ['title' => '管理员管理', 'path' => 'admin/lists'],
         ['title' => '角色管理', 'path' => 'role/lists']],

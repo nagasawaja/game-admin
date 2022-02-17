@@ -1,5 +1,6 @@
 <template>
     <div class="app-container calendar-list-container">
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">刷新</el-button>
         <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;margin-top:15px;">
             <el-table-column width="65px"  label="id" prop="id"></el-table-column>
             <el-table-column width="300px" label="title" prop="title"></el-table-column>
@@ -125,7 +126,6 @@
                 })
             },
             handleFilter() {
-                this.listQuery.page = 1
                 this.getList()
             },
             handleUpdate (idx, row) {
