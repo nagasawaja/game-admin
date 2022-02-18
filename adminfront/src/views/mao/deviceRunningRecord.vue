@@ -50,8 +50,26 @@
           :value="item">
         </el-option>
       </el-select>
+      <br/>
+      显示的电脑：  <el-select style="width: 200px;" clearable v-model="computerNameSelectList"  placeholder="请选择">
+      <el-option
+        v-for="(value,key) in computerNameList"
+        :key="value"
+        :label="value"
+        :value="value">
+      </el-option>
+    </el-select>
+      是否汇总：<el-select style="width:100px;" v-model="collectDataFlag"  placeholder="请选择">
+        <el-option
+          v-for="(value,key) in constant.yesOrNoShowText"
+          :key=key
+          :label=value
+          :value=key>
+        </el-option>
+      </el-select>
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter2">刷新表单</el-button>
     </div>
-    <div id="mainaaa" style="width:100%; height:90vh;">
+    <div id="mainaaa" style="width:100%; height:85vh;">
 
     </div>
   </div>
@@ -60,21 +78,7 @@
 <script>
 import request from '@/utils/request'
 import * as echarts from 'echarts'
-
-Date.prototype.format = function (fmt) {
-  var o = {
-    'M+': this.getMonth() + 1, // 月份
-    'd+': this.getDate(), // 日
-    'h+': this.getHours(), // 小时
-    'm+': this.getMinutes(), // 分
-    's+': this.getSeconds(), // 秒
-    'q+': Math.floor((this.getMonth() + 3) / 3), // 季度
-    'S': this.getMilliseconds() // 毫秒
-  }
-  if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length))
-  for (var k in o) { if (new RegExp('(' + k + ')').test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length))) }
-  return fmt
-}
+import '@/utils/common_function'
 
 export default {
   name: 'activity-share-total-lists',
@@ -86,8 +90,12 @@ export default {
     var stcCreate_datetime = new Date()
     return {
       legend: [],
-      series: [],
+      seriess: [],
       xAxis: [],
+      selectObj: {},
+      computerNameList: [],
+      computerNameSelectList: [],
+      collectDataFlag: '0',
       constant: require('@/utils/constant'),
       frequencySecondList: [600, 900, 1800, 3600],
       dataTypeList: ['total', 'suc'],
@@ -103,7 +111,6 @@ export default {
     }
   },
   created () {
-    console.log(this.listQuery)
     this.getList()
   },
   mounted () {
@@ -117,6 +124,32 @@ export default {
     handleFilter () {
       this.getList()
     },
+    handleFilter2 () {
+      // 过滤
+      if(typeof(this.computerNameSelectList) == "string") {
+        let a = this.computerNameSelectList
+        this.computerNameSelectList = []
+        this.computerNameSelectList.push(a)
+      }
+      this.selectObj = {}
+      if (this.computerNameSelectList.length > 0) {
+        for (const i in this.legend) {
+          let findFlag = false
+          for (const o in this.computerNameSelectList) {
+            // console.log(this.legend[i] + '----' + this.computerNameSelectList[o])
+            if (this.legend[i].indexOf(this.computerNameSelectList[o]) === 0) {
+              findFlag = true
+              break
+            }
+          }
+          if (findFlag === false) {
+            this.selectObj[this.legend[i]] = false
+          }
+        }
+      }
+
+      this.chartSetOption(this.legend, this.xAxis, this.seriess, this.selectObj, this.collectDataFlag)
+    },
     getList () {
       this.listLoading = true
       request({url: 'mao/deviceRunningRecord', method: 'post', params: this.listQuery}).then(response => {
@@ -127,57 +160,69 @@ export default {
           return
         }
         // this.legend = result.data.legend
-        this.series = result.data.series
-        this.xAxis = result.data.xAxis
         this.listLoading = false
-        let seriess = []
-        for (var i in this.series) {
-          seriess.push({
+        this.xAxis = result.data.xAxis
+        this.legend = result.data.legend
+        this.computerNameList = result.data.computer_name
+        let aa = result.data.series
+        this.seriess = []
+        for (var i in aa) {
+          this.seriess.push({
             name: i,
             type: 'line',
-            // stack: 'Total',
-            data: this.series[i]
+            stack: 'total',
+            // smooth: true,
+            data: aa[i]
           })
         }
 
-        let legend = result.data.legend
-        let selectObj = {}
-        let length = legend.length
-        legend.map((item, i) => {
-          if (i > 5 && i < (length - 5)) {
-            selectObj[legend[i]] = false
+        this.chartSetOption(this.legend, this.xAxis, this.seriess, this.selectObj,this.collectDataFlag)
+      })
+    },
+    chartSetOption (legend, xAxis, seriess, selectObj,collectDataFlag) {
+      // let yInterval = 10
+      // if(this.listQuery.frequencySecond >= 1800) {
+      //   yInterval = 100
+      // }
+      let stack = 'total'
+      if (collectDataFlag === '0') {
+        // 不汇总
+        stack = ''
+      }
+      for (const i in seriess) {
+        seriess[i].stack = stack
+      }
+      console.log(seriess)
+      this.myChart.clear()
+      this.myChart.setOption({
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          data: legend,
+          selected: selectObj
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
           }
-        })
-        this.myChart.clear()
-        this.myChart.setOption({
-          tooltip: {
-            trigger: 'axis'
-          },
-          legend: {
-            data: legend
-            // selected: selectObj
-          },
-          grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-          },
-          toolbox: {
-            feature: {
-              saveAsImage: {}
-            }
-          },
-          xAxis: {
-            type: 'category',
-            boundaryGap: false,
-            data: this.xAxis
-          },
-          yAxis: {
-            type: 'value'
-          },
-          series: seriess
-        })
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: this.xAxis
+        },
+        yAxis: {
+          type: 'value',
+          interval: 10
+        },
+        series: seriess
       })
     }
   }

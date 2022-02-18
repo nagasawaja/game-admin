@@ -227,16 +227,21 @@ class MaoController extends Controller
             ->when($startTime != '', function($query) use($startTime) {$query->where('create_time', '>=', strtotime($startTime));})
             ->when($endTime != '', function($query) use($endTime) {$query->where('create_time', '<=', strtotime($endTime));})
             ->where('game_id', '=', $gameId)
+//            ->where('computer_name','=', 'right3')
             ->get();
         $deviceMap = [];
         $legend = [];
         $xAxis = [];
         $xAxisMap = [];
         $imeiTotalTimesMap = [];
-
+        $computerNameObjArr = [];
         $nowCreateTime = 0;
         $calcImei = false;
         foreach($rows as $row) {
+            if(!isset($computerNameObjArr[$row->computer_name])) {
+                $computerNameObjArr[$row->computer_name] = 1;
+            }
+
             if(!isset($xAxisMap[$row->create_time])) {
                 if($nowCreateTime == 0 || $row->create_time - $nowCreateTime >= $frequencySecond){
                     $calcImei = true;
@@ -264,15 +269,24 @@ class MaoController extends Controller
             } else {
                 $imeiTotalTimesMap[$row->imei] += $row->success_times;
             }
-
         }
-
+        foreach($imeiTotalTimesMap as $b)
         $xAx = [];
         foreach($xAxis as $v) {
             $xAx[] = date('m-d H:i', $v);
         }
 
-        return JSON::ok(['series' => $deviceMap, 'legend' => $legend, 'xAxis' => $xAx]);
+        // 将剩余的数据拿出来
+        foreach($imeiTotalTimesMap as $k=>$v) {
+            $deviceMap[$k][] = $v;
+        }
+
+        $computerNameArr = [];
+        foreach($computerNameObjArr as $k=> $v) {
+            $computerNameArr[] = $k;
+        }
+        sort($computerNameArr);
+        return JSON::ok(['series' => $deviceMap, 'legend' => $legend, 'xAxis' => $xAx, 'computer_name'=> $computerNameArr]);
     }
 
 }
