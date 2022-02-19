@@ -126,7 +126,7 @@ export default {
     },
     handleFilter2 () {
       // 过滤
-      if(typeof(this.computerNameSelectList) == "string") {
+      if(typeof(this.computerNameSelectList) != "object") {
         let a = this.computerNameSelectList
         this.computerNameSelectList = []
         this.computerNameSelectList.push(a)
@@ -179,20 +179,35 @@ export default {
         this.chartSetOption(this.legend, this.xAxis, this.seriess, this.selectObj,this.collectDataFlag)
       })
     },
-    chartSetOption (legend, xAxis, seriess, selectObj,collectDataFlag) {
+    chartSetOption (legend, xAxis, seriess, selectObj, collectDataFlag) {
       // let yInterval = 10
       // if(this.listQuery.frequencySecond >= 1800) {
       //   yInterval = 100
       // }
       let stack = 'total'
+      let interval = 10
       if (collectDataFlag === '0') {
         // 不汇总
         stack = ''
+        interval = 5
+      }
+      // 选择了电脑，选择汇总，选择suc
+      console.log(this.listQuery.dataType)
+      if ( Object.keys(selectObj).length > 0 && collectDataFlag === '1' && this.listQuery.dataType === 'suc') {
+        interval = 5
+      }
+      // 数据选择成功的，且数据不汇总
+      if (this.listQuery.dataType !== 'total' && collectDataFlag === '0') {
+        interval = 1
+      }
+      // 没有选择对应的电脑和sum数据的时候
+      if (Object.keys(selectObj).length === 0 && this.listQuery.dataType === 'total' && collectDataFlag === '1') {
+        interval = 50
       }
       for (const i in seriess) {
         seriess[i].stack = stack
       }
-      console.log(seriess)
+
       this.myChart.clear()
       this.myChart.setOption({
         tooltip: {
@@ -203,9 +218,10 @@ export default {
           selected: selectObj
         },
         grid: {
-          left: '3%',
-          right: '4%',
+          left: '2%',
+          right: '10%',
           bottom: '3%',
+          top: '10%',
           containLabel: true
         },
         toolbox: {
@@ -220,7 +236,7 @@ export default {
         },
         yAxis: {
           type: 'value',
-          interval: 10
+          interval: interval
         },
         series: seriess
       })
