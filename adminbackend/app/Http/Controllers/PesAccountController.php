@@ -57,7 +57,6 @@ class PesAccountController extends Controller
                 }
                 $query->where('a.server_name', '=', $serverName);
             })
-            ->where('fad.gold', '>', 1000)
             ->when($lastUpdateTime, function($query) use($lastUpdateTime) {$query->where('fad.game_update_time', '>=', strtotime($lastUpdateTime));})
             ->groupBy(['gold'])
             ->orderBy('fad.gold', 'desc')
